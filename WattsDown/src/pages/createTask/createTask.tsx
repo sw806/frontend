@@ -60,6 +60,13 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   };
 
   const styles = StyleSheet.create({
+    screenContainer: {
+      flex: 1,
+      width: "80%",
+      marginLeft: "auto",
+      marginRight: "auto",
+      justifyContent: 'center',
+    },
     heading:{
       color: '#009FFF', 
       alignSelf: 'center',
@@ -104,7 +111,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   })
   
   return (
-    <View>
+    <View style={styles.screenContainer}>
       <Text 
       variant="displayLarge"
       style={styles.heading}

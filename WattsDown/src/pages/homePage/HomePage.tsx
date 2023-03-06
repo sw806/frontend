@@ -5,6 +5,13 @@ import MenuItem from "react-native-paper/lib/typescript/components/Menu/MenuItem
 import { IStackScreenProps } from "../../library/Stack.ScreenProps";
 
 const styles=StyleSheet.create({
+    screenContainer: {
+        flex: 1,
+        width: "80%",
+        marginLeft: "auto",
+        marginRight: "auto",
+        justifyContent: 'center',
+      },
     heading:{
         color: '#009FFF', 
         alignSelf: 'center',
@@ -20,7 +27,7 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
     const [energy, setEnergy] = React.useState("");
     const [watts, setWatts] = React.useState("");
     return(
-        <View>
+        <View style={styles.screenContainer}>
             <Text 
                 variant="displayLarge"
                 style={styles.heading}
