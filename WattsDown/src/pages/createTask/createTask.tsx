@@ -41,7 +41,7 @@ const CreateTask = () => {
 
   const handleCreateTask = async () => {
     const id = uuid.v4().toString();
-    const task = {id :uuid.v4(), name: setTask.name, time: scheduleResult};
+    const task = {id :uuid.v4(), setScheduleResult, time: scheduleResult};
     try {
       // check for existing id
       const existingTask = await AsyncStorage.getItem(id);

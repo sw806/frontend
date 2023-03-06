@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import CreateTask from './src/pages/createTast';
+import CreateTask from './src/pages/createTask/createTask';
 
 export default function App() {
   return (
