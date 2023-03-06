@@ -51,7 +51,7 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
             </View>
             <Button 
                 mode="contained" 
-                onPress={() => navigation.navigate('CreateTask')}>
+                onPress={() => navigation.navigate('New Task')}>
                 Add New
             </Button>
          

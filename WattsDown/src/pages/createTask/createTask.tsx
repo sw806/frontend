@@ -67,7 +67,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
     const id = uuid.v4().toString();
     const newtask = {id: id, schedule: scheduleResult};
-    /*
+    
     try {
       // check for existing id
       const existingTask = await AsyncStorage.getItem(id);
@@ -87,12 +87,11 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
         power: ''
       });
 
+      toggleModal();
+
     } catch (error) {
       console.log(error);
     }
-    */
-    toggleModal();
-  
   };
 
   const toggleModal = () => {
@@ -249,7 +248,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
           mode='contained' 
           style={styles.containerbutton}
           buttonColor='#009FFF'
-          onPress={() => navigation.navigate('HomePage')}
+          onPress={() => navigation.navigate('Home')}
           >
             Back
         </Button>
@@ -274,7 +273,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
               <Button  
                   buttonColor='#009FFF'
                   textColor='white'
-                  onPress={() => navigation.navigate('HomePage')}>
+                  onPress={() => navigation.navigate('Home')}>
                     Home
               </Button>
 

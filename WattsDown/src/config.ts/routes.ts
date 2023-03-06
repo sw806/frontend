@@ -8,11 +8,11 @@ import CreateTask from "../pages/createTask/CreateTask";
 */
 const routes: IRouteProps[] = [
     {
-        name: 'HomePage',
+        name: 'Home',
         component: HomePage
     },
     {
-        name: 'CreateTask',
+        name: 'New Task',
         component: CreateTask
     }
 ]
