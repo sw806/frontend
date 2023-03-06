@@ -3,9 +3,11 @@ import { View, Pressable , StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import { Button, Text , TextInput  } from 'react-native-paper';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 
-const CreateTask = () => {
+const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
+
+  const {navigation, route, nameProp} = props;
   const [scheduleResult, setScheduleResult] = useState('');
   const [task, setTask] = useState({
     name: '',
@@ -39,7 +41,6 @@ const CreateTask = () => {
     }
   };
   
-
   const handleCreateTask = async () => {
     const id = uuid.v4().toString();
     const task = {id :uuid.v4(), setScheduleResult, time: scheduleResult};
@@ -186,9 +187,7 @@ const CreateTask = () => {
           mode='contained' 
           style={styles.containerbutton}
           buttonColor='#009FFF'
-          onPress={() => {
-            setScheduleResult('17:30-18:30')
-          }}
+          onPress={() => navigation.navigate('HomePage')}
           >
             Back
         </Button>
@@ -197,9 +196,6 @@ const CreateTask = () => {
           mode='contained' 
           style={styles.containerbutton}
           buttonColor='#2EB584'
-          onPress={() => {
-            setScheduleResult('17:30-18:30')
-          }}
           >
             Save
         </Button>

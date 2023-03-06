@@ -2,6 +2,7 @@ import {View, StyleSheet, ScrollView} from "react-native";
 import {Button, DataTable, Divider, Menu, Text, TextInput} from "react-native-paper";
 import * as React from 'react';
 import MenuItem from "react-native-paper/lib/typescript/components/Menu/MenuItem";
+import { IStackScreenProps } from "../../library/Stack.ScreenProps";
 
 const styles=StyleSheet.create({
     heading:{
@@ -12,7 +13,9 @@ const styles=StyleSheet.create({
       }
 })
 
-export default function HomePage() {
+const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
+    const {navigation, route, nameProp} = props;
+
     const [minutes, setMinutes] = React.useState("");
     const [energy, setEnergy] = React.useState("");
     const [watts, setWatts] = React.useState("");
@@ -21,7 +24,7 @@ export default function HomePage() {
             <Text 
                 variant="displayLarge"
                 style={styles.heading}
-                > New Task </Text>
+                > WattsDown </Text>
             <View>
                 <DataTable.Row>
                     <DataTable.Cell>Wash Clothes</DataTable.Cell>
@@ -39,9 +42,14 @@ export default function HomePage() {
                     <DataTable.Cell>-</DataTable.Cell>
                 </DataTable.Row>
             </View>
-            <Button mode="contained">
+            <Button 
+                mode="contained" 
+                onPress={() => navigation.navigate('CreateTask')}>
                 Add New
             </Button>
+         
         </View>
     )
 }
+
+export default HomePage
