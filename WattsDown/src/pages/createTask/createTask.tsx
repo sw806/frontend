@@ -4,10 +4,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import { Button, Text , TextInput  } from 'react-native-paper';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
+import Modal from "react-native-modal";
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
   const {navigation, route, nameProp} = props;
+  const [isModalVisible, setModalVisible] = useState(false);
   const [scheduleResult, setScheduleResult] = useState('');
   const [task, setTask] = useState({
     name: '',
@@ -20,6 +22,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
     setTask(prevState => ({ ...prevState, [name]: value }));
   };
   
+  /*
   const handleScheduleResult = async () => {
     const body = {
       time: task.time,
@@ -40,10 +43,31 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       console.log(error);
     }
   };
-  
+  */
+
+  // Mock function
+  const handleScheduleResult = async () => { 
+
+    if (!task.name) {
+      alert('Please enter the task name.');
+      return false;
+    }
+    const requiredInputs = ['time', 'energy', 'power'];
+    const filledInputs = requiredInputs.filter((input) => !!task[input]);
+    if (filledInputs.length < 2) {
+      alert('Please provide at least two of the following inputs: Time Minutes, Energy kWh, Power Watts');
+      return;
+    }
+
+      setScheduleResult('17:30-18:30')
+    
+  };
+
   const handleCreateTask = async () => {
+
     const id = uuid.v4().toString();
-    const task = {id :uuid.v4(), setScheduleResult, time: scheduleResult};
+    const newtask = {id: id, schedule: scheduleResult};
+    /*
     try {
       // check for existing id
       const existingTask = await AsyncStorage.getItem(id);
@@ -52,11 +76,27 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
         handleCreateTask();
         return;
       }
-      await AsyncStorage.setItem(id, JSON.stringify(task));
+      await AsyncStorage.setItem(id, JSON.stringify(newtask));
+
+      // reset states
+      setScheduleResult('');
+      setTask({
+        name: '',
+        time: '',
+        energy: '',
+        power: ''
+      });
 
     } catch (error) {
       console.log(error);
     }
+    */
+    toggleModal();
+  
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
   };
 
   const styles = StyleSheet.create({
@@ -108,6 +148,22 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
     outputResult:{
       fontSize: 30,
     },
+    modalBackground:{
+      flex: 1,
+      backgroundColor: 'rba(0,0,0,0,5',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    modalContainer:{
+      width: '80%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'white',
+      paddingHorizontal: 20,
+      paddingVertical: 30,
+      elevation: 20,
+      borderRadius: 20
+    }
   })
   
   return (
@@ -142,7 +198,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       activeOutlineColor='#009FFF'
       outlineColor='#009FFF'
       underlineColor='#009FFF'
-      
       />
 
       <TextInput
@@ -178,7 +233,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       style={styles.button}
       buttonColor='#009FFF'
       onPress={() => {
-        setScheduleResult('17:30-18:30')
+        handleScheduleResult();
       }}
       >
         Schedule task
@@ -203,9 +258,30 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
           mode='contained' 
           style={styles.containerbutton}
           buttonColor='#2EB584'
+          disabled={!scheduleResult}
+          onPress={() => {
+            handleCreateTask();
+          }}
           >
             Save
         </Button>
+
+        <Modal isVisible={isModalVisible}>
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContainer}>
+              <Text style={{color: '#009FFF', paddingBottom: 10}}> {task.name} scheduled!</Text>
+
+              <Button  
+                  buttonColor='#009FFF'
+                  textColor='white'
+                  onPress={() => navigation.navigate('HomePage')}>
+                    Home
+              </Button>
+
+            </View>
+          </View>
+        </Modal>
+
 
       </View>
 
