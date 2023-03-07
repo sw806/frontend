@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 24
+    },
+    icon: {
+        backgroundColor: 'rgba(255, 255, 255, 0)'
     }
 })
 
@@ -22,7 +25,7 @@ const ResultArea = (props: ResultProps) =>  {
     return(
         <Card style={styles.card}>
             <Card.Content style={styles.content}>
-                <Avatar.Icon size={54} icon="clock-outline"/>
+                <Avatar.Icon size={70} icon="clock-outline" style={styles.icon}/>
                 <Text style={styles.text}>{props.time}</Text>
             </Card.Content>
         </Card>
