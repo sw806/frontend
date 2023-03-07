@@ -20,6 +20,10 @@ const styles=StyleSheet.create({
       }
 })
 
+const handleEditTask = (nav) => {
+    nav.navigate('Edit Task')
+}
+
 const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
     const {navigation, route, nameProp} = props;
 
@@ -33,7 +37,7 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
                 style={styles.heading}
                 > WattsDown </Text>
             <View>
-                <DataTable.Row>
+                <DataTable.Row onPress={() => handleEditTask(navigation)}>
                     <DataTable.Cell>Wash Clothes</DataTable.Cell>
                     <DataTable.Cell>17:30</DataTable.Cell>
                     <DataTable.Cell>-</DataTable.Cell>

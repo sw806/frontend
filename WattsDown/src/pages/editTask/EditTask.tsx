@@ -1,6 +1,10 @@
 import {View, StyleSheet} from "react-native";
-import {Text, TextInput} from "react-native-paper";
+import {Button, Text, TextInput} from "react-native-paper";
 import * as React from 'react';
+import ResultArea from "../../components/ResultArea";
+import EditButtons from "../../components/EditButtons";
+import TextInputs from "../../components/TextInputs";
+
 
 const styles=StyleSheet.create({
     heading:{
@@ -8,6 +12,9 @@ const styles=StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 'auto',
         marginTop: 10,
+    },
+    ScheduleBtn: {
+        marginTop: "1%"
     }
 })
 
@@ -17,9 +24,14 @@ export default function EditTask() {
     const [watts, setWatts] = React.useState("");
     return(
         <View>
-            <Text variant="headlineLarge" style={styles.heading} >TASK NAME</Text>
-            <Text variant="headlineLarge" style={styles.heading}>Edit Task</Text>
-            <TextInput label="Minutes" value={minutes} onChangeText={text => setMinutes(text)}/>
+            <View>
+                <Text variant="headlineLarge" style={styles.heading} >TASK NAME</Text>
+                <Text variant="headlineLarge" style={styles.heading}>Edit Task</Text>
+            </View>
+            <TextInputs minutes={minutes} energy={energy} watts={watts} setMinutes={setMinutes} setEnergy={setEnergy} setWatts={setWatts} />
+            <Button mode="contained" buttonColor="#009FFF" uppercase style={styles.ScheduleBtn} >Schedule</Button>
+            <ResultArea time="10:00-12:00" />
+            <EditButtons />
         </View>
     )
 }

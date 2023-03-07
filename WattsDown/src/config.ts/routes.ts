@@ -1,6 +1,7 @@
 import { IRouteProps } from "../library/RouteProp";
 import HomePage from "../pages/homePage/HomePage";
-import CreateTask from "../pages/createTask/CreateTask";
+import EditTask from "../pages/editTask/EditTask";
+import CreateTask from "../pages/createTask/createTask";
 
 /*
  * used to specify routes
@@ -14,6 +15,10 @@ const routes: IRouteProps[] = [
     {
         name: 'New Task',
         component: CreateTask
+    },
+    {
+        name: "Edit Task",
+        component: EditTask
     }
 ]
 
