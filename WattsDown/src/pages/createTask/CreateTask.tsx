@@ -19,7 +19,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   const [power, setPower] = useState<number>();
   const [startDate, setStartDate] = useState<number>();
 
-
     /*
   const handleScheduleResult = async () => {
 
@@ -91,7 +90,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
   const saveTask = async () => {
 
-  
     const newTask: Task = {
       id: uuid.v4().toString(),
       name: name,
@@ -141,13 +139,11 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       width: 150,
       margin: 10,
       alignSelf: 'center',
-
     },
     containerbutton:{
       height: 40,
       width: 150,
       margin: 10,
-
     },
     container: {
       flexDirection: 'row',

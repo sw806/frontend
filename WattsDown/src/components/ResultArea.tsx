@@ -23,11 +23,15 @@ type ResultProps= {
     time: number
 }
 const ResultArea = (props: ResultProps) =>  {
+
+    const date = new Date(props.time * 1000); // Convert Unix timestamp to Date object
+    const formattedDate = date.toLocaleString(); // Format the date to a string
+
     return(
         <Card style={styles.card}>
             <Card.Content style={styles.content}>
                 <Avatar.Icon size={70} icon="clock-outline" style={styles.icon}/>
-                <Text style={styles.text}>{props.time}</Text>
+                <Text style={styles.text}>{props.time ? formattedDate: props.time}</Text>
             </Card.Content>
         </Card>
     )
