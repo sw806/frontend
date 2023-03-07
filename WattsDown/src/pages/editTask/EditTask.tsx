@@ -1,5 +1,5 @@
 import {View, StyleSheet} from "react-native";
-import {Button, Modal, Portal, Provider, Text, TextInput} from "react-native-paper";
+import {Button, Modal, Text} from "react-native-paper";
 import * as React from 'react';
 import ResultArea from "../../components/ResultArea";
 import EditButtons from "../../components/EditButtons";
@@ -136,7 +136,6 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
         <View style={styles.container}>
             <View>
                 <Text variant="headlineLarge" style={styles.heading} >{name}</Text>
-                <Text variant="headlineMedium" style={styles.heading}>Edit Task</Text>
             </View>
             <TextInputs minutes={minutes} energy={energyy} watts={watts} setMinutes={setMinutes} setEnergy={setEnergyy} setWatts={setWatts} />
             <View style={styles.ScheduleBtn}>

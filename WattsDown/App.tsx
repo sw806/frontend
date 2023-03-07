@@ -14,7 +14,14 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName={'Home'}>
         {routes.map((r,i) => (
-          <Stack.Screen key={i} name={r.name}>
+          <Stack.Screen key={i} name={r.name} options={{
+            headerStyle: {backgroundColor: "#009FFF"},
+            headerTintColor: "white",
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontSize: 60
+            }
+          }}>
               {(props) => <r.component nameProp ={r.name} {...props} />}
           </Stack.Screen>
         ))}
