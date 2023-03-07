@@ -86,7 +86,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       setDuration((energy * 60) / power);
     }
 
-    setStartDate(100);
+    setStartDate(1678206600);
   };
 
   const saveTask = async () => {
