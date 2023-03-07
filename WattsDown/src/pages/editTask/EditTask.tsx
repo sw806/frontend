@@ -71,6 +71,7 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     const [minutes, setMinutes] = React.useState<number>(duration);
     const [energyy, setEnergyy] = React.useState<number>(energy);
     const [watts, setWatts] = React.useState<number>(power);
+    const [date, setDate] = React.useState(startDate)
     const [visible, setVisible] = React.useState<boolean>(false);
     const [modalText, setModalText] = React.useState<string>("")
     const [saveModal, setSaveModal] = React.useState<boolean>(false)
@@ -87,7 +88,7 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
             time: energy,
             energy: energy,
             power: power,
-            schedule: "00:00-01:00"
+            schedule: startDate
         };
         await AsyncStorage.mergeItem(id, JSON.stringify(existingObject));
     }
@@ -129,8 +130,36 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     }
 
     const handleSchedule = () => {
-        // @ts-ignore
-        console.log(energy)
+        if (!name) {
+            alert('Please enter the task name.');
+            return;
+        }
+
+        const inputs = [duration, energy, power];
+        const filledInputs = inputs.filter(input => !!input);
+        if (filledInputs.length < 2) {
+            alert('Provide 2 of the following inputs: Duration, Energy kWh, Power Watts');
+            return;
+        }
+
+        if (power > 3){
+            alert('Power is too high!');
+            return;
+        }
+
+        if( !energy && power && duration){
+            setEnergyy((duration / 60) * power);
+        }
+
+        if( energy && !power && duration){
+            setWatts( (energy * 60) / duration);
+        }
+
+        if( energy && power && !duration){
+            setMinutes((energy * 60) / power);
+        }
+
+        setDate(1678206699);
     }
     return(
         <View style={styles.container}>
@@ -141,7 +170,7 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
             <View style={styles.ScheduleBtn}>
                 <Button mode="contained" buttonColor="#009FFF" uppercase onPress={() => handleSchedule()}>Schedule</Button>
             </View>
-            <ResultArea time={startDate} />
+            <ResultArea time={date} />
             <View style={styles.editButtons}>
                 <EditButtons
                     delete={handleDelete}
