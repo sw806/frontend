@@ -28,7 +28,7 @@ const styles=StyleSheet.create({
         marginRight: "auto",
     },
     editButtons: {
-        position: "absolute",
+        position: "relative",
         bottom: 5,
         width: "100%"
     },
