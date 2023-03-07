@@ -24,6 +24,17 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   
   /*
   const handleScheduleResult = async () => {
+
+    if (!task.name) {
+      alert('Please enter the task name.');
+      return false;
+    }
+    const requiredInputs = ['time', 'energy', 'power'];
+    const filledInputs = requiredInputs.filter((input) => !!task[input]);
+    if (filledInputs.length < 2) {
+      alert('Please provide at least two of the following inputs: Time Minutes, Energy kWh, Power Watts');
+      return;
+    }
     const body = {
       time: task.time,
       energy: task.energy,
@@ -60,7 +71,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
     }
 
       setScheduleResult('17:30-18:30')
-    
   };
 
   const handleCreateTask = async () => {
@@ -280,10 +290,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
             </View>
           </View>
         </Modal>
-
-
       </View>
-
     </View>
   );
 };

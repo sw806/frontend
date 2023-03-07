@@ -1,7 +1,7 @@
 import { IRouteProps } from "../library/RouteProp";
 import HomePage from "../pages/homePage/HomePage";
 import EditTask from "../pages/editTask/EditTask";
-import CreateTask from "../pages/createTask/createTask";
+import CreateTask from "../pages/createTask/CreateTask";
 
 /*
  * used to specify routes
