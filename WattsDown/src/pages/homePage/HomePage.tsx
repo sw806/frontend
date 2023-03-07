@@ -3,6 +3,7 @@ import {Button, DataTable, Divider, Menu, Text, TextInput} from "react-native-pa
 import * as React from 'react';
 import MenuItem from "react-native-paper/lib/typescript/components/Menu/MenuItem";
 import { IStackScreenProps } from "../../library/Stack.ScreenProps";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles=StyleSheet.create({
     screenContainer: {
