@@ -5,11 +5,11 @@ import {View} from "react-native";
 
 type TIProps = {
   name: string,
-  time: string,
-  energy: string,
-  power: string,
+  duration: number,
+  energy: number,
+  power: number,
   setName,
-  setTime,
+  setDuration,
   setEnergy,
   setPower
 }
@@ -21,7 +21,7 @@ const CreateNewTaskInputs = (props: TIProps) => {
             <TextInput
             mode="outlined"
             label="Task Name"
-            placeholder="Enter the task name"
+            placeholder="Task Name"
             right={<TextInput.Affix text="/100" />}
             onChangeText={text => props.setName(text)}
             value={props.name}
@@ -33,11 +33,11 @@ const CreateNewTaskInputs = (props: TIProps) => {
 
             <TextInput
             mode="outlined"
-            label="Time Minutes"
-            placeholder="Enter the task name"
+            label="Duration"
+            placeholder="Duration"
             right={<TextInput.Affix text="/100" />}
-            onChangeText={text => props.setTime(text)}
-            value={props.time}
+            onChangeText={text => props.setDuration(text)}
+            value={props.duration != null ? props.duration.toString() : ''}
             keyboardType="numeric"
             activeUnderlineColor='#009FFF'
             activeOutlineColor='#009FFF'
@@ -48,10 +48,10 @@ const CreateNewTaskInputs = (props: TIProps) => {
             <TextInput
             mode="outlined"
             label="Energy kWh"
-            placeholder="Enter the task name"
+            placeholder="Energy kWh"
             right={<TextInput.Affix text="/100" />}
             onChangeText={text => props.setEnergy(text)}
-            value={props.energy}
+            value={props.energy != null ? props.energy.toString() : ''}
             keyboardType="numeric"
             activeUnderlineColor='#009FFF'
             activeOutlineColor='#009FFF'
@@ -61,11 +61,11 @@ const CreateNewTaskInputs = (props: TIProps) => {
 
             <TextInput
             mode="outlined"
-            label="Power Watts"
-            placeholder="Enter the task name"
+            label="Power kW"
+            placeholder="Power kW"
             right={<TextInput.Affix text="/100" />}
             onChangeText={text => props.setPower(text)}
-            value={props.power}
+            value={props.power != null ? props.power.toString() : ''}
             keyboardType="numeric"
             activeUnderlineColor='#009FFF'
             activeOutlineColor='#009FFF'

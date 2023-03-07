@@ -1,5 +1,6 @@
 import {Avatar, Card, Text} from "react-native-paper";
 import {StyleSheet} from "react-native";
+import React from "react";
 
 const styles = StyleSheet.create({
     content: {
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
 })
 
 type ResultProps= {
-    time: string
+    time: number
 }
 const ResultArea = (props: ResultProps) =>  {
     return(

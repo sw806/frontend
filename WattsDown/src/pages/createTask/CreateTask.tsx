@@ -7,53 +7,29 @@ import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 import Modal from "react-native-modal";
 import CreateNewTaskInputs from "../../components/CreateNewTaskTextInputs";
 import ResultArea from "../../components/ResultArea";
+import {Task} from "../../datatypes/datatypes";
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
   const {navigation, route, nameProp} = props;
   const [isModalVisible, setModalVisible] = useState(false);
-  const [scheduleResult, setScheduleResult] = useState('');
-  const [name, setName] = useState('');
-  const [time, setTime] = useState('');
-  const [energy, setEnergy] = useState('');
-  const [power, setPower] = useState('');
+  const [task, setTask] = useState<Task>({
+    id: '',
+    name: '',
+    duration: null,
+    energy: null,
+    power: null,
+    startDate: null,
+  });
+  const [name, setName] = useState<string>('');
+  const [duration, setDuration] = useState<number>();
+  const [energy, setEnergy] = useState<number>();
+  const [power, setPower] = useState<number>();
+  const [startDate, setStartDate] = useState<number>();
 
-  /*
+
+    /*
   const handleScheduleResult = async () => {
-
-    if (!task.name) {
-      alert('Please enter the task name.');
-      return false;
-    }
-    const requiredInputs = ['time', 'energy', 'power'];
-    const filledInputs = requiredInputs.filter((input) => !!task[input]);
-    if (filledInputs.length < 2) {
-      alert('Please provide at least two of the following inputs: Time Minutes, Energy kWh, Power Watts');
-      return;
-    }
-    const body = {
-      time: task.time,
-      energy: task.energy,
-      power: task.power
-    };
-  
-    try {
-      const response = await fetch('API_ENDPOINT', {
-        body: JSON.stringify(body),
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      });
-  
-      const data = await response.json();
-      setScheduleResult(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  */
-
-  // Mock function
-  const handleScheduleResult = async () => { 
 
     if (!name) {
       alert('Please enter the task name.');
@@ -67,36 +43,82 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       alert('Provide 2 of the following inputs: Time Minutes, Energy kWh, Power Watts');
       return;
     }
-
-      setScheduleResult('17:30-18:30')
+    const body = {
+      duration: duration * 60,
+      power: power
+    };
+  
+    try {
+      const response = await fetch('API_ENDPOINT', {
+        body: JSON.stringify(body),
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+  
+      const data = await response.json();
+      setTask(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
+  */
 
-  const handleCreateTask = async () => {
+  const createTask = async () => { 
 
-    const id = uuid.v4().toString();
-    const newtask = {
-      id: id,
+    if (!name) {
+      alert('Please enter the task name.');
+      return false;
+    }
+
+    const inputs = [duration, energy, power];
+    const filledInputs = inputs.filter(input => !!input);
+    if (filledInputs.length < 2) {
+      alert('Provide 2 of the following inputs: Duration, Energy kWh, Power Watts');
+    }
+
+    if (power > 3){
+      alert('Power is too high!');
+    }
+
+    if( !energy && power && duration){
+      setEnergy((duration / 60) * power);
+    }
+
+    if( energy && !power && duration){
+      setPower( (energy * 60) / duration);
+    }
+
+    if( energy && power && !duration){
+      setDuration((energy * 60) / power);
+    }
+
+    setStartDate(100);
+
+    const newTask: Task = {
+      id: uuid.v4().toString(),
       name: name,
-      time: energy,
+      duration: duration,
       energy: energy,
       power: power,
-      schedule: scheduleResult
+      startDate: startDate,
     };
-    
+  
+    setTask(newTask);
+  };
+
+  const saveTask = async () => {
+
     try {
       // check for existing id
-      const existingTask = await AsyncStorage.getItem(id);
+      const existingTask = await AsyncStorage.getItem(task.id);
       if (existingTask !== null) {
         // Generate a new id if the key already exists by calling itself recursively
-        handleCreateTask();
+        saveTask();
         return;
       }
-      await AsyncStorage.setItem(id, JSON.stringify(newtask));
+      await AsyncStorage.setItem(task.id, JSON.stringify(task));
 
       toggleModal();
-
-      // reset states
-      setScheduleResult('');
 
     } catch (error) {
       console.log(error);
@@ -164,11 +186,11 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
       <CreateNewTaskInputs
         name={name}
-        time={time}
+        duration={duration}
         energy={energy}
         power={power}
         setName={setName}
-        setTime={setTime}
+        setDuration={setDuration}
         setEnergy={setEnergy}
         setPower={setPower}
       />
@@ -178,13 +200,13 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       style={styles.button}
       buttonColor='#009FFF'
       onPress={() => {
-        handleScheduleResult();
+        createTask();
       }}
       >
         Schedule task
       </Button>
 
-      <ResultArea time={scheduleResult} />
+      <ResultArea time={task.startDate} />
 
       <View style={styles.container}>
 
@@ -201,9 +223,9 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
           mode='contained' 
           style={styles.containerbutton}
           buttonColor='#2EB584'
-          disabled={!scheduleResult}
+          disabled={!task.startDate}
           onPress={() => {
-            handleCreateTask();
+            saveTask();
           }}
           >
             Save
@@ -214,7 +236,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       <Modal isVisible={isModalVisible}>
           <View style={styles.modalBackground}>
             <View style={styles.modalContainer}>
-              <Text style={{color: '#009FFF', paddingBottom: 10}}> {name} scheduled!</Text>
+              <Text style={{color: '#009FFF', paddingBottom: 10}}> {task.name} scheduled!</Text>
 
               <Button  
                   buttonColor='#009FFF'

@@ -67,8 +67,8 @@ const styles=StyleSheet.create({
 
 const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     const {navigation, route, nameProp} = props;
-    const {id,name, time, energy, power, schedule} = route.params.data;
-    const [minutes, setMinutes] = React.useState<number>(time);
+    const {id,name, duration, energy, power, startDate} = route.params.data;
+    const [minutes, setMinutes] = React.useState<number>(duration);
     const [energyy, setEnergyy] = React.useState<number>(energy);
     const [watts, setWatts] = React.useState<number>(power);
     const [visible, setVisible] = React.useState<boolean>(false);
@@ -142,7 +142,7 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
             <View style={styles.ScheduleBtn}>
                 <Button mode="contained" buttonColor="#009FFF" uppercase onPress={() => handleSchedule()}>Schedule</Button>
             </View>
-            <ResultArea time={schedule} />
+            <ResultArea time={startDate} />
             <View style={styles.editButtons}>
                 <EditButtons
                     delete={handleDelete}
