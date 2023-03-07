@@ -4,6 +4,7 @@ import * as React from 'react';
 import ResultArea from "../../components/ResultArea";
 import EditButtons from "../../components/EditButtons";
 import TextInputs from "../../components/TextInputs";
+import {IStackScreenProps} from "../../library/Stack.ScreenProps";
 
 
 const styles=StyleSheet.create({
@@ -11,27 +12,70 @@ const styles=StyleSheet.create({
         alignSelf: 'center',
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: 10,
+        marginTop: "3%",
+        color: '#009FFF',
     },
     ScheduleBtn: {
-        marginTop: "1%"
+        marginTop: "3%",
+        display: "flex",
+        alignItems: "center"
+    },
+    container: {
+        flex: 1,
+        width: "80%",
+        marginLeft: "auto",
+        marginRight: "auto",
+    },
+    editButtons: {
+        position: "absolute",
+        bottom: 5,
+        width: "100%"
     }
+
 })
 
-export default function EditTask() {
+
+
+const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
+    const {navigation, route, nameProp} = props;
     const [minutes, setMinutes] = React.useState("");
     const [energy, setEnergy] = React.useState("");
     const [watts, setWatts] = React.useState("");
+    const handleSave = () => {
+        reroute()
+    }
+
+    const handleCancel = () => {
+        reroute()
+    }
+
+    const handleDelete = () => {
+        reroute()
+    }
+
+    const reroute = () => {
+        navigation.navigate('Home')
+    }
     return(
-        <View>
+        <View style={styles.container}>
             <View>
                 <Text variant="headlineLarge" style={styles.heading} >TASK NAME</Text>
-                <Text variant="headlineLarge" style={styles.heading}>Edit Task</Text>
+                <Text variant="headlineMedium" style={styles.heading}>Edit Task</Text>
             </View>
             <TextInputs minutes={minutes} energy={energy} watts={watts} setMinutes={setMinutes} setEnergy={setEnergy} setWatts={setWatts} />
-            <Button mode="contained" buttonColor="#009FFF" uppercase style={styles.ScheduleBtn} >Schedule</Button>
+            <View style={styles.ScheduleBtn}>
+                <Button mode="contained" buttonColor="#009FFF" uppercase >Schedule</Button>
+            </View>
             <ResultArea time="10:00-12:00" />
-            <EditButtons />
+            <View style={styles.editButtons}>
+                <EditButtons
+                    delete={handleDelete}
+                    save={handleSave}
+                    cancel={handleCancel}
+                />
+            </View>
         </View>
     )
 }
+
+export default EditTask
