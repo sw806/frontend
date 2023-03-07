@@ -5,6 +5,7 @@ import uuid from 'react-native-uuid';
 import { Button, Text , TextInput  } from 'react-native-paper';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 import Modal from "react-native-modal";
+import ResultArea from "../../components/ResultArea";
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
@@ -76,7 +77,14 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   const handleCreateTask = async () => {
 
     const id = uuid.v4().toString();
-    const newtask = {id: id, schedule: scheduleResult};
+    const newtask = {
+      id: id,
+      name: task.name,
+      time: task.energy,
+      energy: task.energy,
+      power: task.power,
+      schedule: scheduleResult
+    };
     
     try {
       // check for existing id
@@ -248,9 +256,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
         Schedule task
       </Button>
 
-      <View style={styles.outputArea}>
-        <Text style={styles.outputResult}> {scheduleResult} </Text>
-      </View>
+      <ResultArea time={scheduleResult} />
 
       <View style={styles.container}>
 
