@@ -5,6 +5,7 @@ import ResultArea from "../../components/ResultArea";
 import EditButtons from "../../components/EditButtons";
 import TextInputs from "../../components/TextInputs";
 import {IStackScreenProps} from "../../library/Stack.ScreenProps";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const styles=StyleSheet.create({
@@ -66,8 +67,9 @@ const styles=StyleSheet.create({
 
 const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     const {navigation, route, nameProp} = props;
+    const {id,name, time, energy, power, schedule} = route.params.data;
     const [minutes, setMinutes] = React.useState(route.params.data.time);
-    const [energy, setEnergy] = React.useState(route.params.data.energy);
+    const [energyy, setEnergyy] = React.useState(route.params.data.energy);
     const [watts, setWatts] = React.useState(route.params.data.power);
     const [visible, setVisible] = React.useState(false);
     const [modalText, setModalText] = React.useState("")
@@ -76,6 +78,22 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     const showModal = () => setVisible(true);
     const hideModal = () => {
         setVisible(false);
+    }
+
+    const saveToStorage = async () => {
+        const existingObject = {
+            id: id,
+            name: name,
+            time: energy,
+            energy: energy,
+            power: power,
+            schedule: "00:00-01:00"
+        };
+        await AsyncStorage.mergeItem(id, JSON.stringify(existingObject));
+    }
+
+    const removeFromStorage = async () => {
+        await AsyncStorage.removeItem(id);
     }
     const handleSave = () => {
         setModalText("Are you sure you want to save changes?")
@@ -103,16 +121,16 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     }
 
     const modalSave = () => {
-        reroute()
+        saveToStorage().then(() => reroute()).catch(() => console.log("failure"))
     }
 
     const modalDelete = () => {
-        reroute()
+        removeFromStorage().then(() => reroute()).catch(() => console.log("couldn't delete"))
     }
 
     const handleSchedule = () => {
         // @ts-ignore
-        console.log(route.params.data)
+        console.log(energy)
     }
     return(
         <View style={styles.container}>
@@ -120,7 +138,7 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
                 <Text variant="headlineLarge" style={styles.heading} >TASK NAME</Text>
                 <Text variant="headlineMedium" style={styles.heading}>Edit Task</Text>
             </View>
-            <TextInputs minutes={minutes} energy={energy} watts={watts} setMinutes={setMinutes} setEnergy={setEnergy} setWatts={setWatts} />
+            <TextInputs minutes={minutes} energy={energyy} watts={watts} setMinutes={setMinutes} setEnergy={setEnergyy} setWatts={setWatts} />
             <View style={styles.ScheduleBtn}>
                 <Button mode="contained" buttonColor="#009FFF" uppercase onPress={() => handleSchedule()}>Schedule</Button>
             </View>
