@@ -13,14 +13,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
   const {navigation, route, nameProp} = props;
   const [isModalVisible, setModalVisible] = useState(false);
-  const [task, setTask] = useState<Task>({
-    id: '',
-    name: '',
-    duration: null,
-    energy: null,
-    power: null,
-    startDate: null,
-  });
   const [name, setName] = useState<string>('');
   const [duration, setDuration] = useState<number>();
   const [energy, setEnergy] = useState<number>();
@@ -67,17 +59,19 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
     if (!name) {
       alert('Please enter the task name.');
-      return false;
+      return;
     }
 
     const inputs = [duration, energy, power];
     const filledInputs = inputs.filter(input => !!input);
     if (filledInputs.length < 2) {
       alert('Provide 2 of the following inputs: Duration, Energy kWh, Power Watts');
+      return;
     }
 
     if (power > 3){
       alert('Power is too high!');
+      return;
     }
 
     if( !energy && power && duration){
@@ -93,7 +87,11 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
     }
 
     setStartDate(100);
+  };
 
+  const saveTask = async () => {
+
+  
     const newTask: Task = {
       id: uuid.v4().toString(),
       name: name,
@@ -103,20 +101,16 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       startDate: startDate,
     };
   
-    setTask(newTask);
-  };
-
-  const saveTask = async () => {
-
     try {
+      
       // check for existing id
-      const existingTask = await AsyncStorage.getItem(task.id);
+      const existingTask = await AsyncStorage.getItem(newTask.id);
       if (existingTask !== null) {
         // Generate a new id if the key already exists by calling itself recursively
         saveTask();
         return;
       }
-      await AsyncStorage.setItem(task.id, JSON.stringify(task));
+      await AsyncStorage.setItem(newTask.id, JSON.stringify(newTask));
 
       toggleModal();
 
@@ -179,10 +173,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   
   return (
     <View style={styles.screenContainer}>
-      <Text 
-      variant="displayLarge"
-      style={styles.heading}
-      > New Task </Text>
 
       <CreateNewTaskInputs
         name={name}
@@ -206,7 +196,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
         Schedule task
       </Button>
 
-      <ResultArea time={task.startDate} />
+      <ResultArea time={startDate} />
 
       <View style={styles.container}>
 
@@ -223,7 +213,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
           mode='contained' 
           style={styles.containerbutton}
           buttonColor='#2EB584'
-          disabled={!task.startDate}
+          disabled={!startDate}
           onPress={() => {
             saveTask();
           }}
@@ -236,7 +226,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       <Modal isVisible={isModalVisible}>
           <View style={styles.modalBackground}>
             <View style={styles.modalContainer}>
-              <Text style={{color: '#009FFF', paddingBottom: 10}}> {task.name} scheduled!</Text>
+              <Text style={{color: '#009FFF', paddingBottom: 10}}> {name} scheduled!</Text>
 
               <Button  
                   buttonColor='#009FFF'

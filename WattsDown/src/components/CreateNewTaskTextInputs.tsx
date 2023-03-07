@@ -17,7 +17,7 @@ type TIProps = {
 const CreateNewTaskInputs = (props: TIProps) => {
 
     return(
-        <View>
+        <View style={{marginTop: 20}}>
             <TextInput
             mode="outlined"
             label="Task Name"
