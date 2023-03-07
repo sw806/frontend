@@ -4,6 +4,7 @@ import * as React from 'react';
 import { IStackScreenProps } from "../../library/Stack.ScreenProps";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from "react-native-gesture-handler";
+import {Task} from "../../datatypes/datatypes";
 
 const styles=StyleSheet.create({
     screenContainer: {
@@ -21,10 +22,7 @@ const styles=StyleSheet.create({
       },
     scheduleContainer: {
         flex: 1,
-        width: "80%",
         verticalAlign: "top",
-        marginLeft: "auto",
-        marginRight: "auto",
     },
     timeContainer: {
         borderRadius: 20,
@@ -36,10 +34,10 @@ const styles=StyleSheet.create({
         backgroundColor: "#009FFF"
     },
     timeName: {
-        flex: 7,
+        flex: 6,
     },
     timeTime: {
-        flex: 7,
+        flex: 6,
     },
     timeArrow: {
         flex: 1,
@@ -47,7 +45,7 @@ const styles=StyleSheet.create({
 })
 
 const handleEditTask = (nav, data) => {
-    nav.navigate('Edit Task', {data: JSON.parse(data)})
+    nav.navigate('Edit Task', {data: data})
 }
 
 const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
@@ -55,7 +53,7 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
 
     const [minutes, setMinutes] = React.useState("");
     const [energy, setEnergy] = React.useState("");
-    const [data, setData] = React.useState<readonly any[]>([]);
+    const [data, setData] = React.useState<readonly Task[]>([]);
 
     const getData = async () => {
         try {
@@ -63,7 +61,7 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
           const keys = await AsyncStorage.getAllKeys();
           const data = await AsyncStorage.multiGet(keys);
 
-          setData(data);
+          setData(data.map(d => JSON.parse(d[1])));
         } catch (error) {
           console.log(error);
         }
@@ -81,9 +79,9 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
                 <View style={styles.timeContainer}>
                     <ScrollView>
                     {data.map(d =>
-                        <DataTable.Row key={JSON.parse(d[1]) ? JSON.parse(d[1]).id : 0} onPress={() => handleEditTask(navigation, d[1])} style={styles.timeRow}>
-                            <DataTable.Cell style={styles.timeName}>{JSON.parse(d[1]) ? JSON.parse(d[1]).name : "None"}</DataTable.Cell>
-                            <DataTable.Cell style={styles.timeTime}>{JSON.parse(d[1]) ? JSON.parse(d[1]).schedule: "None"}</DataTable.Cell>
+                        <DataTable.Row key={d.id} onPress={() => handleEditTask(navigation, d)} style={styles.timeRow}>
+                            <DataTable.Cell style={styles.timeName}>{d.name}</DataTable.Cell>
+                            <DataTable.Cell style={styles.timeTime}>{(new Date(d.startDate * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})).replace('.', ':')}</DataTable.Cell>
                             <DataTable.Cell style={styles.timeArrow}>{">"}</DataTable.Cell>
                         </DataTable.Row>
                     )}
