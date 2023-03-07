@@ -1,9 +1,9 @@
 import {View, StyleSheet, ScrollView} from "react-native";
 import {Button, DataTable, Divider, Menu, Text, TextInput} from "react-native-paper";
 import * as React from 'react';
-import MenuItem from "react-native-paper/lib/typescript/components/Menu/MenuItem";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IStackScreenProps } from "../../library/Stack.ScreenProps";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import MenuItem from "react-native-paper/lib/typescript/components/Menu/MenuItem";
 
 const styles=StyleSheet.create({
     screenContainer: {
@@ -55,7 +55,7 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
                 style={styles.heading}
                 > WattsDown </Text>
             <View>
-                {data.map(d => 
+                {data.map(d =>
                     <DataTable.Row onPress={() => handleEditTask(navigation)}>
                         <DataTable.Cell>{JSON.parse(d[1]).name}</DataTable.Cell>
                         <DataTable.Cell>{JSON.parse(d[1]).schedule}</DataTable.Cell>

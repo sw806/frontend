@@ -5,6 +5,7 @@ import uuid from 'react-native-uuid';
 import { Button, Text , TextInput  } from 'react-native-paper';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 import Modal from "react-native-modal";
+import CreateNewTaskInputs from "../../components/CreateNewTaskTextInputs";
 import ResultArea from "../../components/ResultArea";
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
@@ -12,17 +13,11 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   const {navigation, route, nameProp} = props;
   const [isModalVisible, setModalVisible] = useState(false);
   const [scheduleResult, setScheduleResult] = useState('');
-  const [task, setTask] = useState({
-    name: '',
-    time: '',
-    energy: '',
-    power: ''
-  });
-  
-  const handleInputChange = (name, value) => {
-    setTask(prevState => ({ ...prevState, [name]: value }));
-  };
-  
+  const [name, setName] = useState('');
+  const [time, setTime] = useState('');
+  const [energy, setEnergy] = useState('');
+  const [power, setPower] = useState('');
+
   /*
   const handleScheduleResult = async () => {
 
@@ -60,14 +55,16 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   // Mock function
   const handleScheduleResult = async () => { 
 
-    if (!task.name) {
+    if (!name) {
       alert('Please enter the task name.');
       return false;
     }
-    const requiredInputs = ['time', 'energy', 'power'];
-    const filledInputs = requiredInputs.filter((input) => !!task[input]);
+
+    // check if at least two of the inputs are provided
+    const inputs = [time, energy, power];
+    const filledInputs = inputs.filter(input => !!input);
     if (filledInputs.length < 2) {
-      alert('Please provide at least two of the following inputs: Time Minutes, Energy kWh, Power Watts');
+      alert('Provide 2 of the following inputs: Time Minutes, Energy kWh, Power Watts');
       return;
     }
 
@@ -79,10 +76,10 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
     const id = uuid.v4().toString();
     const newtask = {
       id: id,
-      name: task.name,
-      time: task.energy,
-      energy: task.energy,
-      power: task.power,
+      name: name,
+      time: energy,
+      energy: energy,
+      power: power,
       schedule: scheduleResult
     };
     
@@ -96,16 +93,10 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       }
       await AsyncStorage.setItem(id, JSON.stringify(newtask));
 
+      toggleModal();
+
       // reset states
       setScheduleResult('');
-      setTask({
-        name: '',
-        time: '',
-        energy: '',
-        power: ''
-      });
-
-      toggleModal();
 
     } catch (error) {
       console.log(error);
@@ -122,7 +113,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       width: "80%",
       marginLeft: "auto",
       marginRight: "auto",
-      justifyContent: 'center',
     },
     heading:{
       color: '#009FFF', 
@@ -146,24 +136,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
     container: {
       flexDirection: 'row',
       alignSelf: 'center',
-    },
-    outputArea:{
-      width: '90%', 
-      height: 150, 
-      backgroundColor:'#009FFF',
-      alignSelf: 'center',
-      marginLeft: 'auto',
-      marginRight: 'auto', 
-      borderRadius: 10,
-      marginTop: 30,
-      marginBottom: 30,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center'
-    
-    },
-    outputResult:{
-      fontSize: 30,
     },
     modalBackground:{
       flex: 1,
@@ -190,61 +162,17 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       style={styles.heading}
       > New Task </Text>
 
-      <TextInput
-      mode="outlined"
-      label="Task Name"
-      placeholder="Enter the task name"
-      right={<TextInput.Affix text="/100" />}
-      onChangeText={text => handleInputChange('name', text)}
-      value={task.name}
-      activeUnderlineColor='#009FFF'
-      activeOutlineColor='#009FFF'
-      outlineColor='#009FFF'
-      underlineColor='#009FFF'
+      <CreateNewTaskInputs
+        name={name}
+        time={time}
+        energy={energy}
+        power={power}
+        setName={setName}
+        setTime={setTime}
+        setEnergy={setEnergy}
+        setPower={setPower}
       />
-
-    <TextInput
-      mode="outlined"
-      label="Time Minutes"
-      placeholder="Enter the task name"
-      right={<TextInput.Affix text="/100" />}
-      onChangeText={text => handleInputChange('time', text)}
-      value={task.time}
-      keyboardType="numeric"
-      activeUnderlineColor='#009FFF'
-      activeOutlineColor='#009FFF'
-      outlineColor='#009FFF'
-      underlineColor='#009FFF'
-      />
-
-      <TextInput
-      mode="outlined"
-      label="Energy kWh"
-      placeholder="Enter the task name"
-      right={<TextInput.Affix text="/100" />}
-      onChangeText={text => handleInputChange('energy', text)}
-      value={task.energy}
-      keyboardType="numeric"
-      activeUnderlineColor='#009FFF'
-      activeOutlineColor='#009FFF'
-      outlineColor='#009FFF'
-      underlineColor='#009FFF'
-      />
-
-    <TextInput
-      mode="outlined"
-      label="Power Watts"
-      placeholder="Enter the task name"
-      right={<TextInput.Affix text="/100" />}
-      onChangeText={text => handleInputChange('power', text)}
-      value={task.power}
-      keyboardType="numeric"
-      activeUnderlineColor='#009FFF'
-      activeOutlineColor='#009FFF'
-      outlineColor='#009FFF'
-      underlineColor='#009FFF'
-      />
-
+      
       <Button 
       mode='contained' 
       style={styles.button}
@@ -281,10 +209,12 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
             Save
         </Button>
 
-        <Modal isVisible={isModalVisible}>
+      </View>
+
+      <Modal isVisible={isModalVisible}>
           <View style={styles.modalBackground}>
             <View style={styles.modalContainer}>
-              <Text style={{color: '#009FFF', paddingBottom: 10}}> {task.name} scheduled!</Text>
+              <Text style={{color: '#009FFF', paddingBottom: 10}}> {name} scheduled!</Text>
 
               <Button  
                   buttonColor='#009FFF'
@@ -296,7 +226,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
             </View>
           </View>
         </Modal>
-      </View>
     </View>
   );
 };
