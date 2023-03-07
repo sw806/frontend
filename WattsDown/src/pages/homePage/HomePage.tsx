@@ -2,8 +2,8 @@ import {View, StyleSheet, ScrollView} from "react-native";
 import {Button, DataTable, Divider, Menu, Text, TextInput} from "react-native-paper";
 import * as React from 'react';
 import MenuItem from "react-native-paper/lib/typescript/components/Menu/MenuItem";
-import { IStackScreenProps } from "../../library/Stack.ScreenProps";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IStackScreenProps } from "../../library/Stack.ScreenProps";
 
 const styles=StyleSheet.create({
     screenContainer: {
@@ -30,7 +30,24 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
 
     const [minutes, setMinutes] = React.useState("");
     const [energy, setEnergy] = React.useState("");
-    const [watts, setWatts] = React.useState("");
+    const [data, setData] = React.useState<readonly any[]>([]);
+
+    const getData = async () => {
+        try {
+          // get saved keys
+          const keys = await AsyncStorage.getAllKeys();
+          const data = await AsyncStorage.multiGet(keys);
+
+          setData(data);
+        } catch (error) {
+          console.log(error);
+        }
+
+        return [];
+      };
+
+      getData();
+
     return(
         <View style={styles.screenContainer}>
             <Text 
@@ -38,21 +55,13 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
                 style={styles.heading}
                 > WattsDown </Text>
             <View>
-                <DataTable.Row onPress={() => handleEditTask(navigation)}>
-                    <DataTable.Cell>Wash Clothes</DataTable.Cell>
-                    <DataTable.Cell>17:30</DataTable.Cell>
-                    <DataTable.Cell>-</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                    <DataTable.Cell>Start Oven</DataTable.Cell>
-                    <DataTable.Cell>17:30</DataTable.Cell>
-                    <DataTable.Cell>-</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                    <DataTable.Cell>Dry Clothes</DataTable.Cell>
-                    <DataTable.Cell>17:30</DataTable.Cell>
-                    <DataTable.Cell>-</DataTable.Cell>
-                </DataTable.Row>
+                {data.map(d => 
+                    <DataTable.Row onPress={() => handleEditTask(navigation)}>
+                        <DataTable.Cell>{JSON.parse(d[1]).name}</DataTable.Cell>
+                        <DataTable.Cell>{JSON.parse(d[1]).schedule}</DataTable.Cell>
+                        <DataTable.Cell>{">"}</DataTable.Cell>
+                    </DataTable.Row>
+                )}
             </View>
             <Button 
                 mode="contained" 
