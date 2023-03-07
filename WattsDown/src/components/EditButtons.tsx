@@ -1,6 +1,5 @@
 import {StyleSheet, View} from "react-native";
 import {Button} from "react-native-paper";
-import {red50} from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 
 const styles = StyleSheet.create({
