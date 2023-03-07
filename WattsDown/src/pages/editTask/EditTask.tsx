@@ -66,9 +66,9 @@ const styles=StyleSheet.create({
 
 const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     const {navigation, route, nameProp} = props;
-    const [minutes, setMinutes] = React.useState("");
-    const [energy, setEnergy] = React.useState("");
-    const [watts, setWatts] = React.useState("");
+    const [minutes, setMinutes] = React.useState(route.params.data.time);
+    const [energy, setEnergy] = React.useState(route.params.data.energy);
+    const [watts, setWatts] = React.useState(route.params.data.power);
     const [visible, setVisible] = React.useState(false);
     const [modalText, setModalText] = React.useState("")
     const [saveModal, setSaveModal] = React.useState(false)
@@ -111,7 +111,8 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     }
 
     const handleSchedule = () => {
-        console.log("yes")
+        // @ts-ignore
+        console.log(route.params.data)
     }
     return(
         <View style={styles.container}>
@@ -123,7 +124,7 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
             <View style={styles.ScheduleBtn}>
                 <Button mode="contained" buttonColor="#009FFF" uppercase onPress={() => handleSchedule()}>Schedule</Button>
             </View>
-            <ResultArea time="10:00-12:00" />
+            <ResultArea time={route.params.data.schedule} />
             <View style={styles.editButtons}>
                 <EditButtons
                     delete={handleDelete}

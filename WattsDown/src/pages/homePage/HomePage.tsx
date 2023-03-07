@@ -1,9 +1,8 @@
-import {View, StyleSheet, ScrollView} from "react-native";
-import {Button, DataTable, Divider, Menu, Text, TextInput} from "react-native-paper";
+import {View, StyleSheet} from "react-native";
+import {Button, DataTable, Text} from "react-native-paper";
 import * as React from 'react';
 import { IStackScreenProps } from "../../library/Stack.ScreenProps";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MenuItem from "react-native-paper/lib/typescript/components/Menu/MenuItem";
 
 const styles=StyleSheet.create({
     screenContainer: {
@@ -21,8 +20,8 @@ const styles=StyleSheet.create({
       }
 })
 
-const handleEditTask = (nav) => {
-    nav.navigate('Edit Task')
+const handleEditTask = (nav, data) => {
+    nav.navigate('Edit Task', {data: JSON.parse(data)})
 }
 
 const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
@@ -56,7 +55,7 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
                 > WattsDown </Text>
             <View>
                 {data.map(d =>
-                    <DataTable.Row onPress={() => handleEditTask(navigation)}>
+                    <DataTable.Row key={JSON.parse(d[1]).id} onPress={() => handleEditTask(navigation, d[1])}>
                         <DataTable.Cell>{JSON.parse(d[1]).name}</DataTable.Cell>
                         <DataTable.Cell>{JSON.parse(d[1]).schedule}</DataTable.Cell>
                         <DataTable.Cell>{">"}</DataTable.Cell>
