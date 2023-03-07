@@ -79,9 +79,9 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
                 <View style={styles.timeContainer}>
                     <ScrollView>
                     {data.map(d =>
-                        <DataTable.Row key={d.id} onPress={() => handleEditTask(navigation, d)} style={styles.timeRow}>
-                            <DataTable.Cell style={styles.timeName}>{d.name}</DataTable.Cell>
-                            <DataTable.Cell style={styles.timeTime}>{(new Date(d.startDate * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})).replace('.', ':')}</DataTable.Cell>
+                        <DataTable.Row key={d ? d.id : 0} onPress={() => handleEditTask(navigation, d)} style={styles.timeRow}>
+                            <DataTable.Cell style={styles.timeName}>{d ? d.name : 0}</DataTable.Cell>
+                            <DataTable.Cell style={styles.timeTime}>{(new Date((d ? d.startDate : 0) * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})).replace('.', ':')}</DataTable.Cell>
                             <DataTable.Cell style={styles.timeArrow}>{">"}</DataTable.Cell>
                         </DataTable.Row>
                     )}
