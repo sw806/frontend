@@ -81,9 +81,9 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
                 <View style={styles.timeContainer}>
                     <ScrollView>
                     {data.map(d =>
-                        <DataTable.Row key={JSON.parse(d[1]).id} onPress={() => handleEditTask(navigation, d[1])} style={styles.timeRow}>
-                            <DataTable.Cell style={styles.timeName}>{JSON.parse(d[1]).name}</DataTable.Cell>
-                            <DataTable.Cell style={styles.timeTime}>{JSON.parse(d[1]).schedule}</DataTable.Cell>
+                        <DataTable.Row key={JSON.parse(d[1]) ? JSON.parse(d[1]).id : 0} onPress={() => handleEditTask(navigation, d[1])} style={styles.timeRow}>
+                            <DataTable.Cell style={styles.timeName}>{JSON.parse(d[1]) ? JSON.parse(d[1]).name : "None"}</DataTable.Cell>
+                            <DataTable.Cell style={styles.timeTime}>{JSON.parse(d[1]) ? JSON.parse(d[1]).schedule: "None"}</DataTable.Cell>
                             <DataTable.Cell style={styles.timeArrow}>{">"}</DataTable.Cell>
                         </DataTable.Row>
                     )}
