@@ -68,12 +68,12 @@ const styles=StyleSheet.create({
 const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     const {navigation, route, nameProp} = props;
     const {id,name, time, energy, power, schedule} = route.params.data;
-    const [minutes, setMinutes] = React.useState(time);
-    const [energyy, setEnergyy] = React.useState(energy);
-    const [watts, setWatts] = React.useState(power);
-    const [visible, setVisible] = React.useState(false);
-    const [modalText, setModalText] = React.useState("")
-    const [saveModal, setSaveModal] = React.useState(false)
+    const [minutes, setMinutes] = React.useState<number>(time);
+    const [energyy, setEnergyy] = React.useState<number>(energy);
+    const [watts, setWatts] = React.useState<number>(power);
+    const [visible, setVisible] = React.useState<boolean>(false);
+    const [modalText, setModalText] = React.useState<string>("")
+    const [saveModal, setSaveModal] = React.useState<boolean>(false)
 
     const showModal = () => setVisible(true);
     const hideModal = () => {
@@ -135,7 +135,7 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     return(
         <View style={styles.container}>
             <View>
-                <Text variant="headlineLarge" style={styles.heading} >TASK NAME</Text>
+                <Text variant="headlineLarge" style={styles.heading} >{name}</Text>
                 <Text variant="headlineMedium" style={styles.heading}>Edit Task</Text>
             </View>
             <TextInputs minutes={minutes} energy={energyy} watts={watts} setMinutes={setMinutes} setEnergy={setEnergyy} setWatts={setWatts} />
