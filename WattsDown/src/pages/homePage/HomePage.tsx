@@ -25,13 +25,18 @@ const styles=StyleSheet.create({
         verticalAlign: "top",
     },
     timeContainer: {
-        borderRadius: 20,
+        borderRadius: 10,
         maxHeight: "85%",
         overflow: "hidden",
         marginBottom: "2%",
+        borderColor: "#7d34eb",
+        borderWidth: 0,
     },
     timeRow: {
-        backgroundColor: "#009FFF"
+        backgroundColor: "#009FFF",
+        color: "#FF00FF",
+        borderRadius: 10,
+        margin: 1,
     },
     timeName: {
         flex: 6,
@@ -42,6 +47,21 @@ const styles=StyleSheet.create({
     timeArrow: {
         flex: 1,
     },
+    textFormat: {
+        color: "#FFFFFF",
+    },
+    buttonFormat: {
+        color: "#009FFF",
+    },
+    button:{
+        height: 40,
+        width: 40,
+        borderRadius: 50,
+        alignSelf: 'center',
+        borderWidth: 5,
+        borderColor: '#009FFF',
+        color: "#009FFF",
+      },
 })
 
 const handleEditTask = (nav, data) => {
@@ -80,17 +100,19 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
                     <ScrollView>
                     {data.map(d =>
                         <DataTable.Row key={d ? d.id : 0} onPress={() => handleEditTask(navigation, d)} style={styles.timeRow}>
-                            <DataTable.Cell style={styles.timeName}>{d ? d.name : 0}</DataTable.Cell>
-                            <DataTable.Cell style={styles.timeTime}>{(new Date((d ? d.startDate : 0) * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})).replace('.', ':')}</DataTable.Cell>
-                            <DataTable.Cell style={styles.timeArrow}>{">"}</DataTable.Cell>
+                            <DataTable.Cell textStyle={styles.textFormat} style={styles.timeName}>{d ? d.name : 0}</DataTable.Cell>
+                            <DataTable.Cell textStyle={styles.textFormat} style={styles.timeTime}>{(new Date((d ? d.startDate : 0) * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})).replace('.', ':')}</DataTable.Cell>
+                            <DataTable.Cell textStyle={styles.textFormat} style={styles.timeArrow}>{">"}</DataTable.Cell>
                         </DataTable.Row>
                     )}
                     </ScrollView>
                 </View>
                 <Button 
-                    mode="contained" 
+                    mode="contained"
+                    style={styles.button}
+                    buttonColor="#00000000"
                     onPress={() => navigation.navigate('New Task')}>
-                    Add New
+                    <Text style={styles.buttonFormat}>+</Text>
                 </Button>
             </View>
          
