@@ -65,10 +65,10 @@ const styles=StyleSheet.create({
 })
 
 const handleEditTask = (nav, data) => {
-    nav.navigate('Edit Task', {data: data})
+    nav.jumpTo('Edit Task', {data: data})
 }
 
-const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
+const HomePage = props =>  {
     const {navigation, route, nameProp} = props;
 
     const [minutes, setMinutes] = React.useState("");
@@ -111,7 +111,7 @@ const HomePage: React.FunctionComponent<IStackScreenProps> = props =>  {
                     mode="contained"
                     style={styles.button}
                     buttonColor="#00000000"
-                    onPress={() => navigation.navigate('New Task')}>
+                    onPress={() => navigation.jumpTo('Create Task')}>
                     <Text style={styles.buttonFormat}>+</Text>
                 </Button>
             </View>

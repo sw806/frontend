@@ -4,28 +4,46 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import 'react-native-gesture-handler';
 import routes from './src/config.ts/routes';
 import React from 'react';
+import {BottomTabBar, createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import HomePage from "./src/pages/homePage/HomePage";
+import CreateTask from "./src/pages/createTask/CreateTask";
+import EditTask from "./src/pages/editTask/EditTask";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Stack = createNativeStackNavigator();
-
+const Tab = createBottomTabNavigator();
 
 export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'Home'}>
-        {routes.map((r,i) => (
-          <Stack.Screen key={i} name={r.name} options={{
-            headerStyle: {backgroundColor: "#009FFF"},
-            headerTintColor: "white",
-            headerTitleAlign: "center",
-            headerTitleStyle: {
-              fontSize: 60
-            }
-          }}>
-              {(props) => <r.component nameProp ={r.name} {...props} />}
-          </Stack.Screen>
-        ))}
-      </Stack.Navigator>
+        <Tab.Navigator initialRouteName="Home" screenOptions={({ route }) => ({
+            tabBarButton: [
+                "Edit Task",
+            ].includes(route.name)
+                ? () => {
+                    return null;
+                }
+                : undefined,
+        })}>
+            <Tab.Screen name="Home" component={HomePage} options={{
+                tabBarLabel: "Home",
+                tabBarIcon: ({ color, size }) => {
+                    return <Icon name="home" size={size} color={color} />;
+                },
+                headerShown: false
+            }}/>
+            <Tab.Screen name="Create Task" component={CreateTask} options={{
+                tabBarLabel: "Create",
+                tabBarIcon: ({ color, size }) => {
+                    return <Icon name="plus" size={size} color={color} />;
+                },
+                headerShown: false
+            }}/>
+            <Tab.Screen name="Edit Task" component={EditTask} options={{
+                headerShown: false
+            }}/>
+        </Tab.Navigator>
     </NavigationContainer>
   );
 }
