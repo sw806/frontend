@@ -59,20 +59,20 @@ const CreateNewTaskInputs = ({ name, duration, energy, power, durationDisabled, 
 
       if (unfilledInput === duration && energy && power) {
         setDurationDisabled(true);
-        const newDuration = (energy * 60) / power
+        const newDuration = ((energy * 60) / power).toFixed(4)
         setDuration(newDuration);
 
       } else if (unfilledInput === energy && duration && power) {
         setEnergyDisabled(true);
 
-        const newEnergy = (duration / 60) * power
+        const newEnergy = ((duration / 60) * power).toFixed(4)
         setEnergy(newEnergy);
 
 
       } else if (unfilledInput === power && duration && energy) {
 
-        const newPower = (energy * 60) / duration
-        if(newPower > 3){
+        const newPower = ((energy * 60) / duration).toFixed(4)
+        if(parseFloat(newPower) > 3){
           alert('Power calculated is too high!');
           return;
         }
@@ -85,6 +85,22 @@ const CreateNewTaskInputs = ({ name, duration, energy, power, durationDisabled, 
     } 
     
   }, [duration, energy, power]);
+
+
+  const handleInputChange = (name: string, value: string) => {
+        switch (name) {
+        case 'Duration':
+          setDuration(value === '' ? null : Number(value));
+          break;
+        case 'Energy':
+          setEnergy(value === '' ? null : Number(value));
+          break;
+        case 'Power':
+          setPower(value === '' ? null : Number(value));
+          break;
+      }
+  }
+  
 
     return(
         <View style={{marginTop: 20}}>
@@ -106,7 +122,7 @@ const CreateNewTaskInputs = ({ name, duration, energy, power, durationDisabled, 
             testID="Duration"
             label="Duration (minutes)"
             placeholder="Duration (minutes)"
-            onChangeText={(text) => setDuration(text)}
+            onChangeText={(text) => handleInputChange('Duration',text)}
             value={duration ? duration.toString() : ''}
             disabled={durationDisabled}
             keyboardType="numeric"
@@ -121,7 +137,7 @@ const CreateNewTaskInputs = ({ name, duration, energy, power, durationDisabled, 
             testID="Energy"
             label="Energy (kWh)"
             placeholder="Energy (kWh)"
-            onChangeText={(text) => setEnergy(text)}
+            onChangeText={(text) => handleInputChange('Energy',text)}
             value={energy ? energy.toString() : ''}
             disabled={energyDisabled}
             keyboardType="numeric"
@@ -136,7 +152,7 @@ const CreateNewTaskInputs = ({ name, duration, energy, power, durationDisabled, 
             testID="Power"
             label="Power (kW)"
             placeholder="Power (kW)"
-            onChangeText={(text) => setPower(text)}
+            onChangeText={(text) => handleInputChange('Power',text)}
             value={power ? power.toString() : ''}
             disabled={powerDisabled}
             keyboardType="numeric"
