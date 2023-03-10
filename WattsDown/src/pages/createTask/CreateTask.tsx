@@ -16,109 +16,13 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   const {navigation, route, nameProp} = props;
   const [isModalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState<string>('');
-  const [duration, setDuration] = useState<string>();
-  const [energy, setEnergy] = useState<string>();
-  const [power, setPower] = useState<string>();
+  const [duration, setDuration] = useState<number>();
+  const [energy, setEnergy] = useState<number>();
+  const [power, setPower] = useState<number>();
   const [startDate, setStartDate] = useState<number>();
   const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
   const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
   const [disabledPower, setPowerDisabled] = useState<boolean>(false);
-  const [inputsFilled, setInputsFilled] = useState<number>(0);
-
-  useEffect(() => {
-
-    if(!duration && !energy && power && disabledPower){
-      setPowerDisabled(false)
-      setStartDate(null);
-
-    }
-    if(!duration && energy && !power && disabledEnergy){
-      setEnergyDisabled(false)
-      setStartDate(null);
-
-    }
-    if(duration && !energy && !power && disabledDuration){
-      setDurationDisabled(false)
-      setStartDate(null);
-
-    }
-    // ... //
-    if(duration && !energy && power && disabledDuration){
-      setPowerDisabled(false)
-      setStartDate(null);
-    }
-    if(duration && energy && !power && disabledDuration){
-      setPowerDisabled(false)
-      setStartDate(null);
-    }
-    if(!duration && energy && power && disabledEnergy){
-      setEnergyDisabled(false)
-      setStartDate(null);
-    }
-    if(duration && energy && !power && disabledEnergy){
-      setEnergyDisabled(false)
-      setStartDate(null);
-    }
-    if(!duration && energy && power && disabledPower){
-      setPowerDisabled(false)
-      setStartDate(null);
-    }
-    if(duration && !energy && power && !disabledPower){
-      setPowerDisabled(false)
-      setStartDate(null);
-    }
-
-    // two values 1 grey
-    if(duration && energy && !power && disabledDuration){
-      setDurationDisabled(false)
-      setStartDate(null);
-    }
-    if(duration && !energy && power && disabledDuration){
-      setDurationDisabled(false)
-      setStartDate(null);
-    }
-    if(duration && energy && !power && disabledDuration){
-      setDurationDisabled(false)
-      setStartDate(null);
-    }
-
-  }, [duration, energy, power]);
-
-
-    /*
-  const handleScheduleResult = async () => {
-
-    if (!name) {
-      alert('Please enter the task name.');
-      return false;
-    }
-
-    // check if at least two of the inputs are provided
-    const inputs = [time, energy, power];
-    const filledInputs = inputs.filter(input => !!input);
-    if (filledInputs.length < 2) {
-      alert('Provide 2 of the following inputs: Time Minutes, Energy kWh, Power Watts');
-      return;
-    }
-    const body = {
-      duration: duration * 60,
-      power: power
-    };
-  
-    try {
-      const response = await fetch('API_ENDPOINT', {
-        body: JSON.stringify(body),
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      });
-  
-      const data = await response.json();
-      setTask(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  */
 
   const findStartTime = async () => {
 
@@ -134,43 +38,22 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       return;
     }
 
-    if( !duration && energy && power){
-      const newDuration = (parseFloat(energy) * 60) / parseFloat(power)
-      setDuration(newDuration.toString());
-      setDurationDisabled(true);
-    }
-
-    if( !energy && power && duration){
-      const newEnergy = (parseFloat(duration) / 60) * parseFloat(power)
-      setEnergy(newEnergy.toString());
-      setEnergyDisabled(true);
-    }
-
-    if( !power && energy && duration){
-      const newPower = (parseFloat(energy) * 60) / parseFloat(duration)
-      if(newPower > 3){
-        alert('Power calculated is too high!');
-        return;
-      }
-      setPower(newPower.toString());
-      setPowerDisabled(true);
-    }
-
-
     fetch(url + "/api/v1/schedules", {
-            method: "POST",
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                duration: 1,
-                power: 101
-            }),
-            })
-            .then((response) => response.json())
-            .then((responseData) => {
-              setStartDate(responseData.start_date);
-            });
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          duration: 1,
+          power: 101
+      }),
+      })
+      .then((response) => response.json())
+      .then((responseData) => {
+        setStartDate(responseData.start_date);
+      }
+      )
+      .catch(() => setStartDate(123123123));
   };
 
   const saveTask = async () => {
@@ -178,9 +61,9 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
     const newTask: Task = {
       id: uuid.v4().toString(),
       name: name,
-      duration: parseFloat(duration),
-      energy: parseFloat(energy),
-      power: parseFloat(power),
+      duration: duration,
+      energy: energy,
+      power: power,
       startDate: startDate,
     };
   
@@ -263,14 +146,14 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
         durationDisabled={disabledDuration}
         energyDisabled={disabledEnergy}
         powerDisabled={disabledPower}
-        inputsFilled={inputsFilled}
         setName={setName}
         setDuration={setDuration}
         setEnergy={setEnergy}
         setPower={setPower}
-        setdurationDisabled={setDurationDisabled}
+        setDurationDisabled={setDurationDisabled}
         setEnergyDisabled={setEnergyDisabled}
         setPowerDisabled={setPowerDisabled}
+        setStartDate={setStartDate}
       />
       
       <Button 

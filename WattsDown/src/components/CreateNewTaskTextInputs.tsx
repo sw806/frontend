@@ -1,46 +1,90 @@
 import {TextInput} from "react-native-paper";
 import * as React from "react";
 import {View} from "react-native";
+import { useEffect } from "react";
 
 
 type TIProps = {
   name: string,
-  duration: string,
-  energy: string,
-  power: string,
+  duration: number,
+  energy: number,
+  power: number,
   durationDisabled: boolean,
   energyDisabled: boolean,
   powerDisabled: boolean,
-  inputsFilled: number,
   setName,
   setDuration,
   setEnergy,
   setPower
-  setdurationDisabled,
+  setDurationDisabled,
   setEnergyDisabled,
   setPowerDisabled,
-  
+  setStartDate,
 }
 
-const CreateNewTaskInputs = (props: TIProps) => {
+const CreateNewTaskInputs = ({ name, duration, energy, power, durationDisabled, energyDisabled, powerDisabled, setName, setDuration, setEnergy, setPower, setDurationDisabled, setEnergyDisabled, setPowerDisabled, setStartDate }: TIProps) => {
 
+  useEffect(() => {
+
+    const allInputs = [duration, energy, power];
+    const filledInputs = allInputs.filter(Boolean);
+    const numFilledInputs = filledInputs.length;
+
+    const allDisabledButtons = [durationDisabled, energyDisabled, powerDisabled]
+    const buttonDisabled = allDisabledButtons.filter(Boolean)
+    const numDisabled = buttonDisabled.length
     
-    const handleInputChange = (name: string, value: string) => {
-        switch (name) {
-          case 'name':
-            props.setName(value);
-            break;
-          case 'duration':
-            props.setDuration(value);
-            break;
-          case 'energy':
-            props.setEnergy(value);
-            break;
-          case 'power':
-            props.setPower(value);
-            break;
-        }
+    if(numFilledInputs == 2 && numDisabled == 1){
+
+      if(durationDisabled){
+        setDuration(null)
+        setDurationDisabled(false);
+
+      } else if(energyDisabled){
+        setEnergy(null)
+        setEnergyDisabled(false);
+
+
+      } else if(powerDisabled){
+        setPower(null)
+        setPowerDisabled(false);
       }
+
+      setStartDate(null);
+
+    } 
+    if (numFilledInputs == 2 && numDisabled == 0) {
+
+      const unfilledInput = allInputs.find((input) => !input);
+
+      if (unfilledInput === duration && energy && power) {
+        setDurationDisabled(true);
+        const newDuration = (energy * 60) / power
+        setDuration(newDuration);
+
+      } else if (unfilledInput === energy && duration && power) {
+        setEnergyDisabled(true);
+
+        const newEnergy = (duration / 60) * power
+        setEnergy(newEnergy);
+
+
+      } else if (unfilledInput === power && duration && energy) {
+
+        const newPower = (energy * 60) / duration
+        if(newPower > 3){
+          alert('Power calculated is too high!');
+          return;
+        }
+
+        setPower(newPower);
+        setPowerDisabled(true);
+      }
+
+      setStartDate(null);
+    } 
+    
+  }, [duration, energy, power]);
 
     return(
         <View style={{marginTop: 20}}>
@@ -49,8 +93,8 @@ const CreateNewTaskInputs = (props: TIProps) => {
             testID="TaskName"
             label="Task Name"
             placeholder="Task Name"
-            onChangeText={(text) => handleInputChange('name', text)}
-            value={props.name}
+            onChangeText={(text) => setName(text)}
+            value={name}
             activeUnderlineColor='#009FFF'
             activeOutlineColor='#009FFF'
             outlineColor='#009FFF'
@@ -62,9 +106,9 @@ const CreateNewTaskInputs = (props: TIProps) => {
             testID="Duration"
             label="Duration (minutes)"
             placeholder="Duration (minutes)"
-            onChangeText={(text) => handleInputChange('duration', text)}
-            value={props.duration}
-            disabled={props.durationDisabled}
+            onChangeText={(text) => setDuration(text)}
+            value={duration ? duration.toString() : ''}
+            disabled={durationDisabled}
             keyboardType="numeric"
             activeUnderlineColor='#009FFF'
             activeOutlineColor='#009FFF'
@@ -77,9 +121,9 @@ const CreateNewTaskInputs = (props: TIProps) => {
             testID="Energy"
             label="Energy (kWh)"
             placeholder="Energy (kWh)"
-            onChangeText={(text) => handleInputChange('energy', text)}
-            value={props.energy}
-            disabled={props.energyDisabled}
+            onChangeText={(text) => setEnergy(text)}
+            value={energy ? energy.toString() : ''}
+            disabled={energyDisabled}
             keyboardType="numeric"
             activeUnderlineColor='#009FFF'
             activeOutlineColor='#009FFF'
@@ -92,9 +136,9 @@ const CreateNewTaskInputs = (props: TIProps) => {
             testID="Power"
             label="Power (kW)"
             placeholder="Power (kW)"
-            onChangeText={(text) => handleInputChange('power', text)}
-            value={props.power}
-            disabled={props.powerDisabled}
+            onChangeText={(text) => setPower(text)}
+            value={power ? power.toString() : ''}
+            disabled={powerDisabled}
             keyboardType="numeric"
             activeUnderlineColor='#009FFF'
             activeOutlineColor='#009FFF'
