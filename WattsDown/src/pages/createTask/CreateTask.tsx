@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Pressable , StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
@@ -16,11 +16,73 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   const {navigation, route, nameProp} = props;
   const [isModalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState<string>('');
-  const [duration, setDuration] = useState<number>();
-  const [energy, setEnergy] = useState<number>();
-  const [power, setPower] = useState<number>();
+  const [duration, setDuration] = useState<string>();
+  const [energy, setEnergy] = useState<string>();
+  const [power, setPower] = useState<string>();
   const [startDate, setStartDate] = useState<number>();
-  const [test, setTest] = useState<string>();
+  const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
+  const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
+  const [disabledPower, setPowerDisabled] = useState<boolean>(false);
+  const [inputsFilled, setInputsFilled] = useState<number>(0);
+
+  useEffect(() => {
+
+    if(!duration && !energy && power && disabledPower){
+      setPowerDisabled(false)
+      setStartDate(null);
+
+    }
+    if(!duration && energy && !power && disabledEnergy){
+      setEnergyDisabled(false)
+      setStartDate(null);
+
+    }
+    if(duration && !energy && !power && disabledDuration){
+      setDurationDisabled(false)
+      setStartDate(null);
+
+    }
+    // ... //
+    if(duration && !energy && power && disabledDuration){
+      setPowerDisabled(false)
+      setStartDate(null);
+    }
+    if(duration && energy && !power && disabledDuration){
+      setPowerDisabled(false)
+      setStartDate(null);
+    }
+    if(!duration && energy && power && disabledEnergy){
+      setEnergyDisabled(false)
+      setStartDate(null);
+    }
+    if(duration && energy && !power && disabledEnergy){
+      setEnergyDisabled(false)
+      setStartDate(null);
+    }
+    if(!duration && energy && power && disabledPower){
+      setPowerDisabled(false)
+      setStartDate(null);
+    }
+    if(duration && !energy && power && !disabledPower){
+      setPowerDisabled(false)
+      setStartDate(null);
+    }
+
+    // two values 1 grey
+    if(duration && energy && !power && disabledDuration){
+      setDurationDisabled(false)
+      setStartDate(null);
+    }
+    if(duration && !energy && power && disabledDuration){
+      setDurationDisabled(false)
+      setStartDate(null);
+    }
+    if(duration && energy && !power && disabledDuration){
+      setDurationDisabled(false)
+      setStartDate(null);
+    }
+
+  }, [duration, energy, power]);
 
 
     /*
@@ -58,7 +120,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   };
   */
 
-  const createTask = async () => { 
+  const findStartTime = async () => {
 
     if (!name) {
       alert('Please enter the task name.');
@@ -72,21 +134,26 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       return;
     }
 
-    if (power > 3){
-      alert('Power is too high!');
-      return;
+    if( !duration && energy && power){
+      const newDuration = (parseFloat(energy) * 60) / parseFloat(power)
+      setDuration(newDuration.toString());
+      setDurationDisabled(true);
     }
 
     if( !energy && power && duration){
-      setEnergy((duration / 60) * power);
+      const newEnergy = (parseFloat(duration) / 60) * parseFloat(power)
+      setEnergy(newEnergy.toString());
+      setEnergyDisabled(true);
     }
 
-    if( energy && !power && duration){
-      setPower( (energy * 60) / duration);
-    }
-
-    if( energy && power && !duration){
-      setDuration((energy * 60) / power);
+    if( !power && energy && duration){
+      const newPower = (parseFloat(energy) * 60) / parseFloat(duration)
+      if(newPower > 3){
+        alert('Power calculated is too high!');
+        return;
+      }
+      setPower(newPower.toString());
+      setPowerDisabled(true);
     }
 
 
@@ -111,9 +178,9 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
     const newTask: Task = {
       id: uuid.v4().toString(),
       name: name,
-      duration: duration,
-      energy: energy,
-      power: power,
+      duration: parseFloat(duration),
+      energy: parseFloat(energy),
+      power: parseFloat(power),
       startDate: startDate,
     };
   
@@ -193,10 +260,17 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
         duration={duration}
         energy={energy}
         power={power}
+        durationDisabled={disabledDuration}
+        energyDisabled={disabledEnergy}
+        powerDisabled={disabledPower}
+        inputsFilled={inputsFilled}
         setName={setName}
         setDuration={setDuration}
         setEnergy={setEnergy}
         setPower={setPower}
+        setdurationDisabled={setDurationDisabled}
+        setEnergyDisabled={setEnergyDisabled}
+        setPowerDisabled={setPowerDisabled}
       />
       
       <Button 
@@ -204,10 +278,10 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       style={styles.button}
       buttonColor='#009FFF'
       onPress={() => {
-        createTask();
+        findStartTime();
       }}
       >
-        Schedule task
+        Find start time
       </Button>
 
       <ResultArea time={startDate} />
