@@ -5,6 +5,8 @@ import { IStackScreenProps } from "../../library/Stack.ScreenProps";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from "react-native-gesture-handler";
 import {Task} from "../../datatypes/datatypes";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 const styles=StyleSheet.create({
     screenContainer: {
@@ -50,18 +52,13 @@ const styles=StyleSheet.create({
     textFormat: {
         color: "#FFFFFF",
     },
-    buttonFormat: {
-        color: "#009FFF",
-    },
     button:{
         height: 40,
         width: 40,
-        borderRadius: 50,
         alignSelf: 'center',
-        borderWidth: 5,
-        borderColor: '#009FFF',
         color: "#009FFF",
-      },
+        borderColor: "#009FFF",
+    },
 })
 
 const handleEditTask = (nav, data) => {
@@ -108,11 +105,12 @@ const HomePage = props =>  {
                     </ScrollView>
                 </View>
                 <Button 
-                    mode="contained"
+                    mode="outlined"
                     style={styles.button}
                     buttonColor="#00000000"
+                    textColor="#009FFF"
                     onPress={() => navigation.jumpTo('Create Task')}>
-                    <Text style={styles.buttonFormat}>+</Text>
+                        <Icon name="plus" />
                 </Button>
             </View>
          
