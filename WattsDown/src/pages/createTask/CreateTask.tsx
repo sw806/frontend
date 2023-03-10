@@ -9,6 +9,8 @@ import CreateNewTaskInputs from "../../components/CreateNewTaskTextInputs";
 import ResultArea from "../../components/ResultArea";
 import {Task} from "../../datatypes/datatypes";
 
+const url = "INSERT IP HERE"
+
 const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
   const {navigation, route, nameProp} = props;
@@ -18,6 +20,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   const [energy, setEnergy] = useState<number>();
   const [power, setPower] = useState<number>();
   const [startDate, setStartDate] = useState<number>();
+  const [test, setTest] = useState<string>();
+
 
     /*
   const handleScheduleResult = async () => {
@@ -85,7 +89,21 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       setDuration((energy * 60) / power);
     }
 
-    setStartDate(1678206600);
+
+    fetch(url + "/api/v1/schedules", {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                duration: 1,
+                power: 101
+            }),
+            })
+            .then((response) => response.json())
+            .then((responseData) => {
+              setStartDate(responseData.start_date);
+            });
   };
 
   const saveTask = async () => {
