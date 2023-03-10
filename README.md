@@ -20,6 +20,17 @@ export default function Example() {
 All components and how to use them, can be found here:
 https://callstack.github.io/react-native-paper/docs/components/ActivityIndicator
 
+# Docker
+Installing ``docker compose`` (Not _docker-compose_) can be found [here](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-install-Docker-and-docker-compose-on-Ubuntu).  
+If you already have docker install then you only need the plugin.
+````
+apt-get install docker-compose-plugin
+````
+To check if it is installed run 
+````
+docker compose version
+````
+
 # Android SDK
 - SDK Tools: 30
 - Android SDK Platform: 30
