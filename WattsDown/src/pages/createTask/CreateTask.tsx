@@ -16,9 +16,9 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   const {navigation, route, nameProp} = props;
   const [isModalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState<string>('');
-  const [duration, setDuration] = useState<number>();
-  const [energy, setEnergy] = useState<number>();
-  const [power, setPower] = useState<number>();
+  const [duration, setDuration] = useState<string>();
+  const [energy, setEnergy] = useState<string>();
+  const [power, setPower] = useState<string>();
   const [startDate, setStartDate] = useState<number>();
   const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
   const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
@@ -33,8 +33,14 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
     const inputs = [duration, energy, power];
     const filledInputs = inputs.filter(input => !!input);
+
     if (filledInputs.length < 2) {
       alert('Provide 2 of the following inputs: Duration, Energy kWh, Power Watts');
+      return;
+    }
+
+    if(parseFloat(power) > 3){
+      alert('Power is too high');
       return;
     }
 
@@ -61,9 +67,9 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
     const newTask: Task = {
       id: uuid.v4().toString(),
       name: name,
-      duration: duration,
-      energy: energy,
-      power: power,
+      duration: parseFloat(duration),
+      energy: parseFloat(energy),
+      power: parseFloat(power),
       startDate: startDate,
     };
   

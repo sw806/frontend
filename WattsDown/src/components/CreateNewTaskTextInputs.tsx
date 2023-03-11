@@ -1,14 +1,14 @@
 import {TextInput} from "react-native-paper";
 import * as React from "react";
 import {View} from "react-native";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 type TIProps = {
   name: string,
-  duration: number,
-  energy: number,
-  power: number,
+  duration: string,
+  energy: string,
+  power: string,
   durationDisabled: boolean,
   energyDisabled: boolean,
   powerDisabled: boolean,
@@ -22,85 +22,106 @@ type TIProps = {
   setStartDate,
 }
 
-const CreateNewTaskInputs = ({ name, duration, energy, power, durationDisabled, energyDisabled, powerDisabled, setName, setDuration, setEnergy, setPower, setDurationDisabled, setEnergyDisabled, setPowerDisabled, setStartDate }: TIProps) => {
+const CreateNewTaskInputs = ({ 
+  name, 
+  duration, 
+  energy, 
+  power, 
+  durationDisabled, 
+  energyDisabled, 
+  powerDisabled, 
+  setName, 
+  setDuration, 
+  setEnergy, 
+  setPower, 
+  setDurationDisabled, 
+  setEnergyDisabled, 
+  setPowerDisabled, 
+  setStartDate }: TIProps) => {
 
+  const [activeInput, setActiveInput] = useState<boolean>(false);
+
+
+  // unlock text inputs 
   useEffect(() => {
 
     const allInputs = [duration, energy, power];
     const filledInputs = allInputs.filter(Boolean);
     const numFilledInputs = filledInputs.length;
 
-    const allDisabledButtons = [durationDisabled, energyDisabled, powerDisabled]
-    const buttonDisabled = allDisabledButtons.filter(Boolean)
-    const numDisabled = buttonDisabled.length
-    
-    if(numFilledInputs == 2 && numDisabled == 1){
-
+    if(numFilledInputs <= 3 && activeInput){
+      
       if(durationDisabled){
         setDuration(null)
         setDurationDisabled(false);
 
-      } else if(energyDisabled){
+      } 
+      if(energyDisabled){
         setEnergy(null)
         setEnergyDisabled(false);
 
 
-      } else if(powerDisabled){
+      } 
+      if(powerDisabled){
         setPower(null)
         setPowerDisabled(false);
       }
+    }
 
-      setStartDate(null);
+    // clear start date when input is changed
+    setStartDate(null);
 
-    } 
-    if (numFilledInputs == 2 && numDisabled == 0) {
-
-      const unfilledInput = allInputs.find((input) => !input);
-
-      if (unfilledInput === duration && energy && power) {
-        setDurationDisabled(true);
-        const newDuration = ((energy * 60) / power).toFixed(4)
-        setDuration(newDuration);
-
-      } else if (unfilledInput === energy && duration && power) {
-        setEnergyDisabled(true);
-
-        const newEnergy = ((duration / 60) * power).toFixed(4)
-        setEnergy(newEnergy);
-
-
-      } else if (unfilledInput === power && duration && energy) {
-
-        const newPower = ((energy * 60) / duration).toFixed(4)
-        if(parseFloat(newPower) > 3){
-          alert('Power calculated is too high!');
-          return;
-        }
-
-        setPower(newPower);
-        setPowerDisabled(true);
-      }
-
-      setStartDate(null);
-    } 
-    
   }, [duration, energy, power]);
 
+  // handle calculation of third value
+  useEffect(() => {
 
-  const handleInputChange = (name: string, value: string) => {
-        switch (name) {
+    if (!duration && energy && power && !activeInput){
+      const newDuration = ((parseFloat(energy) * 60) / parseFloat(power)).toFixed(4)
+      setDuration(newDuration);
+      setDurationDisabled(true);
+
+    }
+    if (duration && !energy && power && !activeInput){
+      const newEnergy = ((parseFloat(duration) / 60) * parseFloat(power)).toFixed(4)
+      setEnergy(newEnergy);
+      setEnergyDisabled(true);
+
+    }
+    if (duration && energy && !power && !activeInput){
+      const newPower = ((parseFloat(energy) * 60) / parseFloat(duration)).toFixed(4)
+      setPower(newPower);
+      setPowerDisabled(true);   
+
+      if(parseFloat(newPower) > 3) {
+        alert('Power calculated is too high!');
+        return;
+      }
+
+    }
+  }, [activeInput]);
+
+  const handleInput = (name: string, value: string) => {
+    const regex = /^[\d,.]*$/; // regular expression to allow only digits, commas, and periods
+
+    if (regex.test(value)) {
+      switch (name) {
         case 'Duration':
-          setDuration(value === '' ? null : Number(value));
+          setDuration(value);
           break;
         case 'Energy':
-          setEnergy(value === '' ? null : Number(value));
+          setEnergy(value);
           break;
         case 'Power':
-          setPower(value === '' ? null : Number(value));
+          setPower(value);
           break;
       }
+    } else {
+      alert("Only numbers allowed!");
+      return;
+    }
+
   }
-  
 
     return(
         <View style={{marginTop: 20}}>
@@ -111,6 +132,7 @@ const CreateNewTaskInputs = ({ name, duration, energy, power, durationDisabled, 
             placeholder="Task Name"
             onChangeText={(text) => setName(text)}
             value={name}
+            keyboardType="numeric"
             activeUnderlineColor='#009FFF'
             activeOutlineColor='#009FFF'
             outlineColor='#009FFF'
@@ -122,14 +144,16 @@ const CreateNewTaskInputs = ({ name, duration, energy, power, durationDisabled, 
             testID="Duration"
             label="Duration (minutes)"
             placeholder="Duration (minutes)"
-            onChangeText={(text) => handleInputChange('Duration',text)}
-            value={duration ? duration.toString() : ''}
+            onChangeText={(text) => handleInput('Duration',text)}
+            value={duration}
             disabled={durationDisabled}
             keyboardType="numeric"
             activeUnderlineColor='#009FFF'
             activeOutlineColor='#009FFF'
             outlineColor='#009FFF'
             underlineColor='#009FFF'
+            onFocus={() => setActiveInput(true)}
+            onBlur={() => setActiveInput(false)}
             />
 
             <TextInput
@@ -137,14 +161,16 @@ const CreateNewTaskInputs = ({ name, duration, energy, power, durationDisabled, 
             testID="Energy"
             label="Energy (kWh)"
             placeholder="Energy (kWh)"
-            onChangeText={(text) => handleInputChange('Energy',text)}
-            value={energy ? energy.toString() : ''}
+            onChangeText={(text) => handleInput('Energy',text)}
+            value={energy}
             disabled={energyDisabled}
             keyboardType="numeric"
             activeUnderlineColor='#009FFF'
             activeOutlineColor='#009FFF'
             outlineColor='#009FFF'
             underlineColor='#009FFF'
+            onFocus={() => setActiveInput(true)}
+            onBlur={() => setActiveInput(false)}
             />
 
             <TextInput
@@ -152,15 +178,16 @@ const CreateNewTaskInputs = ({ name, duration, energy, power, durationDisabled, 
             testID="Power"
             label="Power (kW)"
             placeholder="Power (kW)"
-            onChangeText={(text) => handleInputChange('Power',text)}
-            value={power ? power.toString() : ''}
+            onChangeText={(text) => handleInput('Power',text)}
+            value={power}
             disabled={powerDisabled}
             keyboardType="numeric"
             activeUnderlineColor='#009FFF'
             activeOutlineColor='#009FFF'
             outlineColor='#009FFF'
             underlineColor='#009FFF'
-
+            onFocus={() => setActiveInput(true)}
+            onBlur={() => setActiveInput(false)}
             />
         </View>
     )
