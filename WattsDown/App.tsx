@@ -27,6 +27,7 @@ export default function App() {
                 : undefined,
         })}>
             <Tab.Screen name="Home" component={HomePage} options={{
+                unmountOnBlur: true,
                 tabBarLabel: "Home",
                 tabBarIcon: ({ color, size }) => {
                     return <Icon name="home" size={size} color={color} />;

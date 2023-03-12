@@ -3,9 +3,9 @@ import * as React from "react";
 import {View} from "react-native";
 
 type TIProps = {
-    minutes: number,
-    energy: number,
-    watts: number,
+    minutes: string,
+    energy: string,
+    watts: string,
     setMinutes,
     setEnergy,
     setWatts

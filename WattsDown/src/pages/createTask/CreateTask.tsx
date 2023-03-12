@@ -8,6 +8,7 @@ import Modal from "react-native-modal";
 import CreateNewTaskInputs from "../../components/CreateNewTaskTextInputs";
 import ResultArea from "../../components/ResultArea";
 import {Task} from "../../datatypes/datatypes";
+import FindStartDateButton from '../../components/FindStartTimeButton';
 
 const url = "INSERT IP HERE"
 
@@ -17,50 +18,12 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   const [isModalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState<string>('');
   const [duration, setDuration] = useState<string>();
-  const [energy, setEnergy] = useState<string>();
   const [power, setPower] = useState<string>();
+  const [energy, setEnergy] = useState<string>();
   const [startDate, setStartDate] = useState<number>();
   const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
-  const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
   const [disabledPower, setPowerDisabled] = useState<boolean>(false);
-
-  const findStartTime = async () => {
-
-    if (!name) {
-      alert('Please enter the task name.');
-      return;
-    }
-
-    const inputs = [duration, energy, power];
-    const filledInputs = inputs.filter(input => !!input);
-
-    if (filledInputs.length < 2) {
-      alert('Provide 2 of the following inputs: Duration, Energy kWh, Power Watts');
-      return;
-    }
-
-    if(parseFloat(power) > 3){
-      alert('Power is too high');
-      return;
-    }
-
-    fetch(url + "/api/v1/schedules", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-          duration: 1,
-          power: 101
-      }),
-      })
-      .then((response) => response.json())
-      .then((responseData) => {
-        setStartDate(responseData.start_date);
-      }
-      )
-      .catch(() => setStartDate(123123123));
-  };
+  const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
 
   const saveTask = async () => {
 
@@ -68,8 +31,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       id: uuid.v4().toString(),
       name: name,
       duration: parseFloat(duration),
-      energy: parseFloat(energy),
       power: parseFloat(power),
+      energy: parseFloat(energy),
       startDate: startDate,
     };
   
@@ -143,6 +106,9 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   
   return (
     <View style={styles.screenContainer}>
+      <View>
+          <Text variant="headlineLarge" style={styles.heading} > Create Task </Text>
+      </View>
 
       <TextInput
         mode="outlined"
@@ -160,30 +126,30 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
       <CreateNewTaskInputs
         duration={duration}
-        energy={energy}
         power={power}
+        energy={energy}
         durationDisabled={disabledDuration}
-        energyDisabled={disabledEnergy}
         powerDisabled={disabledPower}
+        energyDisabled={disabledEnergy}
+        screenName={route.name}
         setDuration={setDuration}
-        setEnergy={setEnergy}
         setPower={setPower}
+        setEnergy={setEnergy}
         setDurationDisabled={setDurationDisabled}
-        setEnergyDisabled={setEnergyDisabled}
         setPowerDisabled={setPowerDisabled}
+        setEnergyDisabled={setEnergyDisabled}
         setStartDate={setStartDate}
       />
       
-      <Button 
-      mode='contained' 
-      style={styles.button}
-      buttonColor='#009FFF'
-      onPress={() => {
-        findStartTime();
-      }}
-      >
-        Find start time
-      </Button>
+      <FindStartDateButton
+      name={name}
+      duration={duration}
+      power={power}
+      energy={energy}
+      url={url}
+      startDate={startDate}
+      setStartDate={setStartDate}
+      />
 
       <ResultArea time={startDate} />
 
