@@ -34,6 +34,7 @@ export default function App() {
                 headerShown: false
             }}/>
             <Tab.Screen name="Create Task" component={CreateTask} options={{
+                unmountOnBlur: true,
                 tabBarLabel: "Create",
                 tabBarIcon: ({ color, size }) => {
                     return <Icon name="plus" size={size} color={color} />;
@@ -41,6 +42,7 @@ export default function App() {
                 headerShown: false
             }}/>
             <Tab.Screen name="Edit Task" component={EditTask} options={{
+                unmountOnBlur: true,
                 headerShown: false
             }}/>
         </Tab.Navigator>

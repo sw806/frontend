@@ -144,15 +144,27 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   return (
     <View style={styles.screenContainer}>
 
+      <TextInput
+        mode="outlined"
+        testID="TaskName"
+        label="Task Name"
+        placeholder="Task Name"
+        onChangeText={(text) => setName(text)}
+        value={name}
+        keyboardType="numeric"
+        activeUnderlineColor='#009FFF'
+        activeOutlineColor='#009FFF'
+        outlineColor='#009FFF'
+        underlineColor='#009FFF'
+      />
+
       <CreateNewTaskInputs
-        name={name}
         duration={duration}
         energy={energy}
         power={power}
         durationDisabled={disabledDuration}
         energyDisabled={disabledEnergy}
         powerDisabled={disabledPower}
-        setName={setName}
         setDuration={setDuration}
         setEnergy={setEnergy}
         setPower={setPower}

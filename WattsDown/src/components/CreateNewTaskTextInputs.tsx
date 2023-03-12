@@ -5,14 +5,12 @@ import { useEffect, useState } from "react";
 
 
 type TIProps = {
-  name: string,
   duration: string,
   energy: string,
   power: string,
   durationDisabled: boolean,
   energyDisabled: boolean,
   powerDisabled: boolean,
-  setName,
   setDuration,
   setEnergy,
   setPower
@@ -23,14 +21,12 @@ type TIProps = {
 }
 
 const CreateNewTaskInputs = ({ 
-  name, 
   duration, 
   energy, 
   power, 
   durationDisabled, 
   energyDisabled, 
   powerDisabled, 
-  setName, 
   setDuration, 
   setEnergy, 
   setPower, 
@@ -125,20 +121,6 @@ const CreateNewTaskInputs = ({
 
     return(
         <View style={{marginTop: 20}}>
-            <TextInput
-            mode="outlined"
-            testID="TaskName"
-            label="Task Name"
-            placeholder="Task Name"
-            onChangeText={(text) => setName(text)}
-            value={name}
-            keyboardType="numeric"
-            activeUnderlineColor='#009FFF'
-            activeOutlineColor='#009FFF'
-            outlineColor='#009FFF'
-            underlineColor='#009FFF'
-            />
-
             <TextInput
             mode="outlined"
             testID="Duration"
