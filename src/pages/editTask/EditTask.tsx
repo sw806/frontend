@@ -17,8 +17,6 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     const {navigation, route, nameProp} = props;
     const {id,name, duration, energy, power, startDate} = route.params.data;
 
-    const url = "INSERT IP HERE"
-
     const [newDuration, setDuration] = useState<string>((duration).toString());
     const [newEnergy, setEnergy] = useState<string>((energy).toString());
     const [newPower, setPower] = useState<string>((power).toString());
@@ -162,7 +160,6 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
                 duration={newDuration}
                 power={newPower}
                 energy={newEnergy}
-                url={url}
                 startDate={newStartDate}
                 setStartDate={setStartDate}
                 setError={setErrorModal}

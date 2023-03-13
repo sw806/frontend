@@ -11,8 +11,6 @@ import {Task} from "../../datatypes/datatypes";
 import FindStartDateButton from '../../components/FindStartTimeButton';
 import {components, typography, colors, space,} from "../../styles/theme";
 
-const url = "INSERT IP HERE"
-
 const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
   const {navigation, route, nameProp} = props;
@@ -130,7 +128,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       duration={duration}
       power={power}
       energy={energy}
-      url={url}
       startDate={startDate}
       setStartDate={setStartDate}
       setError={setErrorModal}

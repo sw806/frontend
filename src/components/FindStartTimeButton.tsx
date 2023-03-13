@@ -1,20 +1,16 @@
 import {Button, Text} from "react-native-paper";
 import * as React from "react";
 import {View} from "react-native";
-import { useEffect, useState } from "react";
-import {components, typography, colors, space} from "../styles/theme";
-
-
+import {components, colors} from "../styles/theme";
 
 type TIProps = {
   name: string,
   duration: string,
   energy: string,
   power: string,
-  url: string,
   startDate: number,
   setStartDate,
-    setError,
+  setError,
 }
 
 const FindStartDateButton = ({ 
@@ -22,9 +18,8 @@ const FindStartDateButton = ({
   duration, 
   energy, 
   power, 
-  url,
   setStartDate,
-    setError
+  setError,
 }: TIProps) => {
 
 
@@ -32,15 +27,20 @@ const FindStartDateButton = ({
 
 
       if (!name) {
-        alert('Please enter the task name.');
+        alert('Please enter a task name.');
+        return;
+      }
+
+      if (!duration || !power || !energy) {
+        alert('Duration, Power and Energy needs to be set');
         return;
       }
   
       const inputs = [duration, energy, power];
       const filledInputs = inputs.filter(input => !!input);
 
-      if (inputs.some(input => input === '' || input === null) || filledInputs.length < 2) {
-        alert('Provide 2 of the following inputs: Duration, Energy kWh, Power Watts');
+      if (inputs.some(input => input === '' || input === undefined) || filledInputs.length < 2) {
+        alert('Provide 2 of the following inputs: Duration, Power, Energy');
         return;
       }
 

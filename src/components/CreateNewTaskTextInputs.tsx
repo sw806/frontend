@@ -52,22 +52,21 @@ const CreateNewTaskInputs = ({
     if(numFilledInputs <= 3 && activeInput){
 
       if(durationDisabled){
-        setDuration(null)
+        setDuration(undefined)
         setDurationDisabled(false);
       } 
       if(powerDisabled){
-        setPower(null)
+        setPower(undefined)
         setPowerDisabled(false);
       }
       if(energyDisabled){
-        setEnergy(null)
+        setEnergy(undefined)
         setEnergyDisabled(false);
       } 
 
       // clear start date when input is changed
       setStartDate(null);
     }
-
   }, [duration, energy, power]);
 
   // handle calculation of third value
