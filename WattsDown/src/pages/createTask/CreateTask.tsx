@@ -117,7 +117,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
         placeholder="Task Name"
         onChangeText={(text) => setName(text)}
         value={name}
-        keyboardType="numeric"
         activeUnderlineColor='#009FFF'
         activeOutlineColor='#009FFF'
         outlineColor='#009FFF'
