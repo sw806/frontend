@@ -2,6 +2,7 @@ import {Button, Text} from "react-native-paper";
 import * as React from "react";
 import {View} from "react-native";
 import { useEffect, useState } from "react";
+import {SERVER_IP} from '@env'
 
 
 type TIProps = {
@@ -44,7 +45,7 @@ const FindStartDateButton = ({
         return;
       }
   
-      fetch(url + "/api/v1/schedules", {
+      fetch(process.env.SERVER_IP + "/api/v1/schedules", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
