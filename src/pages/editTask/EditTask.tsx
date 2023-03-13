@@ -134,11 +134,7 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     return(
         <View style={styles.container}>
             <View>
-                <Text variant="headlineLarge" style={styles.heading} >{name}</Text>
-            </View>
-
-            <View>
-                <Text variant="headlineSmall" style={styles.subheading} >Edit</Text>
+                <Text variant="headlineLarge" style={styles.heading} >{name}{"\n"}<Text variant="headlineSmall" style={styles.subheading} > Edit</Text></Text>
             </View>
 
             <CreateNewTaskInputs
