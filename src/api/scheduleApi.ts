@@ -1,4 +1,5 @@
-export interface ScheduleRequestParams {		duration: number;
+export interface ScheduleRequestParams {
+	duration: number;
 	power: string;
 }
 

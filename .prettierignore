@@ -1,4 +1,13 @@
-
+.expo
+.vscode
+assets
+node_modules
+WattsDown
+app.json
+babel.config.js
+package-lock.json
+package.json
+rsconfig.json
 
 build
 coverage

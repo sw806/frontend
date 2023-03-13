@@ -2,7 +2,11 @@ import { Button, Text } from 'react-native-paper';
 import * as React from 'react';
 import { View } from 'react-native';
 import { components, colors } from '../styles/theme';
-import { ScheduleRequestParams, ScheduleResponse, postSchedule } from '../api/scheduleApi';
+import {
+	ScheduleRequestParams,
+	ScheduleResponse,
+	postSchedule,
+} from '../api/scheduleApi';
 
 type TIProps = {
 	name: string;
@@ -60,7 +64,7 @@ const FindStartDateButton = ({
 		} catch (error) {
 			setError(true);
 		}
-};
+	};
 	return (
 		<View>
 			<Button
