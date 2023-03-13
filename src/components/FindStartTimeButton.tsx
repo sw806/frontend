@@ -56,8 +56,8 @@ const FindStartDateButton = ({
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            duration: 1,
-            power: 101
+            duration: duration,
+            power: power
         }),
         })
         .then((response) => response.json())
