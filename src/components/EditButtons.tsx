@@ -1,30 +1,27 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
 import {Button} from "react-native-paper";
+import {components, typography, colors, space} from "../styles/theme";
+
 
 
 const styles = StyleSheet.create({
     btn: {
-        height: 40,
-        width: 150,
-        margin: 10,
+        ...components.buttons.unstyled.contained
     },
     dualContainer: {
         flexDirection: 'row',
         alignSelf: 'center',
     },
     singleContainer: {
-        marginTop: "1%",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
+        marginTop: space.spacing.xs,
+        ...components.containers.button.single
     },
     container: {
-        display: "flex",
         width: "80%",
         marginLeft: "auto",
         marginRight: "auto",
-        marginTop: "3%",
+        marginTop: space.spacing.s,
     }
 })
 const EditButtons = (props) => {

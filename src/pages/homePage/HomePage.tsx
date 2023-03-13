@@ -6,21 +6,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from "react-native-gesture-handler";
 import {Task} from "../../datatypes/datatypes";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {components, typography, colors, space,} from "../../styles/theme";
 
 
 const styles=StyleSheet.create({
     screenContainer: {
-        flex: 1,
-        width: "80%",
-        marginLeft: "auto",
-        marginRight: "auto",
-        justifyContent: 'center',
+        ...components.containers.screen
       },
     heading:{
-        color: '#009FFF', 
         alignSelf: 'center',
-        marginTop: 10,
-        marginBottom: 20,
+        ...typography.pageHeader.big
       },
     scheduleContainer: {
         flex: 1,
@@ -35,10 +30,12 @@ const styles=StyleSheet.create({
         borderWidth: 0,
     },
     timeRow: {
-        backgroundColor: "#009FFF",
-        color: "#FF00FF",
-        borderRadius: 10,
-        margin: 1,
+        backgroundColor: colors.blue.regular,
+        color: colors.red.light,
+        borderRadius: 3,
+        borderWidth: 2,
+        borderColor: colors.neutral.black,
+        margin: space.spacing.xxs,
     },
     timeName: {
         flex: 6,
@@ -50,14 +47,14 @@ const styles=StyleSheet.create({
         flex: 1,
     },
     textFormat: {
-        color: "#FFFFFF",
+        color: colors.neutral.white,
     },
     button:{
         height: 40,
         width: 40,
         alignSelf: 'center',
-        color: "#009FFF",
-        borderColor: "#009FFF",
+        color: colors.blue.regular,
+        borderColor: colors.blue.regular,
     },
 })
 

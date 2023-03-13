@@ -2,7 +2,8 @@ import {Button, Text} from "react-native-paper";
 import * as React from "react";
 import {View} from "react-native";
 import { useEffect, useState } from "react";
-import {SERVER_IP} from '@env'
+import {components, typography, colors, space} from "../styles/theme";
+
 
 
 type TIProps = {
@@ -67,12 +68,10 @@ const FindStartDateButton = ({
       <Button 
         mode='contained' 
         style={{
-          height: 40,
-          width: 150,
-          margin: 10,
           alignSelf: 'center',
+            ...components.buttons.primary.contained
           }}
-        buttonColor='#009FFF'
+        buttonColor={colors.blue.regular}
         onPress={() => {
           findStartDate();
         }}

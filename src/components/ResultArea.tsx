@@ -1,18 +1,19 @@
 import {Avatar, Card, Text} from "react-native-paper";
 import {StyleSheet} from "react-native";
 import React from "react";
+import {components, typography, colors, space} from "../styles/theme";
+
 
 const styles = StyleSheet.create({
     content: {
-        display: "flex",
-        alignItems: "center"
+        ...components.containers.results
     },
     card : {
-        backgroundColor: "#009FFF",
-        marginTop: "1%"
+        backgroundColor: colors.blue.regular,
+        marginTop: space.spacing.xs
     },
     text: {
-        fontSize: 24
+        fontSize: typography.fontSizes.titleLarge.fontSize
     },
     icon: {
         backgroundColor: 'rgba(255, 255, 255, 0)'
