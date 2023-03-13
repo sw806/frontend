@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import Modal from "react-native-modal";import React, { useEffect, useState } from 'react';
 import { View, Pressable , StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import { Button, Text , TextInput  } from 'react-native-paper';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
-import Modal from "react-native-modal";
+
 import CreateNewTaskInputs from "../../components/CreateNewTaskTextInputs";
 import ResultArea from "../../components/ResultArea";
 import {Task} from "../../datatypes/datatypes";
@@ -25,6 +25,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
   const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
   const [disabledPower, setPowerDisabled] = useState<boolean>(false);
   const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
+  const [errorModal, setErrorModal] = useState<boolean>(false);
 
   const saveTask = async () => {
 
@@ -132,6 +133,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
       url={url}
       startDate={startDate}
       setStartDate={setStartDate}
+      setError={setErrorModal}
       />
 
       <ResultArea time={startDate} />
@@ -176,6 +178,21 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
             </View>
           </View>
         </Modal>
+      <Modal isVisible={errorModal}>
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Text style={{color: '#009FFF', paddingBottom: 10}}>Error connecting to server!{'\n'}Please check your connection and try again</Text>
+
+            <Button
+                buttonColor={colors.blue.regular}
+                textColor={colors.neutral.white}
+                onPress={() => setErrorModal(false)}>
+              Close
+            </Button>
+
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

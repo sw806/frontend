@@ -1,5 +1,6 @@
 import {View, StyleSheet} from "react-native";
-import {Button, Modal, Text} from "react-native-paper";
+import {Button, Text} from "react-native-paper";
+import Modal from "react-native-modal";
 import * as React from 'react';
 import ResultArea from "../../components/ResultArea";
 import EditButtons from "../../components/EditButtons";
@@ -28,6 +29,7 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     const [visible, setVisible] = React.useState<boolean>(false);
     const [modalText, setModalText] = React.useState<string>("")
     const [saveModal, setSaveModal] = React.useState<boolean>(false)
+    const [errorModal, setErrorModal] = useState<boolean>(false);
     
     const showModal = () => setVisible(true);
     const hideModal = () => {
@@ -128,7 +130,8 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
         containerStyle: {
             backgroundColor: 'white',
             padding: 20
-        }
+        },
+
     })
     
     return(
@@ -162,6 +165,7 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
                 url={url}
                 startDate={newStartDate}
                 setStartDate={setStartDate}
+                setError={setErrorModal}
             />
 
             <ResultArea time={newStartDate} />
@@ -174,19 +178,39 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
                 />
             </View>
 
-            <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.containerStyle} dismissable={false}>
-                
-                <Text variant="bodyMedium">{modalText}</Text>
+            <Modal isVisible={visible}>
+                <View style={styles.modalBackground}>
+                    <View style={styles.modalContainer}>
+                        <Text variant="bodyMedium">{modalText}</Text>
 
-                <View style={styles.dualContainer}>
-                    
-                    <Button style={styles.btn} mode="elevated" buttonColor="#607d8b" textColor="#ffffff" onPress={() => modalCancel()} >Cancel</Button>
-                    {saveModal &&
-                    <Button style={styles.btn} mode="elevated" buttonColor="#4caf50" textColor="#ffffff" disabled={!newStartDate} onPress={()  => modalSave()}>Save</Button>
-                    }
-                    {!saveModal &&
-                    <Button style={styles.btn} mode="elevated" buttonColor="#d32f2f" textColor="#ffffff" onPress={() => modalDelete()}>Delete</Button>
-                    }
+                        <View style={styles.dualContainer}>
+
+                            <Button style={styles.btn} mode="elevated" buttonColor="#607d8b" textColor="#ffffff" onPress={() => modalCancel()} >Cancel</Button>
+                            {saveModal &&
+                                <Button style={styles.btn} mode="elevated" buttonColor="#4caf50" textColor="#ffffff" disabled={!newStartDate} onPress={()  => modalSave()}>Save</Button>
+                            }
+                            {!saveModal &&
+                                <Button style={styles.btn} mode="elevated" buttonColor="#d32f2f" textColor="#ffffff" onPress={() => modalDelete()}>Delete</Button>
+                            }
+                        </View>
+                    </View>
+                </View>
+
+
+            </Modal>
+            <Modal isVisible={errorModal}>
+                <View style={styles.modalBackground}>
+                    <View style={styles.modalContainer}>
+                        <Text style={{color: '#009FFF', paddingBottom: 10}}>Error connecting to server!{'\n'}Please check your connection and try again</Text>
+
+                        <Button
+                            buttonColor={colors.blue.regular}
+                            textColor={colors.neutral.white}
+                            onPress={() => setErrorModal(false)}>
+                            Close
+                        </Button>
+
+                    </View>
                 </View>
             </Modal>
         </View>

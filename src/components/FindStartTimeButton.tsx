@@ -14,6 +14,7 @@ type TIProps = {
   url: string,
   startDate: number,
   setStartDate,
+    setError,
 }
 
 const FindStartDateButton = ({ 
@@ -23,9 +24,12 @@ const FindStartDateButton = ({
   power, 
   url,
   setStartDate,
+    setError
 }: TIProps) => {
 
+
   const findStartDate = async () => {
+
 
       if (!name) {
         alert('Please enter the task name.');
@@ -61,7 +65,9 @@ const FindStartDateButton = ({
           setStartDate(responseData.start_date);
         }
         )
-        .catch(() => setStartDate(123123123));
+        .catch(() => {
+            setError(true)
+        });
     };
   return(
     <View>
