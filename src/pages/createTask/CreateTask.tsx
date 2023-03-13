@@ -9,6 +9,7 @@ import CreateNewTaskInputs from "../../components/CreateNewTaskTextInputs";
 import ResultArea from "../../components/ResultArea";
 import {Task} from "../../datatypes/datatypes";
 import FindStartDateButton from '../../components/FindStartTimeButton';
+import {components, typography, colors, space,} from "../../styles/theme";
 
 const url = "INSERT IP HERE"
 
@@ -60,47 +61,30 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
   const styles = StyleSheet.create({
     screenContainer: {
-      flex: 1,
-      width: "80%",
-      marginLeft: "auto",
-      marginRight: "auto",
+      ...components.containers.screen
     },
     heading:{
-      color: '#009FFF', 
-      alignSelf: 'center',
-      marginTop: 10,
-      marginBottom: 20,
+      ...typography.pageHeader.big
     },
     button:{
-      height: 40,
-      width: 150,
-      margin: 10,
       alignSelf: 'center',
+      ...components.buttons.primary.contained
     },
     containerbutton:{
-      height: 40,
-      width: 150,
-      margin: 10,
+      ...components.buttons.primary.contained
+    },
+    disabledButton: {
+      ...components.buttons.unstyled.contained
     },
     container: {
       flexDirection: 'row',
       alignSelf: 'center',
     },
     modalBackground:{
-      flex: 1,
-      backgroundColor: 'rba(0,0,0,0,5',
-      justifyContent: 'center',
-      alignItems: 'center'
+      ...components.containers.modals.background
     },
     modalContainer:{
-      width: '80%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'white',
-      paddingHorizontal: 20,
-      paddingVertical: 30,
-      elevation: 20,
-      borderRadius: 20
+      ...components.containers.modals.contained
     }
   })
   
@@ -117,10 +101,10 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
         placeholder="Task Name"
         onChangeText={(text) => setName(text)}
         value={name}
-        activeUnderlineColor='#009FFF'
-        activeOutlineColor='#009FFF'
-        outlineColor='#009FFF'
-        underlineColor='#009FFF'
+        activeUnderlineColor={colors.blue.regular}
+        activeOutlineColor={colors.blue.regular}
+        outlineColor={colors.blue.regular}
+        underlineColor={colors.blue.regular}
       />
 
       <CreateNewTaskInputs
@@ -157,7 +141,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
         <Button 
           mode='contained' 
           style={styles.containerbutton}
-          buttonColor='#009FFF'
+          buttonColor={colors.blue.regular}
           onPress={() => navigation.navigate('Home')}
           >
             Back
@@ -165,8 +149,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
 
         <Button 
           mode='contained' 
-          style={styles.containerbutton}
-          buttonColor='#2EB584'
+          style={styles.disabledButton}
+          buttonColor={colors.neutral.grey}
           disabled={!startDate}
           onPress={() => {
             saveTask();
@@ -183,8 +167,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = props =>  {
               <Text style={{color: '#009FFF', paddingBottom: 10}}> {name} scheduled!</Text>
 
               <Button  
-                  buttonColor='#009FFF'
-                  textColor='white'
+                  buttonColor={colors.blue.regular}
+                  textColor={colors.neutral.white}
                   onPress={() => navigation.navigate('Home')}>
                     Home
               </Button>

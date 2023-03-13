@@ -9,6 +9,7 @@ import CreateNewTaskInputs from "../../components/CreateNewTaskTextInputs";
 import { useState } from "react";
 import FindStartDateButton from "../../components/FindStartTimeButton";
 import {Task} from "../../datatypes/datatypes";
+import {components, typography, colors, space,} from "../../styles/theme";
 
 
 const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
@@ -92,10 +93,11 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     const styles=StyleSheet.create({
         heading:{
             alignSelf: 'center',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            marginTop: "3%",
-            color: '#009FFF',
+            ...typography.pageHeader.big
+        },
+        subheading: {
+            alignSelf: 'center',
+            ...typography.pageHeader.medium
         },
         ScheduleBtn: {
             marginTop: "3%",
@@ -103,10 +105,7 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
             alignItems: "center"
         },
         container: {
-            flex: 1,
-            width: "80%",
-            marginLeft: "auto",
-            marginRight: "auto",
+            ...components.containers.screen
         },
         editButtons: {
             position: "relative",
@@ -114,25 +113,13 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
             width: "100%"
         },
         modalBackground:{
-            flex: 1,
-            backgroundColor: 'rba(0,0,0,0,5)',
-            justifyContent: 'center',
-            alignItems: 'center'
+            ...components.containers.modals.background
         },
         modalContainer:{
-            width: '80%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'white',
-            paddingHorizontal: 20,
-            paddingVertical: 30,
-            elevation: 20,
-            borderRadius: 20
+            ...components.containers.modals.contained
         },
         btn: {
-            height: 40,
-            width: 150,
-            margin: 10,
+            ...components.buttons.unstyled.contained
         },
         dualContainer: {
             flexDirection: 'row',
@@ -147,11 +134,7 @@ const EditTask:React.FunctionComponent<IStackScreenProps> = props => {
     return(
         <View style={styles.container}>
             <View>
-                <Text variant="headlineLarge" style={styles.heading} >{name}</Text>
-            </View>
-
-            <View>
-                <Text variant="headlineSmall" style={styles.heading} >Edit</Text>
+                <Text variant="headlineLarge" style={styles.heading} >{name}{"\n"}<Text variant="headlineSmall" style={styles.subheading} > Edit</Text></Text>
             </View>
 
             <CreateNewTaskInputs

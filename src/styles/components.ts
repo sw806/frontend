@@ -67,7 +67,7 @@ export const buttons = {
             textColor: colors.neutral.white
         }
     },
-    disabled: {
+    unstyled: {
         contained: {
             height: 40,
             width: 150,
@@ -122,7 +122,7 @@ export const containers = {
     modals: {
         background: {
             flex: 1,
-            backgroundColor: 'rba(0,0,0,0,5',
+            backgroundColor: 'rba(0,0,0,0,5)',
             justifyContent: 'center',
             alignItems: 'center'
         },
