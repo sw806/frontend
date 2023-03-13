@@ -2,6 +2,7 @@ import { Button, Text } from 'react-native-paper';
 import * as React from 'react';
 import { View } from 'react-native';
 import { components, colors } from '../styles/theme';
+import { ScheduleRequestParams, ScheduleResponse, postSchedule } from '../api/scheduleApi';
 
 type TIProps = {
 	name: string;
@@ -48,24 +49,18 @@ const FindStartDateButton = ({
 			return;
 		}
 
-		fetch(process.env.SERVER_IP + '/api/v1/schedules', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				duration: parseFloat(duration),
-				power: power,
-			}),
-		})
-			.then((response) => response.json())
-			.then((responseData) => {
-				setStartDate(responseData.start_date);
-			})
-			.catch(() => {
-				setError(true);
-			});
-	};
+		const params: ScheduleRequestParams = {
+			duration: parseFloat(duration),
+			power: power,
+		};
+
+		try {
+			const responseData: ScheduleResponse = await postSchedule(params);
+			setStartDate(responseData.start_date);
+		} catch (error) {
+			setError(true);
+		}
+};
 	return (
 		<View>
 			<Button
