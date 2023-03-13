@@ -98,7 +98,7 @@ const CreateNewTaskInputs = ({
   }, [activeInput]);
 
   const handleInput = (name: string, value: string) => {
-    const regex = /^[\d,.]*$/; // regular expression to allow only digits, commas, and periods
+    const regex = /^\d*\.?\d*$/;
 
     if (regex.test(value)) {
       switch (name) {
@@ -113,7 +113,7 @@ const CreateNewTaskInputs = ({
           break;
       }
     } else {
-      alert("Only numbers allowed!");
+      alert("Invalid input, only numbers allowed!");
       return;
     }
   }
