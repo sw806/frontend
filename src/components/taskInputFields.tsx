@@ -46,6 +46,12 @@ const CreateNewTaskInputs = ({
 		const filledInputs = allInputs.filter(Boolean);
 		const numFilledInputs = filledInputs.length;
 
+		console.log("duration: " + duration)
+		console.log("power: " + power)
+		console.log("energy: " + energy)
+		console.log("screen: " + screenName)
+		console.log("...............................")
+
 		if (numFilledInputs == 3 && screenName == 'Edit Task') {
 			setEnergyDisabled(true);
 		}

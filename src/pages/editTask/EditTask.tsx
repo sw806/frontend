@@ -6,11 +6,12 @@ import ResultArea from '../../components/ResultArea';
 import EditButtons from '../../components/EditButtons';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CreateNewTaskInputs from '../../components/CreateNewTaskTextInputs';
+import CreateNewTaskInputs from '../../components/taskInputFields';
 import { useState } from 'react';
 import FindStartDateButton from '../../components/FindStartTimeButton';
 import { Task } from '../../datatypes/datatypes';
 import { components, typography, colors, space } from '../../styles/theme';
+import { StorageService } from '../../utils/storage';
 
 const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -33,7 +34,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		setVisible(false);
 	};
 
-	const saveToStorage = async () => {
+	const saveTask = async () => {
 		const updatedTask: Task = {
 			id: id,
 			name: name,
@@ -43,16 +44,11 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			startDate: newStartDate,
 		};
 
-		try {
-			await AsyncStorage.removeItem(id);
-			await AsyncStorage.setItem(id, JSON.stringify(updatedTask));
-		} catch (error) {
-			console.log(error);
-		}
+		await StorageService.updateTask(updatedTask);
 	};
 
-	const removeFromStorage = async () => {
-		await AsyncStorage.removeItem(id);
+	const removeTask = async () => {
+		await StorageService.deleteTask(id)
 	};
 	const handleSave = () => {
 		setModalText('Are you sure you want to save changes?');
@@ -80,13 +76,13 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	};
 
 	const modalSave = () => {
-		saveToStorage()
+		saveTask()
 			.then(() => reroute())
 			.catch(() => console.log('failure'));
 	};
 
 	const modalDelete = () => {
-		removeFromStorage()
+		removeTask()
 			.then(() => reroute())
 			.catch(() => console.log("couldn't delete"));
 	};

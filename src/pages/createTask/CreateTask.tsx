@@ -6,7 +6,7 @@ import uuid from 'react-native-uuid';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 
-import CreateNewTaskInputs from '../../components/CreateNewTaskTextInputs';
+import CreateNewTaskInputs from '../../components/taskInputFields';
 import ResultArea from '../../components/ResultArea';
 import { Task } from '../../datatypes/datatypes';
 import FindStartDateButton from '../../components/FindStartTimeButton';
@@ -36,7 +36,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			startDate: startDate,
 		};
 
-		await StorageService.saveData(newTask);
+		await StorageService.saveTask(newTask);
 		toggleModal();
 	};
 

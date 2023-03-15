@@ -69,7 +69,7 @@ const HomePage = (props) => {
 	const [data, setData] = React.useState<readonly Task[]>([]);
 
 	const fetchData = async () => {
-		setData(await StorageService.getData());
+		setData(await StorageService.getAllTasks());
 	}
 
 	fetchData();
