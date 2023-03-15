@@ -2,11 +2,11 @@ import { View, StyleSheet } from 'react-native';
 import { Button, DataTable, Text } from 'react-native-paper';
 import * as React from 'react';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Task } from '../../datatypes/datatypes';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { components, typography, colors, space } from '../../styles/theme';
+import { StorageService } from '../../utils/storage';
 
 const styles = StyleSheet.create({
 	screenContainer: {
@@ -68,19 +68,11 @@ const HomePage = (props) => {
 	const [energy, setEnergy] = React.useState('');
 	const [data, setData] = React.useState<readonly Task[]>([]);
 
-	const getData = async () => {
-		try {
-			// get saved keys
-			const keys = await AsyncStorage.getAllKeys();
-			const data = await AsyncStorage.multiGet(keys);
+	const fetchData = async () => {
+		setData(await StorageService.getData());
+	}
 
-			setData(data.map((d) => JSON.parse(d[1])));
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	getData();
+	fetchData();
 
 	return (
 		<View style={styles.screenContainer}>
