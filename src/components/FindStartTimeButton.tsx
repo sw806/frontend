@@ -26,10 +26,6 @@ const FindStartDateButton = ({
 	setStartDate,
 	setError,
 }: TIProps) => {
-	/**
-	 * 
-	 * @returns 
-	 */
 	const findStartDate = async () => {
 		if (!name) {
 			alert('Please enter a task name.');
@@ -63,6 +59,7 @@ const FindStartDateButton = ({
 			return true;
 		} catch (error) {
 			setError(true);
+			return false;
 		}
 	};
 	return (

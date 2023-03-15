@@ -14,4 +14,20 @@ export module StorageService {
             console.log(error);
         }
     };
+
+    export async function saveData (task: Task) {
+        try {
+            // check for existing id
+            const existingTask = await AsyncStorage.getItem(task.id);
+            if (existingTask !== null) {
+                // Generate a new id if the key already exists by calling itself recursively
+                saveData(task);
+                return;
+            }
+            await AsyncStorage.setItem(task.id, JSON.stringify(task));
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
+

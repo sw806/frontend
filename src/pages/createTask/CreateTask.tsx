@@ -11,6 +11,7 @@ import ResultArea from '../../components/ResultArea';
 import { Task } from '../../datatypes/datatypes';
 import FindStartDateButton from '../../components/FindStartTimeButton';
 import { components, typography, colors, space } from '../../styles/theme';
+import { StorageService } from '../../utils/storage';
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -35,20 +36,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			startDate: startDate,
 		};
 
-		try {
-			// check for existing id
-			const existingTask = await AsyncStorage.getItem(newTask.id);
-			if (existingTask !== null) {
-				// Generate a new id if the key already exists by calling itself recursively
-				saveTask();
-				return;
-			}
-			await AsyncStorage.setItem(newTask.id, JSON.stringify(newTask));
-
-			toggleModal();
-		} catch (error) {
-			console.log(error);
-		}
+		await StorageService.saveData(newTask);
+		toggleModal();
 	};
 
 	const toggleModal = () => {
