@@ -83,7 +83,7 @@ const HomePage = (props) => {
 			<View style={styles.scheduleContainer}>
 				<View style={styles.timeContainer}>
 					<ScrollView>
-						{data.map((d) => (
+						{data?.map((d) => (
 							<DataTable.Row
 								key={d ? d.id : 0}
 								onPress={() => handleEditTask(navigation, d)}
