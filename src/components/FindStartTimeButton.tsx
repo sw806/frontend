@@ -48,14 +48,9 @@ const FindStartDateButton = ({
 			return;
 		}
 
-		if (parseFloat(power) > 3) {
-			alert('Power is too high');
-			return;
-		}
-
 		const params: ScheduleRequestParams = {
 			duration: parseFloat(duration),
-			power: power,
+			power: parseFloat(power),
 		};
 
 		try {

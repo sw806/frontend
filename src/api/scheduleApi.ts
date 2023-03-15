@@ -1,10 +1,10 @@
 export interface ScheduleRequestParams {
 	duration: number;
-	power: string;
+	power: number;
 }
 
 export interface ScheduleResponse {
-	start_date: string;
+	start_date: number;
 }
 
 export const postSchedule = async (

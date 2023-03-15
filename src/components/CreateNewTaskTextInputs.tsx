@@ -2,6 +2,7 @@ import { TextInput } from 'react-native-paper';
 import * as React from 'react';
 import { View } from 'react-native';
 import { useEffect, useState } from 'react';
+import {calculateDuration, calculateEnergy, calculatePower} from '../utils/calculations'
 
 type TIProps = {
 	duration: string;
@@ -70,34 +71,20 @@ const CreateNewTaskInputs = ({
 	// handle calculation of third value
 	useEffect(() => {
 		if (!duration && energy && power && !activeInput) {
-			const newDuration = (
-				(parseFloat(energy) * 60) /
-				parseFloat(power)
-			).toFixed(4);
-			setDuration(newDuration);
+			const newDuration = calculateDuration(parseFloat(energy), parseFloat(power), 4);
+			setDuration(newDuration.toString());
 			setDurationDisabled(true);
 		}
 
 		if (duration && energy && !power && !activeInput) {
-			const newPower = (
-				(parseFloat(energy) * 60) /
-				parseFloat(duration)
-			).toFixed(4);
-			setPower(newPower);
+			const newPower = calculatePower(parseFloat(duration), parseFloat(energy), 4);
+			setPower(newPower.toString());
 			setPowerDisabled(true);
-
-			if (parseFloat(newPower) > 3) {
-				alert('Power calculated is too high!');
-				return;
-			}
 		}
 
 		if (duration && !energy && power && !activeInput) {
-			const newEnergy = (
-				(parseFloat(duration) / 60) *
-				parseFloat(power)
-			).toFixed(4);
-			setEnergy(newEnergy);
+			const newEnergy = calculateEnergy(parseFloat(duration), parseFloat(power), 4);
+			setEnergy(newEnergy.toString());
 			setEnergyDisabled(true);
 		}
 	}, [activeInput]);
@@ -111,6 +98,10 @@ const CreateNewTaskInputs = ({
 					setDuration(value);
 					break;
 				case 'Power':
+					if(parseFloat(value) > 3){
+						alert("Power cannot be over 3")
+						return;
+					}
 					setPower(value);
 					break;
 				case 'Energy':
