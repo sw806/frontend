@@ -121,6 +121,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		},
 		btn: {
 			...components.buttons.unstyled.contained,
+			width: 100,
+			marginTop: space.spacing.l
 		},
 		dualContainer: {
 			flexDirection: 'row',
