@@ -3,6 +3,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { useEffect, useState } from 'react';
 import {calculateDuration, calculateEnergy, calculatePower} from '../utils/calculations'
+import { isValidNumber } from '../utils/inputValidation';
 
 type TIProps = {
 	duration: string;
@@ -89,28 +90,28 @@ const CreateNewTaskInputs = ({
 		}
 	}, [activeInput]);
 
-	const handleInput = (name: string, value: string) => {
-		const regex = /^\d*\.?\d*$/;
+	const handleInput = (inputName: string, inputValue: string) => {
 
-		if (regex.test(value)) {
-			switch (name) {
+		if (isValidNumber(inputValue)) {
+			switch (inputName) {
 				case 'Duration':
-					setDuration(value);
+					setDuration(inputValue);
 					break;
 				case 'Power':
-					if(parseFloat(value) > 3){
+					if(parseFloat(inputValue) > 3){
 						alert("Power cannot be over 3")
 						return;
 					}
-					setPower(value);
+					setPower(inputValue);
 					break;
 				case 'Energy':
-					setEnergy(value);
+					setEnergy(inputValue);
 					break;
 			}
+			return true;
 		} else {
 			alert('Invalid input, only numbers allowed!');
-			return;
+			return false;
 		}
 	};
 	return (

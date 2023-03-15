@@ -26,15 +26,19 @@ const FindStartDateButton = ({
 	setStartDate,
 	setError,
 }: TIProps) => {
+	/**
+	 * 
+	 * @returns 
+	 */
 	const findStartDate = async () => {
 		if (!name) {
 			alert('Please enter a task name.');
-			return;
+			return false;
 		}
 
 		if (!duration || !power || !energy) {
-			alert('Duration, Power and Energy needs to be set');
-			return;
+			alert('Duration, Power and Energy has to be set');
+			return false;
 		}
 
 		const inputs = [duration, energy, power];
@@ -45,7 +49,7 @@ const FindStartDateButton = ({
 			filledInputs.length < 2
 		) {
 			alert('Provide 2 of the following inputs: Duration, Power, Energy');
-			return;
+			return false;
 		}
 
 		const params: ScheduleRequestParams = {
@@ -56,6 +60,7 @@ const FindStartDateButton = ({
 		try {
 			const responseData: ScheduleResponse = await postSchedule(params);
 			setStartDate(responseData.start_date);
+			return true;
 		} catch (error) {
 			setError(true);
 		}
