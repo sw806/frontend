@@ -12,6 +12,7 @@ import HomePage from './src/pages/homePage/HomePage';
 import CreateTask from './src/pages/createTask/CreateTask';
 import EditTask from './src/pages/editTask/EditTask';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import OverviewPage from "./src/pages/overview/OverviewPage";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,7 +23,7 @@ export default function App() {
 			<Tab.Navigator
 				initialRouteName="Home"
 				screenOptions={({ route }) => ({
-					tabBarButton: ['Edit Task'].includes(route.name)
+					tabBarButton: ['Edit Task', 'Overview'].includes(route.name)
 						? () => {
 								return null;
 						  }
@@ -58,8 +59,30 @@ export default function App() {
 					}}
 				/>
 				<Tab.Screen
+					name="Settings"
+					component={CreateTask}
+					options={{
+						unmountOnBlur: true,
+						tabBarLabel: 'Settings',
+						tabBarIcon: ({ color, size }) => {
+							return (
+								<Icon name="cog" size={size} color={color} />
+							);
+						},
+						headerShown: false,
+					}}
+				/>
+				<Tab.Screen
 					name="Edit Task"
 					component={EditTask}
+					options={{
+						unmountOnBlur: true,
+						headerShown: false,
+					}}
+				/>
+				<Tab.Screen
+					name="Overview"
+					component={OverviewPage}
 					options={{
 						unmountOnBlur: true,
 						headerShown: false,
