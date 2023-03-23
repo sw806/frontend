@@ -70,7 +70,7 @@ const HomePage = (props) => {
 
 	const fetchData = async () => {
 		setData(await StorageService.getAllTasks());
-	}
+	};
 
 	fetchData();
 

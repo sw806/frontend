@@ -2,7 +2,11 @@ import { TextInput } from 'react-native-paper';
 import * as React from 'react';
 import { View } from 'react-native';
 import { useEffect, useState } from 'react';
-import {calculateDuration, calculateEnergy, calculatePower} from '../utils/calculations'
+import {
+	calculateDuration,
+	calculateEnergy,
+	calculatePower,
+} from '../utils/calculations';
 import { isValidNumber } from '../utils/inputValidation';
 
 type TIProps = {
@@ -46,12 +50,6 @@ const CreateNewTaskInputs = ({
 		const filledInputs = allInputs.filter(Boolean);
 		const numFilledInputs = filledInputs.length;
 
-		console.log("duration: " + duration)
-		console.log("power: " + power)
-		console.log("energy: " + energy)
-		console.log("screen: " + screenName)
-		console.log("...............................")
-
 		if (numFilledInputs == 3 && screenName == 'Edit Task') {
 			setEnergyDisabled(true);
 		}
@@ -78,34 +76,45 @@ const CreateNewTaskInputs = ({
 	// handle calculation of third value
 	useEffect(() => {
 		if (!duration && energy && power && !activeInput) {
-			const newDuration = calculateDuration(parseFloat(energy), parseFloat(power), 4);
+			const newDuration = calculateDuration(
+				parseFloat(energy),
+				parseFloat(power),
+				4
+			);
 			setDuration(newDuration.toString());
 			setDurationDisabled(true);
 		}
 
 		if (duration && energy && !power && !activeInput) {
-			const newPower = calculatePower(parseFloat(duration), parseFloat(energy), 4);
+			const newPower = calculatePower(
+				parseFloat(duration),
+				parseFloat(energy),
+				4
+			);
 			setPower(newPower.toString());
 			setPowerDisabled(true);
 		}
 
 		if (duration && !energy && power && !activeInput) {
-			const newEnergy = calculateEnergy(parseFloat(duration), parseFloat(power), 4);
+			const newEnergy = calculateEnergy(
+				parseFloat(duration),
+				parseFloat(power),
+				4
+			);
 			setEnergy(newEnergy.toString());
 			setEnergyDisabled(true);
 		}
 	}, [activeInput]);
 
 	const handleInput = (inputName: string, inputValue: string) => {
-
 		if (isValidNumber(inputValue)) {
 			switch (inputName) {
 				case 'Duration':
 					setDuration(inputValue);
 					break;
 				case 'Power':
-					if(parseFloat(inputValue) > 3){
-						alert("Power cannot be over 3")
+					if (parseFloat(inputValue) > 3) {
+						alert('Power cannot be over 3');
 						return;
 					}
 					setPower(inputValue);

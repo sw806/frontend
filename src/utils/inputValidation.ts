@@ -4,15 +4,12 @@
  * @returns true if string is a valid number
  */
 const isValidNumber = (inputString: string) => {
+	const regex = /^\d*\.?\d*$/;
+	if (regex.test(inputString)) {
+		return true;
+	}
 
-    const regex = /^\d*\.?\d*$/;
-    if(regex.test(inputString)){
-        return true
-    }
-    
-    return false;
-}
+	return false;
+};
 
-export {
-    isValidNumber
-}
+export { isValidNumber };
