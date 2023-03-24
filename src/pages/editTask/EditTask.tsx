@@ -57,7 +57,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	};
 
 	const handleCancel = () => {
-		reroute();
+		hideModal()
+		navigation.navigate("Overview", {data: route.params.data})
 	};
 
 	const handleDelete = () => {
