@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 });
 
 const handleEditTask = (nav, data) => {
-	nav.jumpTo('Edit Task', { data: data });
+	nav.jumpTo('Overview', { data: data });
 };
 
 const HomePage = (props) => {

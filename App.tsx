@@ -12,7 +12,7 @@ import HomePage from './src/pages/homePage/HomePage';
 import CreateTask from './src/pages/createTask/CreateTask';
 import EditTask from './src/pages/editTask/EditTask';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import OverviewPage from "./src/pages/overview/OverviewPage";
+import OverviewPage from './src/pages/overview/OverviewPage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

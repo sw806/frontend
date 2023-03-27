@@ -48,7 +48,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	};
 
 	const removeTask = async () => {
-		await StorageService.deleteTask(id)
+		await StorageService.deleteTask(id);
 	};
 	const handleSave = () => {
 		setModalText('Are you sure you want to save changes?');
@@ -57,7 +57,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	};
 
 	const handleCancel = () => {
-		reroute();
+		hideModal()
+		navigation.navigate("Overview", {data: route.params.data})
 	};
 
 	const handleDelete = () => {
@@ -118,7 +119,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		btn: {
 			...components.buttons.unstyled.contained,
 			width: 100,
-			marginTop: space.spacing.l
+			marginTop: space.spacing.l,
 		},
 		dualContainer: {
 			flexDirection: 'row',

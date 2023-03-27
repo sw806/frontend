@@ -12,6 +12,7 @@ import { Task } from '../../datatypes/datatypes';
 import FindStartDateButton from '../../components/FindStartTimeButton';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
+import { SlidingWindow } from '../../components/SlidingWindow';
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -25,6 +26,15 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [disabledPower, setPowerDisabled] = useState<boolean>(false);
 	const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
+	const [data, setData] = React.useState<readonly Task[]>([]);
+
+	const fetchData = async () => {
+		setData(await StorageService.getAllTasks());
+	};
+
+	useEffect(() => {
+		fetchData();
+	}, []);
 
 	const saveTask = async () => {
 		const newTask: Task = {
@@ -82,17 +92,17 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				</Text>
 			</View>
 
-			<TextInput
-				mode="outlined"
-				testID="TaskName"
-				label="Task Name"
-				placeholder="Task Name"
-				onChangeText={(text) => setName(text)}
-				value={name}
-				activeUnderlineColor={colors.blue.regular}
-				activeOutlineColor={colors.blue.regular}
-				outlineColor={colors.blue.regular}
-				underlineColor={colors.blue.regular}
+			<SlidingWindow
+				name={name}
+				data={data}
+				setName={setName}
+				setData={setData}
+				duration={duration}
+				energy={energy}
+				power={power}
+				setDuration={setDuration}
+				setPower={setPower}
+				setEnergy={setEnergy}
 			/>
 
 			<CreateNewTaskInputs

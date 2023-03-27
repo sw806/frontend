@@ -5,12 +5,15 @@
  * @param numDigts number of digits after the decimal point
  * @returns duration as a Number
  */
-const calculateDuration = (power: number, energy: number, numDigts: number = 0) => {
+const calculateDuration = (
+	power: number,
+	energy: number,
+	numDigts: number = 0
+) => {
+	const duration = parseFloat(((energy * 60) / power).toFixed(numDigts));
 
-    const duration = parseFloat(((energy * 60) / power).toFixed(numDigts));
-    
-    return duration;
-}
+	return duration;
+};
 
 /**
  * calculate the power given duration and energy
@@ -19,30 +22,31 @@ const calculateDuration = (power: number, energy: number, numDigts: number = 0) 
  * @param numDigts number of digits after the decimal point
  * @returns power as a Number
  */
-const calculatePower = (duration: number, energy: number, numDigts: number = 0) => {
+const calculatePower = (
+	duration: number,
+	energy: number,
+	numDigts: number = 0
+) => {
+	const power = parseFloat(((energy * 60) / duration).toFixed(numDigts));
 
-    const power = parseFloat(((energy * 60) / duration).toFixed(numDigts));
-    
-    return power;
-}
+	return power;
+};
 
 /**
  * calculate the energy given duration and power
  * @param duration in minutes
- * @param power in Watts 
+ * @param power in Watts
  * @param numDigts number of digits after the decimal point
  * @returns energy as a Number
  */
-const calculateEnergy = (duration: number, power: number, numDigts: number = 0) => {
+const calculateEnergy = (
+	duration: number,
+	power: number,
+	numDigts: number = 0
+) => {
+	const energy = parseFloat(((duration / 60) * power).toFixed(numDigts));
 
-    const energy = parseFloat(((duration / 60) * power).toFixed(numDigts));
-    
-    return energy;
-}
+	return energy;
+};
 
-
-export {
-    calculateDuration,
-    calculateEnergy,
-    calculatePower
-} 
+export { calculateDuration, calculateEnergy, calculatePower };
