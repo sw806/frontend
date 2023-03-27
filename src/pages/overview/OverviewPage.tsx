@@ -50,6 +50,12 @@ const styles = StyleSheet.create({
     icon: {
         backgroundColor: 'rgba(255, 255, 255, 0)',
     },
+    container: {
+        width: '80%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: space.spacing.s,
+    },
 
 })
 
