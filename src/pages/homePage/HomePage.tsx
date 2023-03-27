@@ -63,16 +63,55 @@ const handleEditTask = (nav, data) => {
 
 const HomePage = (props) => {
 	const { navigation, route, nameProp } = props;
-
-	const [minutes, setMinutes] = React.useState('');
-	const [energy, setEnergy] = React.useState('');
 	const [data, setData] = React.useState<readonly Task[]>([]);
+	const [taskColors, setTaskColors] = React.useState<{
+		[id: string]: string;
+	}>({});
+	const timers = React.useRef<{ [id: string]: NodeJS.Timeout }>({});
 
-	const fetchData = async () => {
-		setData(await StorageService.getAllTasks());
-	}
+	const setTaskColor = (id: string, color: string) => {
+		setTaskColors((prevColors) => ({ ...prevColors, [id]: color }));
+	};
 
-	fetchData();
+	React.useEffect(() => {
+		const fetchData = async () => {
+			const tasks = await StorageService.getAllTasks();
+
+			const sortedTasks = tasks.sort((a, b) => a.startDate - b.startDate);
+
+			setData(sortedTasks);
+
+			tasks.forEach((task) => {
+				const currentTime = new Date().getTime();
+				console.log('Start date', task.startDate);
+				const taskEndTime =
+					new Date(task.startDate * 1000).getTime() +
+					task.duration * 60 * 1000;
+				const remainingTime = taskEndTime - currentTime;
+
+				console.log('Remaining time:', remainingTime);
+
+				console.log('Calc in hours', remainingTime / 1000 / 60 / 60);
+
+				if (remainingTime > 0) {
+					timers.current[task.id] = setTimeout(() => {
+						setTaskColor(task.id, colors.red.light);
+					}, remainingTime);
+				} else {
+					setTaskColor(task.id, colors.red.light);
+				}
+			});
+		};
+
+		fetchData();
+
+		return () => {
+			// Clear timers on component unmount
+			Object.values(timers.current).forEach((timer) => {
+				clearTimeout(timer);
+			});
+		};
+	}, []);
 
 	return (
 		<View style={styles.screenContainer}>
@@ -86,8 +125,19 @@ const HomePage = (props) => {
 						{data?.map((d) => (
 							<DataTable.Row
 								key={d ? d.id : 0}
-								onPress={() => handleEditTask(navigation, d)}
-								style={styles.timeRow}
+								onPress={() => {
+									if (taskColors[d.id] !== colors.red.light){
+										handleEditTask(navigation, d);
+									}		
+								} }
+								style={[
+									styles.timeRow,
+									{
+										backgroundColor:
+											taskColors[d.id] ||
+											colors.blue.regular,
+									},
+								]}
 							>
 								<DataTable.Cell
 									textStyle={styles.textFormat}
@@ -112,6 +162,10 @@ const HomePage = (props) => {
 								>
 									{'>'}
 								</DataTable.Cell>
+								<DataTable.Cell
+									textStyle={styles.textFormat}
+									style={styles.timeTime}
+								></DataTable.Cell>
 							</DataTable.Row>
 						))}
 					</ScrollView>
