@@ -28,6 +28,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [modalText, setModalText] = React.useState<string>('');
 	const [saveModal, setSaveModal] = React.useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
+	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
 
 	const showModal = () => setVisible(true);
 	const hideModal = () => {
@@ -158,6 +159,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				setPowerDisabled={setPowerDisabled}
 				setEnergyDisabled={setEnergyDisabled}
 				setStartDate={setStartDate}
+				previousTaskInUse={previousTaskInUse}
+				setPreviousTaskInUse={setPreviousTaskInUse}
 			/>
 
 			<FindStartDateButton
