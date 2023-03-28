@@ -26,11 +26,11 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [disabledPower, setPowerDisabled] = useState<boolean>(false);
 	const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
-	const [data, setData] = useState<readonly Task[]>([]);
+	const [allTasks, setAllTasks] = useState<readonly Task[]>([]);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
 
 	const fetchData = async () => {
-		setData(await StorageService.getAllTasks());
+		setAllTasks(await StorageService.getAllTasks());
 	};
 
 	useEffect(() => {
@@ -95,9 +95,9 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 			<SlidingWindow
 				name={name}
-				data={data}
+				allTasks={allTasks}
 				setName={setName}
-				setData={setData}
+				setData={setAllTasks}
 				setDuration={setDuration}
 				setPower={setPower}
 				setEnergy={setEnergy}

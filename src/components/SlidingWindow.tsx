@@ -13,7 +13,7 @@ import { Task } from '../datatypes/datatypes';
 
 type TIProps = {
 	name: string;
-	data;
+	allTasks;
 	setName;
 	setData;
 	setDuration;
@@ -25,7 +25,7 @@ type TIProps = {
 
 export const SlidingWindow = ({
 	name,
-	data,
+	allTasks,
 	setName,
 	setDuration,
 	setPower,
@@ -195,16 +195,16 @@ export const SlidingWindow = ({
 								onPress={handleCloseSlideWindow}
 								style={{
 									justifyContent: 'center',
-									paddingLeft: 20,
+									paddingLeft: 30,
 								}}
 							>
-								<Text style={{ color: 'white' }}>Back</Text>
+								<Text style={{ color: 'white' }}> Back </Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 
 					<Text style={styles.FlatListHeading}> Previous tasks </Text>
-					<FlatList data={data} renderItem={renderTaskItem} />
+					<FlatList data={allTasks} renderItem={renderTaskItem} />
 				</KeyboardAvoidingView>
 			</Modal>
 
@@ -235,8 +235,7 @@ export const SlidingWindow = ({
 								setShowModal(false);
 							}}
 						>
-							{' '}
-							Close{' '}
+							Close
 						</Button>
 					</View>
 				</View>
