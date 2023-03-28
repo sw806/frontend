@@ -24,6 +24,8 @@ type TIProps = {
 	setEnergyDisabled;
 	setPowerDisabled;
 	setStartDate;
+	previousTaskInUse;
+	setPreviousTaskInUse;
 };
 
 const CreateNewTaskInputs = ({
@@ -41,6 +43,8 @@ const CreateNewTaskInputs = ({
 	setEnergyDisabled,
 	screenName,
 	setStartDate,
+	previousTaskInUse,
+	setPreviousTaskInUse,
 }: TIProps) => {
 	const [activeInput, setActiveInput] = useState<boolean>(false);
 
@@ -54,23 +58,36 @@ const CreateNewTaskInputs = ({
 			setEnergyDisabled(true);
 		}
 
+		if (numFilledInputs == 3 && previousTaskInUse) {
+			setEnergyDisabled(true);
+			setStartDate(null);
+		}
+
 		if (numFilledInputs <= 3 && activeInput) {
 			if (durationDisabled) {
-				setDuration(undefined);
+				setDuration('');
 				setDurationDisabled(false);
 			}
 			if (powerDisabled) {
-				setPower(undefined);
+				setPower('');
 				setPowerDisabled(false);
 			}
 			if (energyDisabled) {
-				setEnergy(undefined);
+				setEnergy('');
 				setEnergyDisabled(false);
 			}
 
 			// clear start date when input is changed
 			setStartDate(null);
 		}
+		console.log('unlock')
+		console.log('previous input: ' + previousTaskInUse)
+		console.log('page: ' + screenName)
+		console.log('duration: ' + duration)
+		console.log('power: ' + power)
+		console.log('energy: ' + energy)
+		console.log("----------------------------------------")
+
 	}, [duration, energy, power]);
 
 	// handle calculation of third value
@@ -91,6 +108,10 @@ const CreateNewTaskInputs = ({
 				parseFloat(energy),
 				4
 			);
+			if (newPower > 3) {
+				alert('The calculated power ' + newPower + ' is above 3 kW!');
+				return;
+			}
 			setPower(newPower.toString());
 			setPowerDisabled(true);
 		}
@@ -104,10 +125,16 @@ const CreateNewTaskInputs = ({
 			setEnergy(newEnergy.toString());
 			setEnergyDisabled(true);
 		}
+		console.log('calculate')
+		console.log('duration: ' + duration)
+		console.log('power: ' + power)
+		console.log('energy: ' + energy)
+		console.log("----------------------------------------")
 	}, [activeInput]);
 
 	const handleInput = (inputName: string, inputValue: string) => {
 		if (isValidNumber(inputValue)) {
+			setPreviousTaskInUse(false);
 			switch (inputName) {
 				case 'Duration':
 					setDuration(inputValue);

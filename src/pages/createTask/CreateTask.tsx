@@ -26,7 +26,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [disabledPower, setPowerDisabled] = useState<boolean>(false);
 	const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
-	const [data, setData] = React.useState<readonly Task[]>([]);
+	const [data, setData] = useState<readonly Task[]>([]);
+	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
 
 	const fetchData = async () => {
 		setData(await StorageService.getAllTasks());
@@ -97,12 +98,11 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				data={data}
 				setName={setName}
 				setData={setData}
-				duration={duration}
-				energy={energy}
-				power={power}
 				setDuration={setDuration}
 				setPower={setPower}
 				setEnergy={setEnergy}
+				previousTaskInUse={previousTaskInUse}
+				setPreviousTaskInUse={setPreviousTaskInUse}
 			/>
 
 			<CreateNewTaskInputs
@@ -120,6 +120,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				setPowerDisabled={setPowerDisabled}
 				setEnergyDisabled={setEnergyDisabled}
 				setStartDate={setStartDate}
+				previousTaskInUse={previousTaskInUse}
+				setPreviousTaskInUse={setPreviousTaskInUse}
 			/>
 
 			<FindStartDateButton

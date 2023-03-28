@@ -13,28 +13,25 @@ import { Task } from '../datatypes/datatypes';
 
 type TIProps = {
 	name: string;
-	duration: string;
-	energy: string;
-	power: string;
 	data;
 	setName;
 	setData;
 	setDuration;
 	setPower;
 	setEnergy;
+	previousTaskInUse;
+	setPreviousTaskInUse;
 };
 
 export const SlidingWindow = ({
 	name,
-	duration,
-	energy,
-	power,
 	data,
 	setName,
-	setData,
 	setDuration,
 	setPower,
 	setEnergy,
+	previousTaskInUse,
+	setPreviousTaskInUse,
 }: TIProps) => {
 	const [showSlidingWindow, setShowSlidingWindow] = useState(false);
 	const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -57,6 +54,7 @@ export const SlidingWindow = ({
 			style={styles.flatListItem}
 			onPress={() => {
 				selectTaskItem(task);
+				setPreviousTaskInUse(true);
 			}}
 		>
 			<View style={styles.flatListItemContent}>
