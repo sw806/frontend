@@ -22,6 +22,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [power, setPower] = useState<string>();
 	const [energy, setEnergy] = useState<string>();
 	const [startDate, setStartDate] = useState<number>();
+	const [loading, setLoading] = useState<boolean>(false);
 	const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
 	const [disabledPower, setPowerDisabled] = useState<boolean>(false);
 	const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
@@ -131,10 +132,11 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				energy={energy}
 				startDate={startDate}
 				setStartDate={setStartDate}
+				setLoading={setLoading}
 				setError={setErrorModal}
 			/>
 
-			<ResultArea time={startDate} />
+			<ResultArea time={startDate} loading={loading} />
 
 			<View style={styles.container}>
 				<Button
