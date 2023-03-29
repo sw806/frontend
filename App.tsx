@@ -11,6 +11,7 @@ import {
 import HomePage from './src/pages/homePage/HomePage';
 import CreateTask from './src/pages/createTask/CreateTask';
 import EditTask from './src/pages/editTask/EditTask';
+import SettingsPage from './src/pages/settingsPage/SettingsPage'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import OverviewPage from './src/pages/overview/OverviewPage';
 
@@ -60,7 +61,7 @@ export default function App() {
 				/>
 				<Tab.Screen
 					name="Settings"
-					component={CreateTask}
+					component={SettingsPage}
 					options={{
 						unmountOnBlur: true,
 						tabBarLabel: 'Settings',

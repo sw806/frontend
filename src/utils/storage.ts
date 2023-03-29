@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Task } from '../datatypes/datatypes';
+import { Task, Options } from '../datatypes/datatypes';
+
+const settings_id: string = "@Settings_key"
 
 export module StorageService {
 	/**
@@ -10,9 +12,21 @@ export module StorageService {
 		try {
 			// get saved keys
 			const keys = await AsyncStorage.getAllKeys();
-			const data = await AsyncStorage.multiGet(keys);
+			const data_keys = keys.filter((key) => key != settings_id)
+			const data = await AsyncStorage.multiGet(data_keys);
 
 			const d: readonly Task[] = data.map((d) => JSON.parse(d[1]));
+			return d;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	export async function getSettings() {
+		try {
+			const data = await AsyncStorage.getItem(settings_id);
+
+			const d: Options = JSON.parse(data);
 			return d;
 		} catch (error) {
 			console.log(error);
@@ -32,6 +46,14 @@ export module StorageService {
 				saveTask(task);
 			}
 			await AsyncStorage.setItem(task.id, JSON.stringify(task));
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	export async function saveSettings(task: Options) {
+		try {
+			await AsyncStorage.setItem(settings_id, JSON.stringify(task));
 		} catch (error) {
 			console.log(error);
 		}

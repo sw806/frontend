@@ -6,3 +6,7 @@ export type Task = {
 	power?: number;
 	startDate?: number;
 };
+
+export type Options = {
+	max_consumption: number;
+}
