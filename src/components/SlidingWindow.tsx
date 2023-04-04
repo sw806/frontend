@@ -13,28 +13,25 @@ import { Task } from '../datatypes/datatypes';
 
 type TIProps = {
 	name: string;
-	duration: string;
-	energy: string;
-	power: string;
-	data;
+	allTasks;
 	setName;
 	setData;
 	setDuration;
 	setPower;
 	setEnergy;
+	previousTaskInUse;
+	setPreviousTaskInUse;
 };
 
 export const SlidingWindow = ({
 	name,
-	duration,
-	energy,
-	power,
-	data,
+	allTasks,
 	setName,
-	setData,
 	setDuration,
 	setPower,
 	setEnergy,
+	previousTaskInUse,
+	setPreviousTaskInUse,
 }: TIProps) => {
 	const [showSlidingWindow, setShowSlidingWindow] = useState(false);
 	const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -57,6 +54,7 @@ export const SlidingWindow = ({
 			style={styles.flatListItem}
 			onPress={() => {
 				selectTaskItem(task);
+				setPreviousTaskInUse(true);
 			}}
 		>
 			<View style={styles.flatListItemContent}>
@@ -197,16 +195,16 @@ export const SlidingWindow = ({
 								onPress={handleCloseSlideWindow}
 								style={{
 									justifyContent: 'center',
-									paddingLeft: 20,
+									paddingLeft: 30,
 								}}
 							>
-								<Text style={{ color: 'white' }}>Back</Text>
+								<Text style={{ color: 'white' }}> Back </Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 
 					<Text style={styles.FlatListHeading}> Previous tasks </Text>
-					<FlatList data={data} renderItem={renderTaskItem} />
+					<FlatList data={allTasks} renderItem={renderTaskItem} />
 				</KeyboardAvoidingView>
 			</Modal>
 
@@ -237,8 +235,7 @@ export const SlidingWindow = ({
 								setShowModal(false);
 							}}
 						>
-							{' '}
-							Close{' '}
+							Close
 						</Button>
 					</View>
 				</View>

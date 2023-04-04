@@ -13,6 +13,7 @@ import FindStartDateButton from '../../components/FindStartTimeButton';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
 import { SlidingWindow } from '../../components/SlidingWindow';
+import TimePicker from '../../components/TimePicker';
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -22,14 +23,13 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [power, setPower] = useState<string>();
 	const [energy, setEnergy] = useState<string>();
 	const [startDate, setStartDate] = useState<number>();
-	const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
-	const [disabledPower, setPowerDisabled] = useState<boolean>(false);
-	const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
-	const [data, setData] = React.useState<readonly Task[]>([]);
+	const [allTasks, setAllTasks] = useState<readonly Task[]>([]);
+	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
 
 	const fetchData = async () => {
-		setData(await StorageService.getAllTasks());
+		setAllTasks(await StorageService.getAllTasks());
 	};
 
 	useEffect(() => {
@@ -94,32 +94,27 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 			<SlidingWindow
 				name={name}
-				data={data}
+				allTasks={allTasks}
 				setName={setName}
-				setData={setData}
-				duration={duration}
-				energy={energy}
-				power={power}
+				setData={setAllTasks}
 				setDuration={setDuration}
 				setPower={setPower}
 				setEnergy={setEnergy}
+				previousTaskInUse={previousTaskInUse}
+				setPreviousTaskInUse={setPreviousTaskInUse}
 			/>
 
 			<CreateNewTaskInputs
 				duration={duration}
 				power={power}
 				energy={energy}
-				durationDisabled={disabledDuration}
-				powerDisabled={disabledPower}
-				energyDisabled={disabledEnergy}
 				screenName={route.name}
 				setDuration={setDuration}
 				setPower={setPower}
 				setEnergy={setEnergy}
-				setDurationDisabled={setDurationDisabled}
-				setPowerDisabled={setPowerDisabled}
-				setEnergyDisabled={setEnergyDisabled}
 				setStartDate={setStartDate}
+				previousTaskInUse={previousTaskInUse}
+				setPreviousTaskInUse={setPreviousTaskInUse}
 			/>
 
 			<FindStartDateButton
@@ -129,10 +124,13 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				energy={energy}
 				startDate={startDate}
 				setStartDate={setStartDate}
+				setLoading={setLoading}
 				setError={setErrorModal}
 			/>
 
-			<ResultArea time={startDate} />
+			<ResultArea time={startDate} loading={loading} />
+
+			<TimePicker/>
 
 			<View style={styles.container}>
 				<Button
@@ -155,6 +153,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				>
 					Save
 				</Button>
+				
 			</View>
 
 			<Modal isVisible={isModalVisible}>

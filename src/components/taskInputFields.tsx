@@ -13,36 +13,31 @@ type TIProps = {
 	duration: string;
 	power: string;
 	energy: string;
-	durationDisabled: boolean;
-	energyDisabled: boolean;
-	powerDisabled: boolean;
 	screenName: string;
 	setDuration;
 	setEnergy;
 	setPower;
-	setDurationDisabled;
-	setEnergyDisabled;
-	setPowerDisabled;
 	setStartDate;
+	previousTaskInUse;
+	setPreviousTaskInUse;
 };
 
 const CreateNewTaskInputs = ({
 	duration,
 	power,
 	energy,
-	durationDisabled,
-	energyDisabled,
-	powerDisabled,
 	setDuration,
 	setPower,
 	setEnergy,
-	setDurationDisabled,
-	setPowerDisabled,
-	setEnergyDisabled,
 	screenName,
 	setStartDate,
+	previousTaskInUse,
+	setPreviousTaskInUse,
 }: TIProps) => {
 	const [activeInput, setActiveInput] = useState<boolean>(false);
+	const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
+	const [disabledPower, setPowerDisabled] = useState<boolean>(false);
+	const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
 
 	// unlock text inputs
 	useEffect(() => {
@@ -54,17 +49,22 @@ const CreateNewTaskInputs = ({
 			setEnergyDisabled(true);
 		}
 
+		if (numFilledInputs == 3 && previousTaskInUse) {
+			setEnergyDisabled(true);
+			setStartDate(null);
+		}
+
 		if (numFilledInputs <= 3 && activeInput) {
-			if (durationDisabled) {
-				setDuration(undefined);
+			if (disabledDuration) {
+				setDuration('');
 				setDurationDisabled(false);
 			}
-			if (powerDisabled) {
-				setPower(undefined);
+			if (disabledPower) {
+				setPower('');
 				setPowerDisabled(false);
 			}
-			if (energyDisabled) {
-				setEnergy(undefined);
+			if (disabledEnergy) {
+				setEnergy('');
 				setEnergyDisabled(false);
 			}
 
@@ -91,6 +91,10 @@ const CreateNewTaskInputs = ({
 				parseFloat(energy),
 				4
 			);
+			if (newPower > 3) {
+				alert('The calculated power ' + newPower + ' is above 3 kW!');
+				return;
+			}
 			setPower(newPower.toString());
 			setPowerDisabled(true);
 		}
@@ -108,6 +112,7 @@ const CreateNewTaskInputs = ({
 
 	const handleInput = (inputName: string, inputValue: string) => {
 		if (isValidNumber(inputValue) || inputValue === "") {
+			setPreviousTaskInUse(false);
 			switch (inputName) {
 				case 'Duration':
 					setDuration(inputValue);
@@ -138,7 +143,7 @@ const CreateNewTaskInputs = ({
 				placeholder="Duration (minutes)"
 				onChangeText={(text) => handleInput('Duration', text)}
 				value={duration}
-				disabled={durationDisabled}
+				disabled={disabledDuration}
 				keyboardType="numeric"
 				activeUnderlineColor="#009FFF"
 				activeOutlineColor="#009FFF"
@@ -155,7 +160,7 @@ const CreateNewTaskInputs = ({
 				placeholder="Power (kW)"
 				onChangeText={(text) => handleInput('Power', text)}
 				value={power}
-				disabled={powerDisabled}
+				disabled={disabledPower}
 				keyboardType="numeric"
 				activeUnderlineColor="#009FFF"
 				activeOutlineColor="#009FFF"
@@ -172,7 +177,7 @@ const CreateNewTaskInputs = ({
 				placeholder="Energy (kWh)"
 				onChangeText={(text) => handleInput('Energy', text)}
 				value={energy}
-				disabled={energyDisabled}
+				disabled={disabledEnergy}
 				keyboardType="numeric"
 				activeUnderlineColor="#009FFF"
 				activeOutlineColor="#009FFF"
