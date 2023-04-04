@@ -13,16 +13,10 @@ type TIProps = {
 	duration: string;
 	power: string;
 	energy: string;
-	durationDisabled: boolean;
-	energyDisabled: boolean;
-	powerDisabled: boolean;
 	screenName: string;
 	setDuration;
 	setEnergy;
 	setPower;
-	setDurationDisabled;
-	setEnergyDisabled;
-	setPowerDisabled;
 	setStartDate;
 	previousTaskInUse;
 	setPreviousTaskInUse;
@@ -32,21 +26,18 @@ const CreateNewTaskInputs = ({
 	duration,
 	power,
 	energy,
-	durationDisabled,
-	energyDisabled,
-	powerDisabled,
 	setDuration,
 	setPower,
 	setEnergy,
-	setDurationDisabled,
-	setPowerDisabled,
-	setEnergyDisabled,
 	screenName,
 	setStartDate,
 	previousTaskInUse,
 	setPreviousTaskInUse,
 }: TIProps) => {
 	const [activeInput, setActiveInput] = useState<boolean>(false);
+	const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
+	const [disabledPower, setPowerDisabled] = useState<boolean>(false);
+	const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
 
 	// unlock text inputs
 	useEffect(() => {
@@ -64,15 +55,15 @@ const CreateNewTaskInputs = ({
 		}
 
 		if (numFilledInputs <= 3 && activeInput) {
-			if (durationDisabled) {
+			if (disabledDuration) {
 				setDuration('');
 				setDurationDisabled(false);
 			}
-			if (powerDisabled) {
+			if (disabledPower) {
 				setPower('');
 				setPowerDisabled(false);
 			}
-			if (energyDisabled) {
+			if (disabledEnergy) {
 				setEnergy('');
 				setEnergyDisabled(false);
 			}
@@ -80,14 +71,6 @@ const CreateNewTaskInputs = ({
 			// clear start date when input is changed
 			setStartDate(null);
 		}
-		console.log('unlock')
-		console.log('previous input: ' + previousTaskInUse)
-		console.log('page: ' + screenName)
-		console.log('duration: ' + duration)
-		console.log('power: ' + power)
-		console.log('energy: ' + energy)
-		console.log("----------------------------------------")
-
 	}, [duration, energy, power]);
 
 	// handle calculation of third value
@@ -125,11 +108,6 @@ const CreateNewTaskInputs = ({
 			setEnergy(newEnergy.toString());
 			setEnergyDisabled(true);
 		}
-		console.log('calculate')
-		console.log('duration: ' + duration)
-		console.log('power: ' + power)
-		console.log('energy: ' + energy)
-		console.log("----------------------------------------")
 	}, [activeInput]);
 
 	const handleInput = (inputName: string, inputValue: string) => {
@@ -165,7 +143,7 @@ const CreateNewTaskInputs = ({
 				placeholder="Duration (minutes)"
 				onChangeText={(text) => handleInput('Duration', text)}
 				value={duration}
-				disabled={durationDisabled}
+				disabled={disabledDuration}
 				keyboardType="numeric"
 				activeUnderlineColor="#009FFF"
 				activeOutlineColor="#009FFF"
@@ -182,7 +160,7 @@ const CreateNewTaskInputs = ({
 				placeholder="Power (kW)"
 				onChangeText={(text) => handleInput('Power', text)}
 				value={power}
-				disabled={powerDisabled}
+				disabled={disabledPower}
 				keyboardType="numeric"
 				activeUnderlineColor="#009FFF"
 				activeOutlineColor="#009FFF"
@@ -199,7 +177,7 @@ const CreateNewTaskInputs = ({
 				placeholder="Energy (kWh)"
 				onChangeText={(text) => handleInput('Energy', text)}
 				value={energy}
-				disabled={energyDisabled}
+				disabled={disabledEnergy}
 				keyboardType="numeric"
 				activeUnderlineColor="#009FFF"
 				activeOutlineColor="#009FFF"

@@ -13,6 +13,7 @@ import FindStartDateButton from '../../components/FindStartTimeButton';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
 import { SlidingWindow } from '../../components/SlidingWindow';
+import TimePicker from '../../components/TimePicker';
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -23,9 +24,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [energy, setEnergy] = useState<string>();
 	const [startDate, setStartDate] = useState<number>();
 	const [loading, setLoading] = useState<boolean>(false);
-	const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
-	const [disabledPower, setPowerDisabled] = useState<boolean>(false);
-	const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [allTasks, setAllTasks] = useState<readonly Task[]>([]);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
@@ -110,16 +108,10 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				duration={duration}
 				power={power}
 				energy={energy}
-				durationDisabled={disabledDuration}
-				powerDisabled={disabledPower}
-				energyDisabled={disabledEnergy}
 				screenName={route.name}
 				setDuration={setDuration}
 				setPower={setPower}
 				setEnergy={setEnergy}
-				setDurationDisabled={setDurationDisabled}
-				setPowerDisabled={setPowerDisabled}
-				setEnergyDisabled={setEnergyDisabled}
 				setStartDate={setStartDate}
 				previousTaskInUse={previousTaskInUse}
 				setPreviousTaskInUse={setPreviousTaskInUse}
@@ -137,6 +129,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			/>
 
 			<ResultArea time={startDate} loading={loading} />
+
+			<TimePicker/>
 
 			<View style={styles.container}>
 				<Button
@@ -159,6 +153,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				>
 					Save
 				</Button>
+				
 			</View>
 
 			<Modal isVisible={isModalVisible}>
