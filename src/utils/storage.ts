@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Task, Options } from '../datatypes/datatypes';
 
-const settings_id: string = "@Settings_key"
+const settings_id: string = '@Settings_key';
 
 export module StorageService {
 	/**
@@ -12,7 +12,7 @@ export module StorageService {
 		try {
 			// get saved keys
 			const keys = await AsyncStorage.getAllKeys();
-			const data_keys = keys.filter((key) => key != settings_id)
+			const data_keys = keys.filter((key) => key != settings_id);
 			const data = await AsyncStorage.multiGet(data_keys);
 
 			const d: readonly Task[] = data.map((d) => JSON.parse(d[1]));

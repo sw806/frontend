@@ -126,10 +126,10 @@ const HomePage = (props) => {
 							<DataTable.Row
 								key={d ? d.id : 0}
 								onPress={() => {
-									if (taskColors[d.id] !== colors.red.light){
+									if (taskColors[d.id] !== colors.red.light) {
 										handleEditTask(navigation, d);
-									}		
-								} }
+									}
+								}}
 								style={[
 									styles.timeRow,
 									{

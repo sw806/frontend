@@ -15,7 +15,7 @@ import { StorageService } from '../../utils/storage';
 
 const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
-	const { id, name, duration, energy, power, startDate } = route.params.data;
+	const { id, name, duration, energy, power, startDate, timeConstraints } = route.params.data;
 
 	const [newDuration, setDuration] = useState<string>(duration.toString());
 	const [newEnergy, setEnergy] = useState<string>(energy.toString());
@@ -50,7 +50,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	};
 
 	const removeTask = async () => {
-		await StorageService.deleteTask(id)
+		await StorageService.deleteTask(id);
 	};
 	const handleSave = () => {
 		setModalText('Are you sure you want to save changes?');
@@ -120,7 +120,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		btn: {
 			...components.buttons.unstyled.contained,
 			width: 100,
-			marginTop: space.spacing.l
+			marginTop: space.spacing.l,
 		},
 		dualContainer: {
 			flexDirection: 'row',
