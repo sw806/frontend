@@ -83,15 +83,10 @@ const HomePage = (props) => {
 
 			tasks.forEach((task) => {
 				const currentTime = new Date().getTime();
-				console.log('Start date', task.startDate);
 				const taskEndTime =
 					new Date(task.startDate * 1000).getTime() +
 					task.duration * 60 * 1000;
 				const remainingTime = taskEndTime - currentTime;
-
-				console.log('Remaining time:', remainingTime);
-
-				console.log('Calc in hours', remainingTime / 1000 / 60 / 60);
 
 				if (remainingTime > 0) {
 					timers.current[task.id] = setTimeout(() => {

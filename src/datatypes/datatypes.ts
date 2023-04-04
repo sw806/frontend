@@ -18,7 +18,7 @@ export type TimeConstraints = {
 
 export type TimeInterval = {
 	id: string;
-	startTime?: Number;
-	endTime?: Number;
+	startTime?: number;
+	endTime?: number;
 };
 

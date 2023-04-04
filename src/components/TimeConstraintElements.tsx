@@ -13,11 +13,6 @@ import DateTimePicker, {
 import { ScrollView } from 'react-native-gesture-handler';
 import { TimeInterval } from '../datatypes/datatypes';
 
-type AddConstraintProps = {
-	timeInterval: TimeInterval;
-	onDelete: (id: string) => void;
-};
-
 const styles = StyleSheet.create({
 	itemContainer: {
 		padding: 10,
@@ -44,79 +39,98 @@ const styles = StyleSheet.create({
 	},
 });
 
-const AddConstraint = ({ timeInterval, onDelete }: AddConstraintProps) => {
-	const [selectedStartTime, setSelectedStartTime] = useState(new Date());
-	const [selectedEndTime, setSelectedEndTime] = useState(new Date());
-	const [startSelected, setStartSelected] = useState(false);
-	const [endSelected, setEndSelected] = useState(false);
-
-	const showTimepicker = (name: string) => {
-		showMode(name, 'time');
-	};
-
+  type AddConstraintProps = {
+	timeInterval: TimeInterval;
+	onDelete: (id: string) => void;
+	onTimeIntervalChange: (id: string, updatedTimeInterval: TimeInterval) => void;
+  };
+  
+  const AddConstraint = ({ timeInterval, onDelete, onTimeIntervalChange }: AddConstraintProps) => {
+	const [showPicker, setShowPicker] = useState(false);
+	const [pickerType, setPickerType] = useState<'startTime' | 'endTime'>('startTime');
+	const [timeIntervalState, setTimeIntervalState] = useState(timeInterval);	
+  
 	const handleDateTimePickerChange = (
-		name: string,
-		setSelectedDate,
-		selectedDate
+	  name: 'startTime' | 'endTime',
+	  selectedDate: Date | undefined
 	) => {
-		const currentDate = selectedDate || new Date();
-		const unixTime = Math.floor(currentDate.getTime() / 1000);
-		setSelectedDate(currentDate);
-		if (name === 'startTime') {
-			timeInterval.startTime = unixTime;
-			setStartSelected(true);
-		} else {
-			timeInterval.endTime = unixTime;
-			setEndSelected(true);
-		}
+	  const unixTime = selectedDate ? Math.floor(selectedDate.getTime() / 1000) : null;
+	  const updatedTimeInterval = { ...timeIntervalState };
+	  if (name === 'startTime') {
+		updatedTimeInterval.startTime = unixTime;
+	  } else {
+		updatedTimeInterval.endTime = unixTime;
+	  }
+	  setTimeIntervalState(updatedTimeInterval);
+	  onTimeIntervalChange(timeInterval.id, updatedTimeInterval);
 	};
-
-	const showMode = (name: string, currentMode) => {
-		const setSelectedDate =
-			name === 'startTime' ? setSelectedStartTime : setSelectedEndTime;
-
-		DateTimePickerAndroid.open({
-			value: name === 'startTime' ? selectedStartTime : selectedEndTime,
-			onChange: (event, selectedDate) => {
-				handleDateTimePickerChange(name, setSelectedDate, selectedDate);
-			},
-			mode: currentMode,
-			is24Hour: true,
-		});
-	};
-
+  
 	const timeOptions = {
-		hour12: false,
-		hour: '2-digit',
-		minute: '2-digit',
-	  };
-
+	  hour12: false,
+	  hour: '2-digit',
+	  minute: '2-digit',
+	};
+  
 	return (
-		<View style={styles.itemContainer}>
-			<TouchableOpacity
-				style={styles.nameInputField}
-				onPress={() => showTimepicker('startTime')}
-			>
-				<Text style={styles.nameInputFieldText}>
-					From: {startSelected ? selectedStartTime.toLocaleTimeString(undefined, timeOptions) : 'Not set'}
-					
-				</Text>
-			</TouchableOpacity>
-
-			<TouchableOpacity
-				style={styles.nameInputField}
-				onPress={() => showTimepicker('endTime')}
-			>
-				<Text style={styles.nameInputFieldText}>
-					To: {endSelected ? selectedEndTime.toLocaleTimeString(undefined, timeOptions) : 'Not set'}
-				</Text>
-			</TouchableOpacity>
-
-			<TouchableOpacity onPress={() => onDelete(timeInterval.id)}>
-				<Text style={styles.itemDelete}>Delete</Text>
-			</TouchableOpacity>
-		</View>
+	  <View style={styles.itemContainer}>
+		<TouchableOpacity
+		  style={styles.nameInputField}
+		  onPress={() => {
+			setPickerType('startTime');
+			setShowPicker(true);
+		  }}
+		>
+		  <Text style={styles.nameInputFieldText}>
+			From:{' '}
+			{timeIntervalState.startTime
+			  ? new Date(timeIntervalState.startTime * 1000).toLocaleTimeString(undefined, timeOptions)
+			  : 'Not set'}
+		  </Text>
+		</TouchableOpacity>
+  
+		<TouchableOpacity
+		  style={styles.nameInputField}
+		  onPress={() => {
+			setPickerType('endTime');
+			setShowPicker(true);
+		  }}
+		>
+		  <Text style={styles.nameInputFieldText}>
+			To:{' '}
+			{timeIntervalState.endTime
+			  ? new Date(timeIntervalState.endTime * 1000).toLocaleTimeString(undefined, timeOptions)
+			  : 'Not set'}
+		  </Text>
+		</TouchableOpacity>
+  
+		{showPicker && (
+  <DateTimePicker
+    value={
+      pickerType === 'startTime'
+        ? timeIntervalState.startTime
+          ? new Date(timeIntervalState.startTime * 1000)
+          : new Date()
+        : timeIntervalState.endTime
+        ? new Date(timeIntervalState.endTime * 1000)
+        : new Date()
+    }
+    mode="time"
+    is24Hour={true}
+    display="default"
+    onChange={(event, selectedDate) => {
+      setShowPicker(false);
+      if (selectedDate) {
+        handleDateTimePickerChange(pickerType, selectedDate);
+      }
+    }}
+  />
+)}
+  
+		<TouchableOpacity onPress={() => onDelete(timeInterval.id)}>
+		  <Text style={styles.itemDelete}>Delete</Text>
+		</TouchableOpacity>
+	  </View>
 	);
-};
-
+  };
+  
 export default AddConstraint;

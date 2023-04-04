@@ -132,6 +132,24 @@ const TimePicker: React.FC<TimePickerProps> = ({
 		setEndConstraints([...endConstraints, newEndConstraint]);
 	};
 
+	const handleTimeIntervalChange = (
+		id: string,
+		updatedTimeInterval: TimeInterval
+	  ) => {
+		const updateConstraints = (constraints: TimeInterval[]) =>
+		  constraints.map((constraint) =>
+			constraint.id === id ? updatedTimeInterval : constraint
+		  );
+	  
+		setStartConstraints((prevStartConstraints) =>
+		  updateConstraints(prevStartConstraints)
+		);
+	  
+		setEndConstraints((prevEndConstraints) =>
+		  updateConstraints(prevEndConstraints)
+		);
+	  };
+
 	return (
 		<View>
 			<View style={styles.ModuleView}>
@@ -178,6 +196,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
 								<AddConstraint
 									timeInterval={constraint}
 									onDelete={handleDeleteStartConstraint}
+									onTimeIntervalChange={handleTimeIntervalChange}
 								/>
 							</View>
 						))}
@@ -206,6 +225,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
 								<AddConstraint
 									timeInterval={constraint}
 									onDelete={handleDeleteEndConstraint}
+									onTimeIntervalChange={handleTimeIntervalChange}
 								/>
 							</View>
 						))}
