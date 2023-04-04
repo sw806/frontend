@@ -10,6 +10,9 @@ const calculateDuration = (
 	energy: number,
 	numDigts: number = 0
 ) => {
+	if (power < 0 || energy < 0) {
+		throw new Error("Power and energy must be greater than 0.");
+	}
 	const duration = parseFloat(((energy * 60) / power).toFixed(numDigts));
 
 	return duration;
@@ -27,6 +30,9 @@ const calculatePower = (
 	energy: number,
 	numDigts: number = 0
 ) => {
+	if (energy < 0 || duration < 0 && (!isNaN(energy) && !isNaN(duration))) {
+		throw new Error("Energy and duration must be greater than 0.");
+	}
 	const power = parseFloat(((energy * 60) / duration).toFixed(numDigts));
 
 	return power;
@@ -44,6 +50,9 @@ const calculateEnergy = (
 	power: number,
 	numDigts: number = 0
 ) => {
+	if (power < 0 || duration < 0) {
+		throw new Error("Power and duration must be greater than 0.");
+	}
 	const energy = parseFloat(((duration / 60) * power).toFixed(numDigts));
 
 	return energy;

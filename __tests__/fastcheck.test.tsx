@@ -30,7 +30,7 @@ describe('Fuzzed partitioning testing', () => {
 				(power, energy, numDigts) => {
 					expect(() =>
 						calculateDuration(power, energy, numDigts)
-					).toThrow('Power must be greater than or equal to 0');
+					).toThrow('Power and energy must be greater than 0');
 				}
 			)
 		);
@@ -60,7 +60,7 @@ describe('Fuzzed partitioning testing', () => {
 				(energy, duration, numDigts) => {
 					expect(() =>
 						calculatePower(duration, energy, numDigts)
-					).toThrow('Energy must be greater than or equal to 0');
+					).toThrow('Energy and duration must be greater than 0');
 				}
 			)
 		);
@@ -89,7 +89,7 @@ describe('Fuzzed partitioning testing', () => {
 				(power, duration, numDigts) => {
 					expect(() =>
 						calculateEnergy(duration, power, numDigts)
-					).toThrow('Power must be greater than or equal to 0');
+					).toThrow('Power and duration must be greater than 0');
 				}
 			)
 		);

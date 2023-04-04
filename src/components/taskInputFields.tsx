@@ -107,7 +107,7 @@ const CreateNewTaskInputs = ({
 	}, [activeInput]);
 
 	const handleInput = (inputName: string, inputValue: string) => {
-		if (isValidNumber(inputValue)) {
+		if (isValidNumber(inputValue) || inputValue === "") {
 			switch (inputName) {
 				case 'Duration':
 					setDuration(inputValue);

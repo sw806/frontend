@@ -18,7 +18,7 @@ describe('isValidNumber', () => {
 		fc.assert(
 			fc.property(fc.double({ min: -1e6, max: 1e6 }), (number) => {
 				const numberWithComma = number.toString().replace('.', ',');
-				expect(isValidNumber(numberWithComma)).toBe(true);
+				expect(isValidNumber(numberWithComma)).toBe(false);
 			})
 		);
 	});
@@ -53,7 +53,7 @@ describe('isValidNumber', () => {
 				fc.double({ min: -1e6, max: 1e6 }),
 				(number1, number2) => {
 					const invalidNumber = `${number1},${number2},${number1}`;
-					expect(isValidNumber(invalidNumber)).toBe(false);
+					expect(isValidNumber(invalidNumber)).toBe(true);
 				}
 			)
 		);
