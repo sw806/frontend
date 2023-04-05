@@ -8,7 +8,7 @@ import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 
 import CreateNewTaskInputs from '../../components/taskInputFields';
 import ResultArea from '../../components/ResultArea';
-import { Task, TimeInterval, TimeConstraints } from '../../datatypes/datatypes';
+import { Task, TimeConstraint, TimeConstraints } from '../../datatypes/datatypes';
 import FindStartDateButton from '../../components/FindStartTimeButton';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
@@ -27,10 +27,10 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [allTasks, setAllTasks] = useState<readonly Task[]>([]);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
-	const [startConstraints, setStartConstraints] = useState<TimeInterval[]>(
+	const [startConstraints, setStartConstraints] = useState<TimeConstraint[]>(
 		[]
 	);
-	const [endConstraints, setEndConstraints] = useState<TimeInterval[]>([]);
+	const [endConstraints, setEndConstraints] = useState<TimeConstraint[]>([]);
 
 	const fetchData = async () => {
 		setAllTasks(await StorageService.getAllTasks());
@@ -127,8 +127,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 			<TimeConstraintModule
 				startConstraints={startConstraints}
-				setStartConstraints={setStartConstraints}
 				endConstraints={endConstraints}
+				setStartConstraints={setStartConstraints}
 				setEndConstraints={setEndConstraints}
 			/>
 

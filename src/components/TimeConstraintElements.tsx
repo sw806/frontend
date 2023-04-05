@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -74,7 +74,7 @@ const AddConstraint = ({ TimeConstraint, onDelete, onUpdate }: AddConstraintProp
 				}}
 			>
 				<Text style={styles.nameInputFieldText}>
-					From:
+					From:{' '}
 					{timeConstraintState.startTime ? new Date(
 								timeConstraintState.startTime * 1000
 						  ).toLocaleTimeString(undefined, timeOptions)

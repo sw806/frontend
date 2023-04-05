@@ -1,6 +1,5 @@
-import { Avatar, Button, Card, Text } from 'react-native-paper';
+import { Avatar, Text } from 'react-native-paper';
 import {
-	ActivityIndicator,
 	Modal,
 	StyleSheet,
 	TouchableOpacity,
@@ -76,12 +75,21 @@ const styles = StyleSheet.create({
 	},
 });
 
-const TimeConstraintModule: React.FC = ({}) => {
+
+type TimeConstraintModuleProps = {
+	startConstraints: TimeConstraint[];
+	setStartConstraints: React.Dispatch<React.SetStateAction<TimeConstraint[]>>;
+	endConstraints: TimeConstraint[];
+	setEndConstraints: React.Dispatch<React.SetStateAction<TimeConstraint[]>>;
+  };
+
+const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
+	startConstraints,
+	setStartConstraints,
+	endConstraints,
+	setEndConstraints,
+	}) => {
 	const [showSlidingWindow, setShowSlidingWindow] = useState(false);
-	const [startConstraints, setStartConstraints] = useState<TimeConstraint[]>(
-		[]
-	);
-	const [endConstraints, setEndConstraints] = useState<TimeConstraint[]>([]);
 
 	useEffect(() => {
 		//Runs on the first render
