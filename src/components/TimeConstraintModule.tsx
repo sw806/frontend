@@ -6,44 +6,41 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import React, { useState } from 'react';
-import DateTimePicker, {
-	DateTimePickerAndroid,
-} from '@react-native-community/datetimepicker';
+import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import AddConstraint from './TimeConstraintElements';
 import uuid from 'react-native-uuid';
-import { TimeInterval } from '../datatypes/datatypes';
+import { TimeConstraint } from '../datatypes/datatypes';
 
 const styles = StyleSheet.create({
-	ModuleView:{
+	ModuleView: {
 		paddingTop: 10,
 	},
-	TimeConstraintButton:{
+	TimeConstraintButton: {
 		color: 'white',
 		backgroundColor: '#009FFF',
 		height: 40,
 		borderRadius: 10,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	TimeConstraintText: {
 		color: 'white',
 		fontSize: 18,
 		paddingLeft: 10,
 	},
-	TimeConstraintTextSymbol: { 
+	TimeConstraintTextSymbol: {
 		color: 'white',
 		fontSize: 30,
 		paddingRight: 10,
-	  },
+	},
 	ModalHeader: {
 		marginTop: 10,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
-	ModalHeaderText:{
+	ModalHeaderText: {
 		color: '#009FFF',
 		fontSize: 26,
 		fontWeight: 'bold',
@@ -79,20 +76,17 @@ const styles = StyleSheet.create({
 	},
 });
 
-type TimePickerProps = {
-	startConstraints: TimeInterval[];
-	setStartConstraints: React.Dispatch<React.SetStateAction<TimeInterval[]>>;
-	endConstraints: TimeInterval[];
-	setEndConstraints: React.Dispatch<React.SetStateAction<TimeInterval[]>>;
-};
-
-const TimePicker: React.FC<TimePickerProps> = ({
-	startConstraints,
-	setStartConstraints,
-	endConstraints,
-	setEndConstraints,
-}) => {
+const TimeConstraintModule: React.FC = ({}) => {
 	const [showSlidingWindow, setShowSlidingWindow] = useState(false);
+	const [startConstraints, setStartConstraints] = useState<TimeConstraint[]>(
+		[]
+	);
+	const [endConstraints, setEndConstraints] = useState<TimeConstraint[]>([]);
+
+	useEffect(() => {
+		//Runs on the first render
+		//And any time any dependency value changes
+	}, [startConstraints, endConstraints]);
 
 	const handleOpenSlideWindow = () => {
 		setShowSlidingWindow(true);
@@ -115,7 +109,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
 	};
 
 	const handleAddStartConstraint = () => {
-		const newStartConstraint: TimeInterval = {
+		const newStartConstraint: TimeConstraint = {
 			id: uuid.v4().toString(),
 			startTime: null,
 			endTime: null,
@@ -124,7 +118,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
 	};
 
 	const handleAddEndConstraint = () => {
-		const newEndConstraint: TimeInterval = {
+		const newEndConstraint: TimeConstraint = {
 			id: uuid.v4().toString(),
 			startTime: null,
 			endTime: null,
@@ -132,34 +126,37 @@ const TimePicker: React.FC<TimePickerProps> = ({
 		setEndConstraints([...endConstraints, newEndConstraint]);
 	};
 
-	const handleTimeIntervalChange = (
-		id: string,
-		updatedTimeInterval: TimeInterval
-	  ) => {
-		const updateConstraints = (constraints: TimeInterval[]) =>
-		  constraints.map((constraint) =>
-			constraint.id === id ? updatedTimeInterval : constraint
-		  );
-	  
+	const updateStartConstraint = (updatedConstraint: TimeConstraint) => {
 		setStartConstraints((prevStartConstraints) =>
-		  updateConstraints(prevStartConstraints)
-		);
-	  
-		setEndConstraints((prevEndConstraints) =>
-		  updateConstraints(prevEndConstraints)
+		  prevStartConstraints.map((constraint) =>
+			constraint.id === updatedConstraint.id ? updatedConstraint : constraint
+		  )
 		);
 	  };
+	  
+	  const updateEndConstraint = (updatedConstraint: TimeConstraint) => {
+		setEndConstraints((prevEndConstraints) =>
+		  prevEndConstraints.map((constraint) =>
+			constraint.id === updatedConstraint.id ? updatedConstraint : constraint
+		  )
+		);
+	  };
+	  
 
 	return (
 		<View>
 			<View style={styles.ModuleView}>
-				<TouchableOpacity style={styles.TimeConstraintButton} onPress={handleOpenSlideWindow}>
-					<Text style={styles.TimeConstraintText}>Time Constraints</Text>
+				<TouchableOpacity
+					style={styles.TimeConstraintButton}
+					onPress={handleOpenSlideWindow}
+				>
+					<Text style={styles.TimeConstraintText}>
+						Time Constraints
+					</Text>
 					<Text style={styles.TimeConstraintTextSymbol}> {'>'} </Text>
 				</TouchableOpacity>
 			</View>
 			<Modal visible={showSlidingWindow} animationType="slide">
-				
 				<View style={styles.ModalHeader}>
 					<TouchableOpacity onPress={handleCloseSlideWindow}>
 						<Avatar.Icon
@@ -169,11 +166,13 @@ const TimePicker: React.FC<TimePickerProps> = ({
 						/>
 					</TouchableOpacity>
 
-					<Text style={styles.ModalHeaderText}> Time Constraints </Text>
+					<Text style={styles.ModalHeaderText}>
+						{' '}
+						Time Constraints{' '}
+					</Text>
 				</View>
 
 				<View>
-
 					<Text style={styles.constraintHeading}>
 						Start constraints
 					</Text>
@@ -185,7 +184,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
 						<Avatar.Icon
 							style={styles.addButtonSymbol}
 							icon="plus-thick"
-							color='#009FFF'
+							color="#009FFF"
 							size={30}
 						/>
 					</TouchableOpacity>
@@ -194,9 +193,9 @@ const TimePicker: React.FC<TimePickerProps> = ({
 						{startConstraints.map((constraint) => (
 							<View key={constraint.id}>
 								<AddConstraint
-									timeInterval={constraint}
+									TimeConstraint={constraint}
 									onDelete={handleDeleteStartConstraint}
-									onTimeIntervalChange={handleTimeIntervalChange}
+									onUpdate={updateStartConstraint}
 								/>
 							</View>
 						))}
@@ -214,7 +213,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
 						<Avatar.Icon
 							style={styles.addButtonSymbol}
 							icon="plus-thick"
-							color='#009FFF'
+							color="#009FFF"
 							size={30}
 						/>
 					</TouchableOpacity>
@@ -223,9 +222,9 @@ const TimePicker: React.FC<TimePickerProps> = ({
 						{endConstraints.map((constraint) => (
 							<View key={constraint.id}>
 								<AddConstraint
-									timeInterval={constraint}
+									TimeConstraint={constraint}
 									onDelete={handleDeleteEndConstraint}
-									onTimeIntervalChange={handleTimeIntervalChange}
+									onUpdate={updateEndConstraint}
 								/>
 							</View>
 						))}
@@ -236,4 +235,4 @@ const TimePicker: React.FC<TimePickerProps> = ({
 	);
 };
 
-export default TimePicker;
+export default TimeConstraintModule;

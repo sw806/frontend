@@ -12,13 +12,12 @@ export type Options = {
 	max_consumption: number;
 };
 export type TimeConstraints = {
-	startConstraints: TimeInterval[];
-	endConstraints: TimeInterval[];
-}
+	startConstraints: TimeConstraint[];
+	endConstraints: TimeConstraint[];
+};
 
-export type TimeInterval = {
+export type TimeConstraint = {
 	id: string;
 	startTime?: number;
 	endTime?: number;
 };
-

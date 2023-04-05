@@ -15,7 +15,8 @@ import { StorageService } from '../../utils/storage';
 
 const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
-	const { id, name, duration, energy, power, startDate, timeConstraints } = route.params.data;
+	const { id, name, duration, energy, power, startDate, timeConstraints } =
+		route.params.data;
 
 	const [newDuration, setDuration] = useState<string>(duration.toString());
 	const [newEnergy, setEnergy] = useState<string>(energy.toString());
@@ -30,8 +31,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [saveModal, setSaveModal] = React.useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
-
 	const showModal = () => setVisible(true);
+
 	const hideModal = () => {
 		setVisible(false);
 	};

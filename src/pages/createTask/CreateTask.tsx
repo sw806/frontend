@@ -13,7 +13,7 @@ import FindStartDateButton from '../../components/FindStartTimeButton';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
 import { SlidingWindow } from '../../components/SlidingWindow';
-import TimePicker from '../../components/TimeConstraintModule';
+import TimeConstraintModule from '../../components/TimeConstraintModule';
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -27,7 +27,9 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [allTasks, setAllTasks] = useState<readonly Task[]>([]);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
-	const [startConstraints, setStartConstraints] = useState<TimeInterval[]>([]);
+	const [startConstraints, setStartConstraints] = useState<TimeInterval[]>(
+		[]
+	);
 	const [endConstraints, setEndConstraints] = useState<TimeInterval[]>([]);
 
 	const fetchData = async () => {
@@ -49,7 +51,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			timeConstraints: {
 				startConstraints: startConstraints,
 				endConstraints: endConstraints,
-			  },
+			},
 		};
 
 		await StorageService.saveTask(newTask);
@@ -123,7 +125,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				setPreviousTaskInUse={setPreviousTaskInUse}
 			/>
 
-			<TimePicker
+			<TimeConstraintModule
 				startConstraints={startConstraints}
 				setStartConstraints={setStartConstraints}
 				endConstraints={endConstraints}
