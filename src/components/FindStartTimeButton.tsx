@@ -56,13 +56,13 @@ const FindStartDateButton = ({
 		};
 
 		try {
-			setLoading(true)
+			setLoading(true);
 			const responseData: ScheduleResponse = await postSchedule(params);
 			setStartDate(responseData.start_date);
-			setLoading(false)
+			setLoading(false);
 			return true;
 		} catch (error) {
-			setLoading(false)
+			setLoading(false);
 			setError(true);
 			return false;
 		}

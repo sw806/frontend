@@ -12,7 +12,7 @@ import { isValidNumber } from '../../utils/inputValidation';
 const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
 	const [isModalVisible, setModalVisible] = useState(false);
-	const [maxConsumption, setMaxConsumption] = useState<string>("0");
+	const [maxConsumption, setMaxConsumption] = useState<string>('0');
 
 	const fetchData = async () => {
 		const options: Options = await StorageService.getSettings();
@@ -30,7 +30,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 		await StorageService.saveSettings(newSettings);
 
-		setModalVisible(true)
+		setModalVisible(true);
 	};
 
 	const styles = StyleSheet.create({
@@ -100,7 +100,6 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 					underlineColor="#009FFF"
 				/>
 			</View>
-
 
 			<View style={styles.container}>
 				<Button

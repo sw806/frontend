@@ -29,23 +29,25 @@ const ResultArea = (props: ResultProps) => {
 	let infoField;
 
 	if (props.loading) {
-		infoField = <ActivityIndicator size="large" />
+		infoField = <ActivityIndicator size="large" />;
 	} else {
-		infoField = <View style={styles.content}><Avatar.Icon
-		size={70}
-		icon="clock-outline"
-		style={styles.icon}
-	/>
-	<Text style={styles.text}>
-		{props.time ? formattedDate : props.time}
-	</Text></View>
+		infoField = (
+			<View style={styles.content}>
+				<Avatar.Icon
+					size={70}
+					icon="clock-outline"
+					style={styles.icon}
+				/>
+				<Text style={styles.text}>
+					{props.time ? formattedDate : props.time}
+				</Text>
+			</View>
+		);
 	}
 
 	return (
 		<Card style={styles.card}>
-			<Card.Content style={styles.content}>
-				{infoField}
-			</Card.Content>
+			<Card.Content style={styles.content}>{infoField}</Card.Content>
 		</Card>
 	);
 };
