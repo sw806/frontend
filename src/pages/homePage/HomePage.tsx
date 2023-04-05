@@ -28,14 +28,31 @@ const styles = StyleSheet.create({
 		borderColor: '#7d34eb',
 		borderWidth: 0,
 	},
-	timeRow: {
-		backgroundColor: colors.blue.regular,
-		color: colors.red.light,
+	timeRowRunning: {
+		backgroundColor: colors.green.regular,
+		color: colors.neutral.black,
 		borderRadius: 3,
 		borderWidth: 2,
-		borderColor: colors.neutral.black,
+		borderColor: colors.green.dark,
 		margin: space.spacing.xxs,
 	},
+	timeRowPlanned: {
+		backgroundColor: colors.blue.regular,
+		color: colors.neutral.black,
+		borderRadius: 3,
+		borderWidth: 2,
+		borderColor: colors.blue.regular,
+		margin: space.spacing.xxs,
+	},
+	timeRowFinished: {
+		backgroundColor: colors.red.light,
+		color: colors.neutral.black,
+		borderRadius: 3,
+		borderWidth: 2,
+		borderColor: colors.red.light,
+		margin: space.spacing.xxs,
+	},
+
 	timeName: {
 		flex: 6,
 	},
@@ -64,10 +81,23 @@ const handleEditTask = (nav, data) => {
 const HomePage = (props) => {
 	const { navigation, route, nameProp } = props;
 	const [data, setData] = React.useState<readonly Task[]>([]);
+	const [currentTime, setCurrentTime] = React.useState<Date>(new Date()); 
 
 	const fetchData = async () => {
 			const tasks = await StorageService.getAllTasks();
-			setData(tasks);
+
+			const tasksCopy = [...tasks];
+			
+			tasksCopy.sort((a,b) => {
+				const dateA = new Date(a.startDate);
+				const dateB = new Date(b.startDate);
+
+				if(dateA < dateB) return 1;
+				if(dateA > dateB) return -1;
+
+				return 0;
+			})
+			setData(tasksCopy);
 	};
 
 		fetchData();
@@ -80,11 +110,52 @@ const HomePage = (props) => {
 			</Text>
 			<View style={styles.scheduleContainer}>
 				<View style={styles.timeContainer}>
-					<ScrollView>
-						{data?.map((d) => (
+				<ScrollView>
+						{data?.filter((f) => (
+							(f.startDate * 1000 <= currentTime.getTime() && (f.startDate * 1000) + (f.duration * 60000)) >= currentTime.getTime()
+						)).map((d) => (
 							<DataTable.Row
-								key={d ? d.id : 0}
-								style={styles.timeRow}
+								onPress={() => handleEditTask(navigation, data)}
+								key={d ? d.id : 0} 						
+								style={styles.timeRowRunning}
+								>
+								<DataTable.Cell
+									textStyle={styles.textFormat}
+									style={styles.timeName}
+								>
+									{d ? d.name : 0}
+								</DataTable.Cell>
+								<DataTable.Cell
+									textStyle={styles.textFormat}
+									style={styles.timeTime}
+								>
+									{
+										new Date(d ? (d.startDate + (d.duration * 60)) * 1000 - currentTime.getTime() : 0)
+										.toLocaleTimeString([], {
+											hour: '2-digit',
+											minute: '2-digit',
+										})
+										.replace('.', ':')
+									 }
+								</DataTable.Cell>
+								<DataTable.Cell
+									textStyle={styles.textFormat}
+									style={styles.timeArrow}
+								>
+									{'>'}
+								</DataTable.Cell>
+							</DataTable.Row>
+						))}
+					</ScrollView>
+					<View style={{ marginVertical: 10 }}></View>	
+					<ScrollView>
+						{data?.filter((f) => (
+							(f.startDate * 1000) > currentTime.getTime()
+						)).map((d) => (
+							<DataTable.Row
+								onPress={() => handleEditTask(navigation, data)}
+								key={d ? d.id : 0} 						
+								style={styles.timeRowPlanned}
 								>
 								<DataTable.Cell
 									textStyle={styles.textFormat}
@@ -102,6 +173,37 @@ const HomePage = (props) => {
 											minute: '2-digit',
 										})
 										.replace('.', ':')}
+								</DataTable.Cell>
+								<DataTable.Cell
+									textStyle={styles.textFormat}
+									style={styles.timeArrow}
+								>
+									{'>'}
+								</DataTable.Cell>
+							</DataTable.Row>
+						))}
+					</ScrollView>
+					<View style={{ marginVertical: 10 }}></View>				
+					<ScrollView>
+						{data?.filter((f) => (
+							(f.startDate * 1000) + (f.duration * 60000) < currentTime.getTime()
+						)).map((d) => (
+							<DataTable.Row
+								onPress={() => handleEditTask(navigation, data)}
+								key={d ? d.id : 0} 						
+								style={styles.timeRowFinished}
+								>
+								<DataTable.Cell
+									textStyle={styles.textFormat}
+									style={styles.timeName}
+								>
+									{d ? d.name : 0}
+								</DataTable.Cell>
+								<DataTable.Cell
+									textStyle={styles.textFormat}
+									style={styles.timeTime}
+								>
+									{"finished"}
 								</DataTable.Cell>
 								<DataTable.Cell
 									textStyle={styles.textFormat}
