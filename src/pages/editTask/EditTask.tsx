@@ -9,29 +9,28 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CreateNewTaskInputs from '../../components/taskInputFields';
 import { useState } from 'react';
 import FindStartDateButton from '../../components/FindStartTimeButton';
-import { Task } from '../../datatypes/datatypes';
+import { Task, TimeConstraint } from '../../datatypes/datatypes';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
+import TimeConstraintModule from '../../components/TimeConstraintModule';
 
 const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
 	const { id, name, duration, energy, power, startDate, timeConstraints } =
 		route.params.data;
-
 	const [newDuration, setDuration] = useState<string>(duration.toString());
 	const [newEnergy, setEnergy] = useState<string>(energy.toString());
 	const [newPower, setPower] = useState<string>(power.toString());
 	const [newStartDate, setStartDate] = useState<number>(startDate);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
-	const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
-	const [disabledPower, setPowerDisabled] = useState<boolean>(false);
 	const [visible, setVisible] = React.useState<boolean>(false);
 	const [modalText, setModalText] = React.useState<string>('');
 	const [saveModal, setSaveModal] = React.useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
 	const showModal = () => setVisible(true);
+	const [startConstraints, setStartConstraints] = useState<TimeConstraint[]>([]);
+	const [endConstraints, setEndConstraints] = useState<TimeConstraint[]>([]);
 
 	const hideModal = () => {
 		setVisible(false);
@@ -45,6 +44,10 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			power: parseFloat(newPower),
 			energy: parseFloat(newEnergy),
 			startDate: newStartDate,
+			timeConstraints: {
+				startConstraints: startConstraints,
+				endConstraints: endConstraints,
+			},
 		};
 
 		await StorageService.updateTask(updatedTask);
@@ -150,16 +153,10 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				duration={newDuration}
 				power={newPower}
 				energy={newEnergy}
-				durationDisabled={disabledDuration}
-				powerDisabled={disabledPower}
-				energyDisabled={disabledEnergy}
 				screenName={route.name}
 				setDuration={setDuration}
 				setPower={setPower}
 				setEnergy={setEnergy}
-				setDurationDisabled={setDurationDisabled}
-				setPowerDisabled={setPowerDisabled}
-				setEnergyDisabled={setEnergyDisabled}
 				setStartDate={setStartDate}
 				previousTaskInUse={previousTaskInUse}
 				setPreviousTaskInUse={setPreviousTaskInUse}
@@ -176,6 +173,12 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				setError={setErrorModal}
 			/>
 
+			<TimeConstraintModule
+				startConstraints={startConstraints}
+				endConstraints={endConstraints}
+				setStartConstraints={setStartConstraints}
+				setEndConstraints={setEndConstraints}
+			/>
 			<ResultArea time={newStartDate} loading={loading} />
 
 			<View style={styles.editButtons}>
