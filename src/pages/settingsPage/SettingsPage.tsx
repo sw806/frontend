@@ -16,7 +16,9 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 	const fetchData = async () => {
 		const options: Options = await StorageService.getSettings();
-		setMaxConsumption(options.max_consumption.toString());
+		if (options && options.max_consumption) {
+			setMaxConsumption(options.max_consumption.toString());
+		}
 	};
 
 	useEffect(() => {
