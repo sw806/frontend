@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { colors } from '../../src/styles/theme';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { Button, Text, TextInput, Avatar } from 'react-native-paper';
 import {
 	View,
 	FlatList,
@@ -11,28 +11,30 @@ import {
 } from 'react-native';
 import { Task } from '../datatypes/datatypes';
 
-type TIProps = {
+type IProps = {
 	name: string;
-	allTasks;
+	allPreviousTasks;
 	setName;
 	setData;
 	setDuration;
 	setPower;
 	setEnergy;
-	previousTaskInUse;
 	setPreviousTaskInUse;
+};
+
+type ItemProps = {
+	task: Task;
 };
 
 export const SlidingWindow = ({
 	name,
-	allTasks,
+	allPreviousTasks,
 	setName,
 	setDuration,
 	setPower,
 	setEnergy,
-	previousTaskInUse,
 	setPreviousTaskInUse,
-}: TIProps) => {
+}: IProps) => {
 	const [showSlidingWindow, setShowSlidingWindow] = useState(false);
 	const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 	const [showModal, setShowModal] = useState(false);
@@ -43,10 +45,6 @@ export const SlidingWindow = ({
 
 	const handleCloseSlideWindow = () => {
 		setShowSlidingWindow(false);
-	};
-
-	type ItemProps = {
-		task: Task;
 	};
 
 	const TaskItem = ({ task }: ItemProps) => (
@@ -68,7 +66,12 @@ export const SlidingWindow = ({
 							setShowModal(true);
 						}}
 					>
-						<Text>ℹ️</Text>
+						<Avatar.Icon
+							style={styles.flatListItemIcon}
+							size={50}
+							color='#009FFF'
+							icon="information-outline"
+						/>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -86,6 +89,10 @@ export const SlidingWindow = ({
 		setEnergy(task.energy.toString());
 		handleCloseSlideWindow();
 	};
+
+	const searchFilter = () => 	{
+		
+	}
 
 	const styles = StyleSheet.create({
 		slidingWindow: {
@@ -136,8 +143,10 @@ export const SlidingWindow = ({
 			justifyContent: 'space-between',
 			width: '95%',
 		},
-		FlatListItemText: {
-			fontSize: 16,
+		flatListItemIcon:{
+			width: 30,
+			height: 30,
+			backgroundColor: 'white',
 		},
 		modalBackground: {
 			flex: 1,
@@ -198,13 +207,13 @@ export const SlidingWindow = ({
 									paddingLeft: 30,
 								}}
 							>
-								<Text style={{ color: 'white' }}> Back </Text>
+								<Text style={{ color: 'white' }}> Okay </Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 
 					<Text style={styles.FlatListHeading}> Previous tasks </Text>
-					<FlatList data={allTasks} renderItem={renderTaskItem} />
+					<FlatList data={allPreviousTasks} renderItem={renderTaskItem} />
 				</KeyboardAvoidingView>
 			</Modal>
 

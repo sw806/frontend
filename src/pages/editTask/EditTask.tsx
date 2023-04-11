@@ -5,7 +5,6 @@ import * as React from 'react';
 import ResultArea from '../../components/ResultArea';
 import EditButtons from '../../components/EditButtons';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import CreateNewTaskInputs from '../../components/taskInputFields';
 import { useState } from 'react';
 import FindStartDateButton from '../../components/FindStartTimeButton';
@@ -18,10 +17,12 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
 	const { id, name, duration, energy, power, startDate, timeConstraints } =
 		route.params.data;
-	const [newDuration, setDuration] = useState<string>(duration.toString());
-	const [newEnergy, setEnergy] = useState<string>(energy.toString());
-	const [newPower, setPower] = useState<string>(power.toString());
+	const [newDuration, setDuration] = useState<string>(duration != undefined ? duration.toString() : "NaN");
+	const [newEnergy, setEnergy] = useState<string>(energy != undefined ? energy.toString() : "NaN");
+	const [newPower, setPower] = useState<string>(power != undefined ? power.toString() : "NaN");
 	const [newStartDate, setStartDate] = useState<number>(startDate);
+	const [newStartConstraints, setStartConstraints] = useState<TimeConstraint[]>(timeConstraints.startConstraints);
+	const [newEndConstraints, setEndConstraints] = useState<TimeConstraint[]>(timeConstraints.endConstraints);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [visible, setVisible] = React.useState<boolean>(false);
 	const [modalText, setModalText] = React.useState<string>('');
@@ -29,8 +30,6 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
 	const showModal = () => setVisible(true);
-	const [startConstraints, setStartConstraints] = useState<TimeConstraint[]>([]);
-	const [endConstraints, setEndConstraints] = useState<TimeConstraint[]>([]);
 
 	const hideModal = () => {
 		setVisible(false);
@@ -45,8 +44,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			energy: parseFloat(newEnergy),
 			startDate: newStartDate,
 			timeConstraints: {
-				startConstraints: startConstraints,
-				endConstraints: endConstraints,
+				startConstraints: newStartConstraints,
+				endConstraints: newEndConstraints,
 			},
 		};
 
@@ -174,8 +173,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			/>
 
 			<TimeConstraintModule
-				startConstraints={startConstraints}
-				endConstraints={endConstraints}
+				startConstraints={newStartConstraints}
+				endConstraints={newEndConstraints}
 				setStartConstraints={setStartConstraints}
 				setEndConstraints={setEndConstraints}
 			/>

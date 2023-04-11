@@ -25,19 +25,19 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [startDate, setStartDate] = useState<number>();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
-	const [allTasks, setAllTasks] = useState<readonly Task[]>([]);
+	const [allPreviousTasks, setAllPreviousTasks] = useState<readonly Task[]>([]);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
 	const [startConstraints, setStartConstraints] = useState<TimeConstraint[]>(
 		[]
 	);
 	const [endConstraints, setEndConstraints] = useState<TimeConstraint[]>([]);
 
-	const fetchData = async () => {
-		setAllTasks(await StorageService.getAllTasks());
+	const getPreviousTasks = async () => {
+		setAllPreviousTasks(await StorageService.getAllTasks());
 	};
 
 	useEffect(() => {
-		fetchData();
+		getPreviousTasks();
 	}, []);
 
 	const saveTask = async () => {
@@ -102,13 +102,12 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 			<SlidingWindow
 				name={name}
-				allTasks={allTasks}
+				allPreviousTasks={allPreviousTasks}
 				setName={setName}
-				setData={setAllTasks}
+				setData={setAllPreviousTasks}
 				setDuration={setDuration}
 				setPower={setPower}
 				setEnergy={setEnergy}
-				previousTaskInUse={previousTaskInUse}
 				setPreviousTaskInUse={setPreviousTaskInUse}
 			/>
 
