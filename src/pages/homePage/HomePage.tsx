@@ -215,15 +215,6 @@ const HomePage = (props) => {
 						))}
 					</ScrollView>
 				</View>
-				<Button
-					mode="outlined"
-					style={styles.button}
-					buttonColor="#00000000"
-					textColor="#009FFF"
-					onPress={() => navigation.jumpTo('Create Task')}
-				>
-					<Icon name="plus" />
-				</Button>
 			</View>
 		</View>
 	);
