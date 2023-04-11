@@ -30,6 +30,8 @@ export module StorageService {
 			return d;
 		} catch (error) {
 			console.log(error);
+			const d: Options = {max_consumption: 0}
+			return d
 		}
 	}
 
