@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { colors } from '../../src/styles/theme';
+import React, { useEffect, useState } from 'react';
+import { colors } from '../styles/theme';
 import { Button, Text, TextInput, Avatar } from 'react-native-paper';
 import {
 	View,
@@ -41,8 +41,13 @@ export const SlidingWindow = ({
 	const [filteredAllPreviousTasks, setFilteredAllPreviousTasks] = useState<Task[]>(allPreviousTasks);
 	const [search, setSearch] = useState('');
 
+	useEffect(() => {
+		setFilteredAllPreviousTasks(allPreviousTasks);
+	  }, [allPreviousTasks]);
+
 	const handleOpenSlideWindow = () => {
 		setShowSlidingWindow(true);
+		console.log(filteredAllPreviousTasks)
 	};
 
 	const handleCloseSlideWindow = () => {

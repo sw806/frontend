@@ -36,14 +36,8 @@ export type Options = {
 	max_consumption: number;
 };
 
-export type TimeConstraint = {
-	id: string;
-	startTime?: number;
-	endTime?: number;
-};
-
-
 export type Interval = {
+	id: string;
 	start: number;
 	duration: number;
 };

@@ -2,7 +2,7 @@ import { Text } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { TimeConstraint } from '../datatypes/datatypes';
+import { Interval } from '../datatypes/datatypes';
 
 const styles = StyleSheet.create({
 	itemContainer: {
@@ -31,15 +31,15 @@ const styles = StyleSheet.create({
 });
 
 type AddConstraintProps = {
-	TimeConstraint: TimeConstraint;
+	Interval: Interval;
 	onDelete: (id: string) => void;
-	onUpdate: (updatedConstraint: TimeConstraint) => void;
+	onUpdate: (updatedConstraint: Interval[]) => void;
 };
 
-const AddConstraint = ({ TimeConstraint, onDelete, onUpdate }: AddConstraintProps) => {
+const AddConstraint = ({ Interval, onDelete, onUpdate }: AddConstraintProps) => {
 	const [showPicker, setShowPicker] = useState(false);
 	const [pickerType, setPickerType] = useState<'startTime' | 'endTime'>('startTime');
-	const [timeConstraintState, setTimeConstraintState] = useState(TimeConstraint);
+	const [timeConstraintState, setTimeConstraintState] = useState(Interval);
 
 	const handleDateTimePickerChange = (
 		name: 'startTime' | 'endTime',
@@ -50,7 +50,7 @@ const AddConstraint = ({ TimeConstraint, onDelete, onUpdate }: AddConstraintProp
 			: null;
 		const updatedTimeInterval = { ...timeConstraintState };
 		if (name === 'startTime') {
-			updatedTimeInterval.startTime = unixTime;
+			updatedTimeInterval.start = unixTime;
 		} else {
 			updatedTimeInterval.endTime = unixTime;
 		}
@@ -75,8 +75,8 @@ const AddConstraint = ({ TimeConstraint, onDelete, onUpdate }: AddConstraintProp
 			>
 				<Text style={styles.nameInputFieldText}>
 					From:{' '}
-					{timeConstraintState.startTime ? new Date(
-								timeConstraintState.startTime * 1000
+					{timeConstraintState.start ? new Date(
+								timeConstraintState.start * 1000
 						  ).toLocaleTimeString(undefined, timeOptions)
 					: 'Not set'}
 				</Text>
@@ -103,8 +103,8 @@ const AddConstraint = ({ TimeConstraint, onDelete, onUpdate }: AddConstraintProp
 				<DateTimePicker
 					value={
 						pickerType === 'startTime'
-							? timeConstraintState.startTime
-								? new Date(timeConstraintState.startTime * 1000)
+							? timeConstraintState.start
+								? new Date(timeConstraintState.start * 1000)
 								: new Date()
 							: timeConstraintState.endTime
 							? new Date(timeConstraintState.endTime * 1000)

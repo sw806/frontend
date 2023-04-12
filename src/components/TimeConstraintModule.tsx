@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import AddConstraint from './TimeConstraintElements';
 import uuid from 'react-native-uuid';
-import { TimeConstraint } from '../datatypes/datatypes';
+import { Interval } from '../datatypes/datatypes';
 
 const styles = StyleSheet.create({
 	ModuleView: {
@@ -77,10 +77,10 @@ const styles = StyleSheet.create({
 
 
 type TimeConstraintModuleProps = {
-	startConstraints: TimeConstraint[];
-	setStartConstraints: React.Dispatch<React.SetStateAction<TimeConstraint[]>>;
-	endConstraints: TimeConstraint[];
-	setEndConstraints: React.Dispatch<React.SetStateAction<TimeConstraint[]>>;
+	startConstraints: Interval[];
+	setStartConstraints: React.Dispatch<React.SetStateAction<[{start_interval: Interval}]>>;
+	endConstraints: [{end_interval: Interval}];
+	setEndConstraints: React.Dispatch<React.SetStateAction<[{end_interval: Interval}]>>;
   };
 
 const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
@@ -117,24 +117,24 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 	};
 
 	const handleAddStartConstraint = () => {
-		const newStartConstraint: TimeConstraint = {
+		const newStartConstraint: Interval = {
 			id: uuid.v4().toString(),
-			startTime: null,
-			endTime: null,
+			start: null,
+			duration: null,
 		};
 		setStartConstraints([...startConstraints, newStartConstraint]);
 	};
 
 	const handleAddEndConstraint = () => {
-		const newEndConstraint: TimeConstraint = {
+		const newEndConstraint: Interval = {
 			id: uuid.v4().toString(),
-			startTime: null,
-			endTime: null,
+			start: null,
+			duration: null,
 		};
 		setEndConstraints([...endConstraints, newEndConstraint]);
 	};
 
-	const updateStartConstraint = (updatedConstraint: TimeConstraint) => {
+	const updateStartConstraint = (updatedConstraint: Interval) => {
 		setStartConstraints((prevStartConstraints) =>
 		  prevStartConstraints.map((constraint) =>
 			constraint.id === updatedConstraint.id ? updatedConstraint : constraint
@@ -142,7 +142,7 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 		);
 	  };
 	  
-	  const updateEndConstraint = (updatedConstraint: TimeConstraint) => {
+	  const updateEndConstraint = (updatedConstraint: Interval) => {
 		setEndConstraints((prevEndConstraints) =>
 		  prevEndConstraints.map((constraint) =>
 			constraint.id === updatedConstraint.id ? updatedConstraint : constraint

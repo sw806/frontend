@@ -8,11 +8,11 @@ import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 
 import CreateNewTaskInputs from '../../components/taskInputFields';
 import ResultArea from '../../components/ResultArea';
-import { Task, TimeConstraint, TimeConstraints } from '../../datatypes/datatypes';
+import { Interval, Task} from '../../datatypes/datatypes';
 import FindStartDateButton from '../../components/FindStartTimeButton';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
-import { SlidingWindow } from '../../components/SlidingWindow';
+import { SlidingWindow } from '../../components/PreviousTasksTemplate';
 import TimeConstraintModule from '../../components/TimeConstraintModule';
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
@@ -27,10 +27,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [allPreviousTasks, setAllPreviousTasks] = useState<readonly Task[]>([]);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
-	const [startConstraints, setStartConstraints] = useState<TimeConstraint[]>(
-		[]
-	);
-	const [endConstraints, setEndConstraints] = useState<TimeConstraint[]>([]);
+	const [startConstraints, setStartConstraints] = useState<[{start_interval: Interval}]>();
+	const [endConstraints, setEndConstraints] = useState<[{end_interval: Interval}]>();
 
 	const getPreviousTasks = async () => {
 		setAllPreviousTasks(await StorageService.getAllTasks());
@@ -48,10 +46,9 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			power: parseFloat(power),
 			energy: parseFloat(energy),
 			startDate: startDate,
-			timeConstraints: {
-				startConstraints: startConstraints,
-				endConstraints: endConstraints,
-			},
+			must_start_between: startConstraints,
+			must_end_between: endConstraints,
+
 		};
 
 		await StorageService.saveTask(newTask);
