@@ -38,6 +38,8 @@ export const SlidingWindow = ({
 	const [showSlidingWindow, setShowSlidingWindow] = useState(false);
 	const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 	const [showModal, setShowModal] = useState(false);
+	const [filteredAllPreviousTasks, setFilteredAllPreviousTasks] = useState<Task[]>(allPreviousTasks);
+	const [search, setSearch] = useState('');
 
 	const handleOpenSlideWindow = () => {
 		setShowSlidingWindow(true);
@@ -90,8 +92,21 @@ export const SlidingWindow = ({
 		handleCloseSlideWindow();
 	};
 
-	const searchFilter = () => 	{
-		
+	const searchFilter = (text: string) => 	{
+		if(text){
+			const filteredTasks = allPreviousTasks.filter(function (task) {
+				const taskData = task.name ? task.name.toUpperCase() : ''.toUpperCase();
+				const textData = text.toUpperCase();
+				return taskData.indexOf(textData) > -1;
+			});
+			setFilteredAllPreviousTasks(filteredTasks)
+			setSearch(text)
+			setName(text)
+		} else {
+			setFilteredAllPreviousTasks(allPreviousTasks);
+			setSearch(text);
+			setName(text)
+		}
 	}
 
 	const styles = StyleSheet.create({
@@ -188,7 +203,7 @@ export const SlidingWindow = ({
 								mode="outlined"
 								label="Task Name"
 								placeholder={name || 'Task Name'}
-								onChangeText={(text) => setName(text)}
+								onChangeText={(text) => searchFilter(text)}
 								value={name}
 								activeUnderlineColor={colors.blue.regular}
 								activeOutlineColor={colors.blue.regular}
@@ -213,7 +228,7 @@ export const SlidingWindow = ({
 					</View>
 
 					<Text style={styles.FlatListHeading}> Previous tasks </Text>
-					<FlatList data={allPreviousTasks} renderItem={renderTaskItem} />
+					<FlatList data={filteredAllPreviousTasks} renderItem={renderTaskItem} />
 				</KeyboardAvoidingView>
 			</Modal>
 
