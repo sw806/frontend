@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 	},
 	nameInputField: {
 		height: 30,
-		width: 140,
+		width: 150,
 		backgroundColor: 'white',
 		borderColor: '#009FFF',
 		justifyContent: 'center',
@@ -31,30 +31,28 @@ const styles = StyleSheet.create({
 });
 
 type AddConstraintProps = {
-	Interval: Interval;
+	interval: Interval;
 	onDelete: (id: string) => void;
-	onUpdate: (updatedConstraint: Interval[]) => void;
+	onUpdate: (updatedConstraint: Interval) => void;
 };
 
-const AddConstraint = ({ Interval, onDelete, onUpdate }: AddConstraintProps) => {
+const AddConstraint = ({ interval, onDelete, onUpdate }: AddConstraintProps) => {
 	const [showPicker, setShowPicker] = useState(false);
 	const [pickerType, setPickerType] = useState<'startTime' | 'endTime'>('startTime');
-	const [timeConstraintState, setTimeConstraintState] = useState(Interval);
+	const [timeIntervalState, setTimeIntervalState] = useState(interval);
 
 	const handleDateTimePickerChange = (
 		name: 'startTime' | 'endTime',
 		selectedDate: Date | undefined
 	) => {
-		const unixTime = selectedDate
-			? Math.floor(selectedDate.getTime() / 1000)
-			: null;
-		const updatedTimeInterval = { ...timeConstraintState };
+		const unixTime = Math.floor(selectedDate.getTime() / 1000);
+		const updatedTimeInterval = { ...timeIntervalState };
 		if (name === 'startTime') {
 			updatedTimeInterval.start = unixTime;
 		} else {
-			updatedTimeInterval.endTime = unixTime;
+			updatedTimeInterval.end = unixTime;
 		}
-		setTimeConstraintState(updatedTimeInterval);
+		setTimeIntervalState(updatedTimeInterval);
 		onUpdate(updatedTimeInterval); // Add this line
 	};
 
@@ -62,6 +60,7 @@ const AddConstraint = ({ Interval, onDelete, onUpdate }: AddConstraintProps) => 
 		hour12: false,
 		hour: '2-digit',
 		minute: '2-digit',
+		weekday: 'short',
 	};
 
 	return (
@@ -75,10 +74,7 @@ const AddConstraint = ({ Interval, onDelete, onUpdate }: AddConstraintProps) => 
 			>
 				<Text style={styles.nameInputFieldText}>
 					From:{' '}
-					{timeConstraintState.start ? new Date(
-								timeConstraintState.start * 1000
-						  ).toLocaleTimeString(undefined, timeOptions)
-					: 'Not set'}
+					{new Date(timeIntervalState.start * 1000).toLocaleTimeString(undefined, timeOptions)}
 				</Text>
 			</TouchableOpacity>
 
@@ -91,11 +87,7 @@ const AddConstraint = ({ Interval, onDelete, onUpdate }: AddConstraintProps) => 
 			>
 				<Text style={styles.nameInputFieldText}>
 					To:{' '}
-					{timeConstraintState.endTime
-						? new Date(
-								timeConstraintState.endTime * 1000
-						  ).toLocaleTimeString(undefined, timeOptions)
-						: 'Not set'}
+					{new Date(timeIntervalState.end * 1000).toLocaleTimeString(undefined, timeOptions)}
 				</Text>
 			</TouchableOpacity>
 
@@ -103,11 +95,11 @@ const AddConstraint = ({ Interval, onDelete, onUpdate }: AddConstraintProps) => 
 				<DateTimePicker
 					value={
 						pickerType === 'startTime'
-							? timeConstraintState.start
-								? new Date(timeConstraintState.start * 1000)
+							? timeIntervalState.start
+								? new Date(timeIntervalState.start * 1000)
 								: new Date()
-							: timeConstraintState.endTime
-							? new Date(timeConstraintState.endTime * 1000)
+							: timeIntervalState.end
+							? new Date(timeIntervalState.end * 1000)
 							: new Date()
 					}
 					mode="time"
@@ -125,7 +117,7 @@ const AddConstraint = ({ Interval, onDelete, onUpdate }: AddConstraintProps) => 
 				/>
 			)}
 
-			<TouchableOpacity onPress={() => onDelete(timeConstraintState.id)}>
+			<TouchableOpacity onPress={() => onDelete(timeIntervalState.id)}>
 				<Text style={styles.itemDelete}>Delete</Text>
 			</TouchableOpacity>
 		</View>

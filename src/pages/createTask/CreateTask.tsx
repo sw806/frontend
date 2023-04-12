@@ -27,8 +27,10 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [allPreviousTasks, setAllPreviousTasks] = useState<readonly Task[]>([]);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
-	const [startConstraints, setStartConstraints] = useState<[{start_interval: Interval}]>();
-	const [endConstraints, setEndConstraints] = useState<[{end_interval: Interval}]>();
+	const [startInterval, setStartInterval] = useState<{ start_interval: Interval }[]>([]);
+	const [endInterval, setEndInterval] = useState<{ end_interval: Interval }[]>([]);
+	
+	
 
 	const getPreviousTasks = async () => {
 		setAllPreviousTasks(await StorageService.getAllTasks());
@@ -46,9 +48,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			power: parseFloat(power),
 			energy: parseFloat(energy),
 			startDate: startDate,
-			must_start_between: startConstraints,
-			must_end_between: endConstraints,
-
+			must_start_between: startInterval,
+			must_end_between: endInterval,
 		};
 
 		await StorageService.saveTask(newTask);
@@ -122,10 +123,10 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			/>
 
 			<TimeConstraintModule
-				startConstraints={startConstraints}
-				endConstraints={endConstraints}
-				setStartConstraints={setStartConstraints}
-				setEndConstraints={setEndConstraints}
+				startInterval={startInterval}
+				endInterval={endInterval}
+				setStartInterval={setStartInterval}
+				setEndInterval={setEndInterval}
 			/>
 
 			<FindStartDateButton

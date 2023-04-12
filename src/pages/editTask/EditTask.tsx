@@ -8,21 +8,21 @@ import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 import CreateNewTaskInputs from '../../components/taskInputFields';
 import { useState } from 'react';
 import FindStartDateButton from '../../components/FindStartTimeButton';
-import { Task, TimeConstraint } from '../../datatypes/datatypes';
+import { Task, Interval } from '../../datatypes/datatypes';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
 import TimeConstraintModule from '../../components/TimeConstraintModule';
 
 const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
-	const { id, name, duration, energy, power, startDate, timeConstraints } =
+	const { id, name, duration, energy, power, startDate, must_start_between, must_end_between } =
 		route.params.data;
 	const [newDuration, setDuration] = useState<string>(duration != undefined ? duration.toString() : "NaN");
 	const [newEnergy, setEnergy] = useState<string>(energy != undefined ? energy.toString() : "NaN");
 	const [newPower, setPower] = useState<string>(power != undefined ? power.toString() : "NaN");
 	const [newStartDate, setStartDate] = useState<number>(startDate);
-	const [newStartConstraints, setStartConstraints] = useState<TimeConstraint[]>(timeConstraints.startConstraints);
-	const [newEndConstraints, setEndConstraints] = useState<TimeConstraint[]>(timeConstraints.endConstraints);
+	const [newStartInterval, setStartInterval] = useState<{ start_interval: Interval }[]>(must_start_between);
+	const [newEndInterval, setEndInterval] = useState<{ end_interval: Interval }[]>(must_end_between);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [visible, setVisible] = React.useState<boolean>(false);
 	const [modalText, setModalText] = React.useState<string>('');
@@ -43,10 +43,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			power: parseFloat(newPower),
 			energy: parseFloat(newEnergy),
 			startDate: newStartDate,
-			timeConstraints: {
-				startConstraints: newStartConstraints,
-				endConstraints: newEndConstraints,
-			},
+			must_start_between: newStartInterval,
+			must_end_between: newEndInterval,
 		};
 
 		await StorageService.updateTask(updatedTask);

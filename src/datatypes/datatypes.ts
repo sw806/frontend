@@ -5,8 +5,8 @@ export type Task = {
 	energy?: number;
 	power?: number;
 	startDate?: number;
-	must_start_between: [{start_interval: Interval}];
-	must_end_between: [{end_interval: Interval}];
+	must_start_between: {start_interval: Interval}[];
+	must_end_between: {end_interval: Interval}[];
 };
 
 export type POSTObject = {
@@ -16,10 +16,10 @@ export type POSTObject = {
 }
 
 export type schedule = {
-	tasks: [RasponseTask];
+	tasks: ResponseTask[];
 }
 
-export type RasponseTask = {
+export type ResponseTask = {
 	duration: number;
 	power: number;
 	must_start_between: [{start_interval: Interval}];
@@ -39,6 +39,7 @@ export type Options = {
 export type Interval = {
 	id: string;
 	start: number;
+	end: number;
 	duration: number;
 };
 
