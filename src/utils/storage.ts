@@ -18,13 +18,15 @@ export module StorageService {
 		try {
 			const data = await AsyncStorage.getItem(task_id);
 
-			const t: TaskEnc = JSON.parse(data)
-			const d: readonly Task[] = Object.values(t) ?? [];
+			if (data) {
+				const t: TaskEnc = JSON.parse(data);
+				const d: readonly Task[] = Object.values(t) ?? [];
+				return d;
+			}
 
-			return d;
+			return [];
 		} catch (error) {
 			console.log(error);
-			return [];
 		}
 	}
 
@@ -62,11 +64,11 @@ export module StorageService {
 			// check for existing id
 			const data = await AsyncStorage.getItem(task_id);
 
-			const t: TaskEnc = {}
+			let t: TaskEnc = {}
 
 			if (data) {
-				const t: TaskEnc = JSON.parse(data)
-			}
+				t = JSON.parse(data)
+			} 
 
 			t[task.id] = task;
 
