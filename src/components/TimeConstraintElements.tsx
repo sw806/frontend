@@ -36,9 +36,15 @@ type AddConstraintProps = {
 	onUpdate: (updatedConstraint: Interval[]) => void;
 };
 
-const AddConstraint = ({ Interval, onDelete, onUpdate }: AddConstraintProps) => {
+const AddConstraint = ({
+	Interval,
+	onDelete,
+	onUpdate,
+}: AddConstraintProps) => {
 	const [showPicker, setShowPicker] = useState(false);
-	const [pickerType, setPickerType] = useState<'startTime' | 'endTime'>('startTime');
+	const [pickerType, setPickerType] = useState<'startTime' | 'endTime'>(
+		'startTime'
+	);
 	const [timeConstraintState, setTimeConstraintState] = useState(Interval);
 
 	const handleDateTimePickerChange = (
@@ -75,10 +81,11 @@ const AddConstraint = ({ Interval, onDelete, onUpdate }: AddConstraintProps) => 
 			>
 				<Text style={styles.nameInputFieldText}>
 					From:{' '}
-					{timeConstraintState.start ? new Date(
+					{timeConstraintState.start
+						? new Date(
 								timeConstraintState.start * 1000
 						  ).toLocaleTimeString(undefined, timeOptions)
-					: 'Not set'}
+						: 'Not set'}
 				</Text>
 			</TouchableOpacity>
 
@@ -131,5 +138,5 @@ const AddConstraint = ({ Interval, onDelete, onUpdate }: AddConstraintProps) => 
 		</View>
 	);
 };
-  
+
 export default AddConstraint;

@@ -6,8 +6,8 @@ const schedule_id: string = '@Schedule_key';
 const task_id: string = '@Task_key';
 
 type TaskEnc = {
-	[id: string]: Task
-}
+	[id: string]: Task;
+};
 
 export module StorageService {
 	/**
@@ -38,8 +38,8 @@ export module StorageService {
 			return d;
 		} catch (error) {
 			console.log(error);
-			const d: Options = {max_consumption: 0}
-			return d
+			const d: Options = { max_consumption: 0 };
+			return d;
 		}
 	}
 
@@ -51,7 +51,7 @@ export module StorageService {
 			return d;
 		} catch (error) {
 			console.log(error);
-			return undefined
+			return undefined;
 		}
 	}
 
@@ -64,11 +64,11 @@ export module StorageService {
 			// check for existing id
 			const data = await AsyncStorage.getItem(task_id);
 
-			let t: TaskEnc = {}
+			let t: TaskEnc = {};
 
 			if (data) {
-				t = JSON.parse(data)
-			} 
+				t = JSON.parse(data);
+			}
 
 			t[task.id] = task;
 
@@ -103,10 +103,10 @@ export module StorageService {
 			// check for existing id
 			const data = await AsyncStorage.getItem(task_id);
 
-			const t: TaskEnc = {}
+			const t: TaskEnc = {};
 
 			if (data) {
-				const t: TaskEnc = JSON.parse(data)
+				const t: TaskEnc = JSON.parse(data);
 			}
 
 			delete t[taskID];

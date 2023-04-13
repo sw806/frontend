@@ -5,15 +5,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
+import * as Notifications from 'expo-notifications';
 
 import CreateNewTaskInputs from '../../components/taskInputFields';
 import ResultArea from '../../components/ResultArea';
-import { Interval, Task} from '../../datatypes/datatypes';
+import { Interval, Task } from '../../datatypes/datatypes';
 import FindStartDateButton from '../../components/FindStartTimeButton';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
 import { SlidingWindow } from '../../components/PreviousTasksTemplate';
 import TimeConstraintModule from '../../components/TimeConstraintModule';
+import { ScrollView } from 'react-native-gesture-handler';
+
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldShowAlert: true,
+		shouldPlaySound: false,
+		shouldSetBadge: false,
+	}),
+});
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -25,12 +35,25 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [startDate, setStartDate] = useState<number>();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
-	const [allPreviousTasks, setAllPreviousTasks] = useState<readonly Task[]>([]);
+	const [allPreviousTasks, setAllPreviousTasks] = useState<readonly Task[]>(
+		[]
+	);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
-	const [startConstraints, setStartConstraints] = useState<[{start_interval: Interval}]>();
-	const [endConstraints, setEndConstraints] = useState<[{end_interval: Interval}]>();
+	const [startConstraints, setStartConstraints] =
+		useState<[{ start_interval: Interval }]>();
+	const [endConstraints, setEndConstraints] =
+		useState<[{ end_interval: Interval }]>();
 
 	const getPreviousTasks = async () => {
+		await Notifications.scheduleNotificationAsync({
+			content: {
+				title: 'Hello, World!',
+			},
+			trigger: {
+				seconds: 1,
+			},
+		});
+		console.log('Yes');
 		setAllPreviousTasks(await StorageService.getAllTasks());
 	};
 
@@ -39,8 +62,9 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	}, []);
 
 	const saveTask = async () => {
+		const newTaskId = uuid.v4().toString();
 		const newTask: Task = {
-			id: uuid.v4().toString(),
+			id: newTaskId,
 			name: name,
 			duration: parseFloat(duration),
 			power: parseFloat(power),
@@ -48,8 +72,20 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			startDate: startDate,
 			must_start_between: startConstraints,
 			must_end_between: endConstraints,
-
 		};
+
+		// Create a notification for 10 minutes before the start time.
+		const startAsDate = new Date(startDate);
+		/*Notifications.postLocalNotification({
+			title: `starting soon ${name}`,
+			body: `You have the task ${name} starting in ${(startAsDate.getTime() - Date.now()) / (1000 * 60)}.`,
+			identifier: newTaskId,
+			payload: newTask,
+			sound: '',
+			badge: 0,
+			type: '',
+			thread: ''
+		})*/
 
 		await StorageService.saveTask(newTask);
 		toggleModal();
@@ -122,10 +158,10 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			/>
 
 			<TimeConstraintModule
-				startConstraints={startConstraints}
-				endConstraints={endConstraints}
-				setStartConstraints={setStartConstraints}
-				setEndConstraints={setEndConstraints}
+				startInterval={startInterval}
+				endInterval={endInterval}
+				setStartInterval={setStartInterval}
+				setEndInterval={setEndInterval}
 			/>
 
 			<FindStartDateButton

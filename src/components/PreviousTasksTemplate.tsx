@@ -38,16 +38,17 @@ export const SlidingWindow = ({
 	const [showSlidingWindow, setShowSlidingWindow] = useState(false);
 	const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 	const [showModal, setShowModal] = useState(false);
-	const [filteredAllPreviousTasks, setFilteredAllPreviousTasks] = useState<Task[]>(allPreviousTasks);
+	const [filteredAllPreviousTasks, setFilteredAllPreviousTasks] =
+		useState<Task[]>(allPreviousTasks);
 	const [search, setSearch] = useState('');
 
 	useEffect(() => {
 		setFilteredAllPreviousTasks(allPreviousTasks);
-	  }, [allPreviousTasks]);
+	}, [allPreviousTasks]);
 
 	const handleOpenSlideWindow = () => {
 		setShowSlidingWindow(true);
-		console.log(filteredAllPreviousTasks)
+		console.log(filteredAllPreviousTasks);
 	};
 
 	const handleCloseSlideWindow = () => {
@@ -76,7 +77,7 @@ export const SlidingWindow = ({
 						<Avatar.Icon
 							style={styles.flatListItemIcon}
 							size={50}
-							color='#009FFF'
+							color="#009FFF"
 							icon="information-outline"
 						/>
 					</TouchableOpacity>
@@ -97,22 +98,24 @@ export const SlidingWindow = ({
 		handleCloseSlideWindow();
 	};
 
-	const searchFilter = (text: string) => 	{
-		if(text){
+	const searchFilter = (text: string) => {
+		if (text) {
 			const filteredTasks = allPreviousTasks.filter(function (task) {
-				const taskData = task.name ? task.name.toUpperCase() : ''.toUpperCase();
+				const taskData = task.name
+					? task.name.toUpperCase()
+					: ''.toUpperCase();
 				const textData = text.toUpperCase();
 				return taskData.indexOf(textData) > -1;
 			});
-			setFilteredAllPreviousTasks(filteredTasks)
-			setSearch(text)
-			setName(text)
+			setFilteredAllPreviousTasks(filteredTasks);
+			setSearch(text);
+			setName(text);
 		} else {
 			setFilteredAllPreviousTasks(allPreviousTasks);
 			setSearch(text);
-			setName(text)
+			setName(text);
 		}
-	}
+	};
 
 	const styles = StyleSheet.create({
 		slidingWindow: {
@@ -124,7 +127,6 @@ export const SlidingWindow = ({
 		},
 		nameInputField: {
 			height: 50,
-			width: 330,
 			marginBottom: 10,
 			backgroundColor: 'white',
 			borderColor: '#009FFF',
@@ -163,7 +165,7 @@ export const SlidingWindow = ({
 			justifyContent: 'space-between',
 			width: '95%',
 		},
-		flatListItemIcon:{
+		flatListItemIcon: {
 			width: 30,
 			height: 30,
 			backgroundColor: 'white',
@@ -233,7 +235,10 @@ export const SlidingWindow = ({
 					</View>
 
 					<Text style={styles.FlatListHeading}> Previous tasks </Text>
-					<FlatList data={filteredAllPreviousTasks} renderItem={renderTaskItem} />
+					<FlatList
+						data={filteredAllPreviousTasks}
+						renderItem={renderTaskItem}
+					/>
 				</KeyboardAvoidingView>
 			</Modal>
 

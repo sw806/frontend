@@ -75,7 +75,6 @@ const CreateNewTaskInputs = ({
 
 	// handle calculation of third value
 	useEffect(() => {
-
 		if (!duration && energy && power && !activeInput) {
 			const newDuration = calculateDuration(
 				parseFloat(energy),
@@ -112,7 +111,7 @@ const CreateNewTaskInputs = ({
 	}, [activeInput]);
 
 	const handleInput = (inputName: string, inputValue: string) => {
-		if (isValidNumber(inputValue) || inputValue === "") {
+		if (isValidNumber(inputValue) || inputValue === '') {
 			setPreviousTaskInUse(false);
 			switch (inputName) {
 				case 'Duration':

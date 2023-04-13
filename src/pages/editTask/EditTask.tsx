@@ -17,12 +17,22 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
 	const { id, name, duration, energy, power, startDate, timeConstraints } =
 		route.params.data;
-	const [newDuration, setDuration] = useState<string>(duration != undefined ? duration.toString() : "NaN");
-	const [newEnergy, setEnergy] = useState<string>(energy != undefined ? energy.toString() : "NaN");
-	const [newPower, setPower] = useState<string>(power != undefined ? power.toString() : "NaN");
+	const [newDuration, setDuration] = useState<string>(
+		duration != undefined ? duration.toString() : 'NaN'
+	);
+	const [newEnergy, setEnergy] = useState<string>(
+		energy != undefined ? energy.toString() : 'NaN'
+	);
+	const [newPower, setPower] = useState<string>(
+		power != undefined ? power.toString() : 'NaN'
+	);
 	const [newStartDate, setStartDate] = useState<number>(startDate);
-	const [newStartConstraints, setStartConstraints] = useState<TimeConstraint[]>(timeConstraints.startConstraints);
-	const [newEndConstraints, setEndConstraints] = useState<TimeConstraint[]>(timeConstraints.endConstraints);
+	const [newStartConstraints, setStartConstraints] = useState<
+		TimeConstraint[]
+	>(timeConstraints.startConstraints);
+	const [newEndConstraints, setEndConstraints] = useState<TimeConstraint[]>(
+		timeConstraints.endConstraints
+	);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [visible, setVisible] = React.useState<boolean>(false);
 	const [modalText, setModalText] = React.useState<string>('');

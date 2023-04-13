@@ -1,10 +1,5 @@
 import { Avatar, Text } from 'react-native-paper';
-import {
-	Modal,
-	StyleSheet,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import AddConstraint from './TimeConstraintElements';
@@ -75,20 +70,23 @@ const styles = StyleSheet.create({
 	},
 });
 
-
 type TimeConstraintModuleProps = {
 	startConstraints: Interval[];
-	setStartConstraints: React.Dispatch<React.SetStateAction<[{start_interval: Interval}]>>;
-	endConstraints: [{end_interval: Interval}];
-	setEndConstraints: React.Dispatch<React.SetStateAction<[{end_interval: Interval}]>>;
-  };
+	setStartConstraints: React.Dispatch<
+		React.SetStateAction<[{ start_interval: Interval }]>
+	>;
+	endConstraints: [{ end_interval: Interval }];
+	setEndConstraints: React.Dispatch<
+		React.SetStateAction<[{ end_interval: Interval }]>
+	>;
+};
 
 const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 	startConstraints,
 	setStartConstraints,
 	endConstraints,
 	setEndConstraints,
-	}) => {
+}) => {
 	const [showSlidingWindow, setShowSlidingWindow] = useState(false);
 
 	useEffect(() => {
@@ -136,20 +134,23 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 
 	const updateStartConstraint = (updatedConstraint: Interval) => {
 		setStartConstraints((prevStartConstraints) =>
-		  prevStartConstraints.map((constraint) =>
-			constraint.id === updatedConstraint.id ? updatedConstraint : constraint
-		  )
+			prevStartConstraints.map((constraint) =>
+				constraint.id === updatedConstraint.id
+					? updatedConstraint
+					: constraint
+			)
 		);
-	  };
-	  
-	  const updateEndConstraint = (updatedConstraint: Interval) => {
+	};
+
+	const updateEndConstraint = (updatedConstraint: Interval) => {
 		setEndConstraints((prevEndConstraints) =>
-		  prevEndConstraints.map((constraint) =>
-			constraint.id === updatedConstraint.id ? updatedConstraint : constraint
-		  )
+			prevEndConstraints.map((constraint) =>
+				constraint.id === updatedConstraint.id
+					? updatedConstraint
+					: constraint
+			)
 		);
-	  };
-	  
+	};
 
 	return (
 		<View>
