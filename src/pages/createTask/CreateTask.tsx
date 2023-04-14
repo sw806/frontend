@@ -14,6 +14,7 @@ import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
 import { SlidingWindow } from '../../components/PreviousTasksTemplate';
 import TimeConstraintModule from '../../components/TimeConstraintModule';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -90,118 +91,120 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	});
 
 	return (
-		<View style={styles.screenContainer}>
-			<View>
-				<Text variant="headlineLarge" style={styles.heading}>
-					{' '}
-					Create Task{' '}
-				</Text>
-			</View>
-
-			<SlidingWindow
-				name={name}
-				allPreviousTasks={allPreviousTasks}
-				setName={setName}
-				setData={setAllPreviousTasks}
-				setDuration={setDuration}
-				setPower={setPower}
-				setEnergy={setEnergy}
-				setPreviousTaskInUse={setPreviousTaskInUse}
-			/>
-
-			<CreateNewTaskInputs
-				duration={duration}
-				power={power}
-				energy={energy}
-				screenName={route.name}
-				setDuration={setDuration}
-				setPower={setPower}
-				setEnergy={setEnergy}
-				setStartDate={setStartDate}
-				previousTaskInUse={previousTaskInUse}
-				setPreviousTaskInUse={setPreviousTaskInUse}
-			/>
-
-			<TimeConstraintModule
-				startInterval={startInterval}
-				endInterval={endInterval}
-				setStartInterval={setStartInterval}
-				setEndInterval={setEndInterval}
-			/>
-
-			<FindStartDateButton
-				name={name}
-				duration={duration}
-				power={power}
-				energy={energy}
-				startDate={startDate}
-				setStartDate={setStartDate}
-				setLoading={setLoading}
-				setError={setErrorModal}
-			/>
-
-			<ResultArea time={startDate} loading={loading} />
-
-			<View style={styles.container}>
-				<Button
-					mode="contained"
-					style={styles.containerbutton}
-					buttonColor={colors.blue.regular}
-					onPress={() => navigation.navigate('Home')}
-				>
-					Back
-				</Button>
-
-				<Button
-					mode="contained"
-					style={styles.disabledButton}
-					buttonColor={colors.neutral.grey}
-					disabled={!startDate}
-					onPress={() => {
-						saveTask();
-					}}
-				>
-					Save
-				</Button>
-			</View>
-
-			<Modal isVisible={isModalVisible}>
-				<View style={styles.modalBackground}>
-					<View style={styles.modalContainer}>
-						<Text style={{ color: '#009FFF', paddingBottom: 10 }}>
-							{' '}
-							{name} scheduled!
-						</Text>
-
-						<Button
-							buttonColor={colors.blue.regular}
-							textColor={colors.neutral.white}
-							onPress={() => navigation.navigate('Home')}
-						>
-							Home
-						</Button>
-					</View>
+		<ScrollView>
+			<View style={styles.screenContainer}>
+				<View>
+					<Text variant="headlineLarge" style={styles.heading}>
+						{' '}
+						Create Task{' '}
+					</Text>
 				</View>
-			</Modal>
-			<Modal isVisible={errorModal}>
-				<View style={styles.modalBackground}>
-					<View style={styles.modalContainer}>
-						<Text style={{ color: '#009FFF', paddingBottom: 10 }}>
-							Error connecting to server!{'\n'}Please check your
-							connection and try again
-						</Text>
 
-						<Button
-							buttonColor={colors.blue.regular}
-							textColor={colors.neutral.white}
-							onPress={() => setErrorModal(false)}
-						>
-							Close
-						</Button>
-					</View>
+				<SlidingWindow
+					name={name}
+					allPreviousTasks={allPreviousTasks}
+					setName={setName}
+					setData={setAllPreviousTasks}
+					setDuration={setDuration}
+					setPower={setPower}
+					setEnergy={setEnergy}
+					setPreviousTaskInUse={setPreviousTaskInUse}
+				/>
+
+				<CreateNewTaskInputs
+					duration={duration}
+					power={power}
+					energy={energy}
+					screenName={route.name}
+					setDuration={setDuration}
+					setPower={setPower}
+					setEnergy={setEnergy}
+					setStartDate={setStartDate}
+					previousTaskInUse={previousTaskInUse}
+					setPreviousTaskInUse={setPreviousTaskInUse}
+				/>
+
+				<TimeConstraintModule
+					startInterval={startInterval}
+					endInterval={endInterval}
+					setStartInterval={setStartInterval}
+					setEndInterval={setEndInterval}
+				/>
+
+				<FindStartDateButton
+					name={name}
+					duration={duration}
+					power={power}
+					energy={energy}
+					startDate={startDate}
+					setStartDate={setStartDate}
+					setLoading={setLoading}
+					setError={setErrorModal}
+				/>
+
+				<ResultArea time={startDate} loading={loading} />
+
+				<View style={styles.container}>
+					<Button
+						mode="contained"
+						style={styles.containerbutton}
+						buttonColor={colors.blue.regular}
+						onPress={() => navigation.navigate('Home')}
+					>
+						Back
+					</Button>
+
+					<Button
+						mode="contained"
+						style={styles.disabledButton}
+						buttonColor={colors.neutral.grey}
+						disabled={!startDate}
+						onPress={() => {
+							saveTask();
+						}}
+					>
+						Save
+					</Button>
 				</View>
-			</Modal>
-		</View>
+
+				<Modal isVisible={isModalVisible}>
+					<View style={styles.modalBackground}>
+						<View style={styles.modalContainer}>
+							<Text style={{ color: '#009FFF', paddingBottom: 10 }}>
+								{' '}
+								{name} scheduled!
+							</Text>
+
+							<Button
+								buttonColor={colors.blue.regular}
+								textColor={colors.neutral.white}
+								onPress={() => navigation.navigate('Home')}
+							>
+								Home
+							</Button>
+						</View>
+					</View>
+				</Modal>
+				<Modal isVisible={errorModal}>
+					<View style={styles.modalBackground}>
+						<View style={styles.modalContainer}>
+							<Text style={{ color: '#009FFF', paddingBottom: 10 }}>
+								Error connecting to server!{'\n'}Please check your
+								connection and try again
+							</Text>
+
+							<Button
+								buttonColor={colors.blue.regular}
+								textColor={colors.neutral.white}
+								onPress={() => setErrorModal(false)}
+							>
+								Close
+							</Button>
+						</View>
+					</View>
+				</Modal>
+			</View>
+		</ScrollView>
 	);
 };
 
