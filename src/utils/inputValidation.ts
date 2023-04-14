@@ -21,6 +21,8 @@ function hasComma(str: string): boolean {
   
 
 const isValidNumber = (inputString: string) => {
+	inputString = inputString.replace(',', '.')
+
 	var input;
 	if(inputString){
 		input = Number(inputString);
