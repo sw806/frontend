@@ -10,20 +10,17 @@ export type Task = {
 };
 
 export type POSTObject = {
-	tasks: [Task];
+	tasks: Task[];
 	schedule: schedule;
-	maximum_power_consumption?: MaximumPowerConsumption;
 }
 
 export type schedule = {
 	tasks: ResponseTask[];
+	maximum_power_consumption?: MaximumPowerConsumption;
 }
 
 export type ResponseTask = {
-	duration: number;
-	power: number;
-	must_start_between: {start_interval: Interval}[];
-	must_end_between: {end_interval: Interval}[];
+	task: Task
 	start_interval: Interval;
 	cost: number;
 };
