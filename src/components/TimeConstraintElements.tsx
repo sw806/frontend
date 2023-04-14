@@ -54,8 +54,10 @@ const AddConstraint = ({ interval, onDelete, onUpdate }: AddConstraintProps) => 
 	) => {
 		const selectedDateUnix= Math.floor(selectedDate.getTime() / 1000);
 		const updatedTimeInterval = { ...timeIntervalState };
+		const dateNow = new Date().getTime() / 1000;
+		
 		if (name === 'startTime') {
-			if(updatedTimeInterval.start > selectedDateUnix ){
+			if( dateNow > selectedDateUnix ){
 				alert("Please select a time after the current time.");
 				return;
 			}

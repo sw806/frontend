@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
 });
 
 const handleEditTask = (nav, data) => {
-	console.log(data)
 	nav.jumpTo('Overview', { data: data });
 };
 

@@ -6,7 +6,7 @@ import ResultArea from '../../components/ResultArea';
 import EditButtons from '../../components/EditButtons';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 import CreateNewTaskInputs from '../../components/taskInputFields';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FindStartDateButton from '../../components/FindStartTimeButton';
 import { Task, Interval } from '../../datatypes/datatypes';
 import { components, typography, colors, space } from '../../styles/theme';
@@ -29,11 +29,16 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [saveModal, setSaveModal] = React.useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
+	
 	const showModal = () => setVisible(true);
 
 	const hideModal = () => {
 		setVisible(false);
 	};
+
+	useEffect(() => {
+		// TODO reset startdate when constraints changes
+	}, [newStartInterval, newEndInterval]);
 
 	const saveTask = async () => {
 		const updatedTask: Task = {
@@ -59,9 +64,13 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		showModal();
 	};
 
-	const handleCancel = () => {
-		reroute();
+	const navigateToOverview = (nav, data) => {
+		nav.jumpTo('Overview', { data: data });
 	};
+
+	const backToOverview = () => {
+		navigateToOverview(navigation, route.params.data);
+	}
 
 	const handleDelete = () => {
 		setModalText('Are you sure you want to delete this task?');
@@ -93,11 +102,13 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const styles = StyleSheet.create({
 		heading: {
 			alignSelf: 'center',
-			...typography.pageHeader.big,
+			...typography.pageHeader.small,
+			textAlign: 'center',
 		},
 		subheading: {
 			alignSelf: 'center',
-			...typography.pageHeader.medium,
+			...typography.pageHeader.small,
+			fontSize: 30,
 		},
 		ScheduleBtn: {
 			marginTop: '3%',
@@ -136,7 +147,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	return (
 		<View style={styles.container}>
 			<View>
-				<Text variant="headlineLarge" style={styles.heading}>
+
+				<Text variant="displayLarge" style={styles.heading}>
 					{name}
 					{'\n'}
 					<Text variant="headlineSmall" style={styles.subheading}>
@@ -159,6 +171,13 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				setPreviousTaskInUse={setPreviousTaskInUse}
 			/>
 
+			<TimeConstraintModule
+					startInterval={newStartInterval}
+					endInterval={newEndInterval}
+					setStartInterval={setStartInterval}
+					setEndInterval={setEndInterval}
+			/>
+
 			<FindStartDateButton
 				name={name}
 				duration={newDuration}
@@ -170,19 +189,13 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				setError={setErrorModal}
 			/>
 
-			<TimeConstraintModule
-				startConstraints={newStartConstraints}
-				endConstraints={newEndConstraints}
-				setStartConstraints={setStartConstraints}
-				setEndConstraints={setEndConstraints}
-			/>
 			<ResultArea time={newStartDate} loading={loading} />
 
 			<View style={styles.editButtons}>
 				<EditButtons
 					delete={handleDelete}
 					save={handleSave}
-					cancel={handleCancel}
+					cancel={backToOverview}
 				/>
 			</View>
 

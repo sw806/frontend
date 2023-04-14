@@ -47,7 +47,6 @@ export const SlidingWindow = ({
 
 	const handleOpenSlideWindow = () => {
 		setShowSlidingWindow(true);
-		console.log(filteredAllPreviousTasks)
 	};
 
 	const handleCloseSlideWindow = () => {

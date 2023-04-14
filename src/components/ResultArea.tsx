@@ -35,7 +35,7 @@ const ResultArea = (props: ResultProps) => {
 			<View style={styles.content}>
 				<Avatar.Icon
 					size={70}
-					icon="clock-outline"
+					icon="calendar-clock"
 					style={styles.icon}
 				/>
 				<Text style={styles.text}>

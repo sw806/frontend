@@ -7,7 +7,6 @@ import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase, RouteProp } from '@react-navigation/native';
 import OverviewInfoContainer from '../../components/OverviewInfoContainer';
-import ResultArea from '../../components/ResultArea';
 
 const styles = StyleSheet.create({
 	screenContainer: {
@@ -15,7 +14,8 @@ const styles = StyleSheet.create({
 	},
 	heading: {
 		alignSelf: 'center',
-		...typography.pageHeader.medium,
+		...typography.pageHeader.small,
+		textAlign: 'center',
 	},
 	cardContainer: {
 		display: 'flex',
@@ -70,12 +70,18 @@ const goEdit = (nav, data) => {
 	nav.jumpTo('Edit Task', { data: data });
 };
 
+const timeOptions = {
+	hour12: false,
+	hour: '2-digit',
+	minute: '2-digit',
+	weekday: 'short',
+};
 const OverviewPage: FC = (props: OverviewProps) => {
 	const { navigation, route } = props;
 	// @ts-ignore
-	const { name, duration, energy, power, startDate } = route.params.data;
-	const date = new Date(duration * 1000); // Convert Unix timestamp to Date object
-	const formattedDate = date.toLocaleString(); // Format the date to a string
+	const { name, duration, energy, power, startDate, must_start_between, must_end_between, price } = route.params.data;
+	const taskStartDate = new Date(startDate * 1000).toLocaleString(); 
+
 
 	return (
 		<View style={styles.screenContainer}>
@@ -88,11 +94,11 @@ const OverviewPage: FC = (props: OverviewProps) => {
 					<Card.Content style={styles.content}>
 						<Avatar.Icon
 							size={70}
-							icon="clock-outline"
+							icon="calendar-clock"
 							style={styles.icon}
 						/>
 						<Text style={styles.text}>
-							{duration ? formattedDate : duration}
+							{taskStartDate}
 						</Text>
 					</Card.Content>
 				</Card>
@@ -100,21 +106,21 @@ const OverviewPage: FC = (props: OverviewProps) => {
 					<View>
 						<OverviewInfoContainer
 							icon="clock-outline"
-							text="somethingMore"
+							text={duration + " minutes"}
 						/>
 						<OverviewInfoContainer
-							icon="clock-outline"
-							text="somethingMore"
+							icon="lightning-bolt-outline"
+							text={power + " kW"}
 						/>
 					</View>
 					<View>
 						<OverviewInfoContainer
-							icon="clock-outline"
-							text="somethingMore"
+							icon="piggy-bank-outline"
+							text={"Kr " + price}
 						/>
 						<OverviewInfoContainer
-							icon="clock-outline"
-							text="somethingMore"
+							icon="power-plug-outline"
+							text={energy + " kWh"}
 						/>
 					</View>
 				</View>

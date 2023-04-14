@@ -1,12 +1,13 @@
 export type Task = {
 	id: string;
 	name: string;
-	duration?: number;
-	energy?: number;
-	power?: number;
+	duration: number;
+	energy: number;
+	power: number;
 	startDate?: number;
-	must_start_between: {start_interval: Interval}[];
-	must_end_between: {end_interval: Interval}[];
+	must_start_between?: {start_interval: Interval}[];
+	must_end_between?: {end_interval: Interval}[];
+	price?: number;
 };
 
 export type POSTObject = {
