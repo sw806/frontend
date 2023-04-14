@@ -123,7 +123,6 @@ export const SlidingWindow = ({
 		},
 		nameInputField: {
 			height: 50,
-			width: 330,
 			marginBottom: 10,
 			backgroundColor: 'white',
 			borderColor: '#009FFF',
