@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import AddConstraint from './TimeConstraintElements';
 import uuid from 'react-native-uuid';
-import { TimeConstraint } from '../datatypes/datatypes';
+import { Interval } from '../datatypes/datatypes';
 
 const styles = StyleSheet.create({
 	ModuleView: {
@@ -77,24 +77,24 @@ const styles = StyleSheet.create({
 
 
 type TimeConstraintModuleProps = {
-	startConstraints: TimeConstraint[];
-	setStartConstraints: React.Dispatch<React.SetStateAction<TimeConstraint[]>>;
-	endConstraints: TimeConstraint[];
-	setEndConstraints: React.Dispatch<React.SetStateAction<TimeConstraint[]>>;
+	startInterval: { start_interval: Interval }[];
+	setStartInterval: React.Dispatch<React.SetStateAction<{start_interval: Interval}[]>>;
+	endInterval: {end_interval: Interval}[];
+	setEndInterval: React.Dispatch<React.SetStateAction<{end_interval: Interval}[]>>;
   };
 
 const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
-	startConstraints,
-	setStartConstraints,
-	endConstraints,
-	setEndConstraints,
+	startInterval,
+	setStartInterval,
+	endInterval,
+	setEndInterval,
 	}) => {
 	const [showSlidingWindow, setShowSlidingWindow] = useState(false);
 
 	useEffect(() => {
 		//Runs on the first render
 		//And any time any dependency value changes
-	}, [startConstraints, endConstraints]);
+	}, [startInterval, endInterval]);
 
 	const handleOpenSlideWindow = () => {
 		setShowSlidingWindow(true);
@@ -102,54 +102,71 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 
 	const handleCloseSlideWindow = () => {
 		setShowSlidingWindow(false);
+		console.log(startInterval)
+		console.log(endInterval)
 	};
 
-	const handleDeleteStartConstraint = (id: string) => {
-		setStartConstraints((prevStartConstraints) =>
-			prevStartConstraints.filter((constraint) => constraint.id !== id)
-		);
-	};
-
-	const handleDeleteEndConstraint = (id: string) => {
-		setEndConstraints((prevEndConstraints) =>
-			prevEndConstraints.filter((constraint) => constraint.id !== id)
-		);
-	};
-
-	const handleAddStartConstraint = () => {
-		const newStartConstraint: TimeConstraint = {
-			id: uuid.v4().toString(),
-			startTime: null,
-			endTime: null,
-		};
-		setStartConstraints([...startConstraints, newStartConstraint]);
-	};
-
-	const handleAddEndConstraint = () => {
-		const newEndConstraint: TimeConstraint = {
-			id: uuid.v4().toString(),
-			startTime: null,
-			endTime: null,
-		};
-		setEndConstraints([...endConstraints, newEndConstraint]);
-	};
-
-	const updateStartConstraint = (updatedConstraint: TimeConstraint) => {
-		setStartConstraints((prevStartConstraints) =>
-		  prevStartConstraints.map((constraint) =>
-			constraint.id === updatedConstraint.id ? updatedConstraint : constraint
+	const handleDeleteStartInterval = (id: string) => {
+		setStartInterval((prevStartIntervals) =>
+		  prevStartIntervals.filter(
+			(intervalObject) => intervalObject.start_interval.id !== id
 		  )
 		);
 	  };
 	  
-	  const updateEndConstraint = (updatedConstraint: TimeConstraint) => {
-		setEndConstraints((prevEndConstraints) =>
-		  prevEndConstraints.map((constraint) =>
-			constraint.id === updatedConstraint.id ? updatedConstraint : constraint
+	  const handleDeleteEndInterval = (id: string) => {
+		setEndInterval((prevEndIntervals) =>
+		  prevEndIntervals.filter(
+			(intervalObject) => intervalObject.end_interval.id !== id
+		  )
+		);
+	  };
+
+	const handleAddStartInterval = () => {
+
+		const now = new Date();
+		const nextDay = new Date(now);
+		nextDay.setDate(now.getDate() + 1);
+		nextDay.setHours(15, 0, 0, 0);
+
+		const newStartInterval: Interval = {
+			id: uuid.v4().toString(),
+			start: Math.floor(now.getTime() / 1000),
+			end: Math.floor(nextDay.getTime() / 1000),
+			duration: null,
+		};
+		setStartInterval([...startInterval, { start_interval: newStartInterval }]);
+	};
+
+	const handleAddEndInterval = () => {
+		const newEndInterval: Interval = {
+			id: uuid.v4().toString(),
+			start: null,
+			end: null,
+			duration: null
+		};
+		setEndInterval([...endInterval, { end_interval: newEndInterval}]);
+	};
+
+	const updateStartInterval = (updatedInterval: Interval) => {
+		setStartInterval((prevStartIntervals) =>
+		  prevStartIntervals.map((interval) =>
+			interval.start_interval.id === updatedInterval.id
+			  ? { start_interval: updatedInterval }
+			  : interval
 		  )
 		);
 	  };
 	  
+	  const updateEndInterval = (updatedInterval: Interval) => {
+		setEndInterval((prevEndIntervals) =>
+		  prevEndIntervals.map((interval) =>
+			interval.end_interval.id === updatedInterval.id
+			  ? { end_interval: updatedInterval }
+			  : interval
+		  )
+		);
+	  };
 
 	return (
 		<View>
@@ -186,7 +203,7 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 					</Text>
 					<TouchableOpacity
 						style={styles.addButton}
-						onPress={handleAddStartConstraint}
+						onPress={handleAddStartInterval}
 					>
 						<Text style={styles.addButtonText}> Add</Text>
 						<Avatar.Icon
@@ -198,16 +215,17 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 					</TouchableOpacity>
 
 					<ScrollView style={styles.scrollView}>
-						{startConstraints.map((constraint) => (
-							<View key={constraint.id}>
-								<AddConstraint
-									TimeConstraint={constraint}
-									onDelete={handleDeleteStartConstraint}
-									onUpdate={updateStartConstraint}
-								/>
+						{startInterval.map((intervalObject) => (
+						<View key={intervalObject.start_interval.id}>
+							<AddConstraint
+								interval={intervalObject.start_interval}
+								onDelete={handleDeleteStartInterval}
+								onUpdate={updateStartInterval}
+							/>
 							</View>
 						))}
 					</ScrollView>
+
 
 					<Text style={styles.constraintHeading}>
 						End constraints
@@ -215,7 +233,7 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 
 					<TouchableOpacity
 						style={styles.addButton}
-						onPress={handleAddEndConstraint}
+						onPress={handleAddEndInterval}
 					>
 						<Text style={styles.addButtonText}> Add</Text>
 						<Avatar.Icon
@@ -227,13 +245,13 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 					</TouchableOpacity>
 
 					<ScrollView style={styles.scrollView}>
-						{endConstraints.map((constraint) => (
-							<View key={constraint.id}>
-								<AddConstraint
-									TimeConstraint={constraint}
-									onDelete={handleDeleteEndConstraint}
-									onUpdate={updateEndConstraint}
-								/>
+						{endInterval.map((intervalObject) => (
+							<View key={intervalObject.end_interval.id}>
+							<AddConstraint
+								interval={intervalObject.end_interval}
+								onDelete={handleDeleteEndInterval}
+								onUpdate={updateEndInterval}
+							/>
 							</View>
 						))}
 					</ScrollView>

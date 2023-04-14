@@ -24,5 +24,13 @@ export const postSchedule = async (
 
 	const responseData: ScheduleResponse = await response.json();
 
-	return responseData;
+	try {
+		if (responseData.start_date) {
+			return responseData;
+		}
+	} catch (error) {
+		console.log(error);
+		throw new Error('Error in response object');
+	}
+	throw new Error('Unknown Error');
 };

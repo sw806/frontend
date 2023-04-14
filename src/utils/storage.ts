@@ -1,7 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Task, Options } from '../datatypes/datatypes';
+import { Task, Options, RasponseTask } from '../datatypes/datatypes';
 
 const settings_id: string = '@Settings_key';
+const schedule_id: string = '@Schedule_key';
+const task_id: string = '@Task_key';
+
+type TaskEnc = {
+	[id: string]: Task
+}
 
 export module StorageService {
 	/**
@@ -10,13 +16,15 @@ export module StorageService {
 	 */
 	export async function getAllTasks() {
 		try {
-			// get saved keys
-			const keys = await AsyncStorage.getAllKeys();
-			const data_keys = keys.filter((key) => key != settings_id);
-			const data = await AsyncStorage.multiGet(data_keys);
+			const data = await AsyncStorage.getItem(task_id);
 
-			const d: readonly Task[] = data.map((d) => JSON.parse(d[1]));
-			return d;
+			if (data) {
+				const t: TaskEnc = JSON.parse(data);
+				const d: readonly Task[] = Object.values(t) ?? [];
+				return d;
+			}
+
+			return [];
 		} catch (error) {
 			console.log(error);
 		}
@@ -35,6 +43,18 @@ export module StorageService {
 		}
 	}
 
+	export async function getSchedule() {
+		try {
+			const data = await AsyncStorage.getItem(schedule_id);
+
+			const d: RasponseTask = JSON.parse(data);
+			return d;
+		} catch (error) {
+			console.log(error);
+			return undefined
+		}
+	}
+
 	/**
 	 * Saves a task to local storage
 	 * @param task to be saved
@@ -42,12 +62,17 @@ export module StorageService {
 	export async function saveTask(task: Task) {
 		try {
 			// check for existing id
-			const existingTask = await AsyncStorage.getItem(task.id);
-			if (existingTask !== null) {
-				// Generate a new id if the key already exists by calling itself recursively
-				saveTask(task);
-			}
-			await AsyncStorage.setItem(task.id, JSON.stringify(task));
+			const data = await AsyncStorage.getItem(task_id);
+
+			let t: TaskEnc = {}
+
+			if (data) {
+				t = JSON.parse(data)
+			} 
+
+			t[task.id] = task;
+
+			await AsyncStorage.setItem(task_id, JSON.stringify(t));
 		} catch (error) {
 			console.log(error);
 		}
@@ -61,13 +86,32 @@ export module StorageService {
 		}
 	}
 
+	export async function saveSchedule(schedule: RasponseTask) {
+		try {
+			await AsyncStorage.setItem(schedule_id, JSON.stringify(schedule));
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	/**
 	 * Deletes a task from local storage
 	 * @param taskID
 	 */
 	export async function deleteTask(taskID: string) {
 		try {
-			await AsyncStorage.removeItem(taskID);
+			// check for existing id
+			const data = await AsyncStorage.getItem(task_id);
+
+			const t: TaskEnc = {}
+
+			if (data) {
+				const t: TaskEnc = JSON.parse(data)
+			}
+
+			delete t[taskID];
+
+			await AsyncStorage.setItem(task_id, JSON.stringify(t));
 		} catch (error) {
 			console.log(error);
 		}
@@ -79,8 +123,7 @@ export module StorageService {
 	 */
 	export async function updateTask(task: Task) {
 		try {
-			await AsyncStorage.removeItem(task.id);
-			await AsyncStorage.setItem(task.id, JSON.stringify(task));
+			await saveTask(task);
 		} catch (error) {
 			console.log(error);
 		}
