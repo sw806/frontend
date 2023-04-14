@@ -34,7 +34,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	
 
 	const getPreviousTasks = async () => {
-		setAllPreviousTasks(await StorageService.getAllTasks());
+		setAllPreviousTasks(await StorageService.getAllTemplateTasks());
 	};
 
 	useEffect(() => {

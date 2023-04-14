@@ -4,6 +4,7 @@ import { Task, Options, RasponseTask } from '../datatypes/datatypes';
 const settings_id: string = '@Settings_key';
 const schedule_id: string = '@Schedule_key';
 const task_id: string = '@Task_key';
+const templateTask_id: string = '@TemplateTask_key';
 
 type TaskEnc = {
 	[id: string]: Task
@@ -17,6 +18,26 @@ export module StorageService {
 	export async function getAllTasks() {
 		try {
 			const data = await AsyncStorage.getItem(task_id);
+
+			if (data) {
+				const t: TaskEnc = JSON.parse(data);
+				const d: readonly Task[] = Object.values(t) ?? [];
+				return d;
+			}
+
+			return [];
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	/**
+		 * retrives all saved tasks from the local storage
+		 * @returns array containing all the tasks from the local storage
+		 */
+	export async function getAllTemplateTasks() {
+		try {
+			const data = await AsyncStorage.getItem(templateTask_id);
 
 			if (data) {
 				const t: TaskEnc = JSON.parse(data);
@@ -73,6 +94,31 @@ export module StorageService {
 			t[task.id] = task;
 
 			await AsyncStorage.setItem(task_id, JSON.stringify(t));
+
+			await saveTemplateTask(task)
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	/**
+	 * Saves a task to local storage
+	 * @param task to be saved
+	 */
+	export async function saveTemplateTask(task: Task) {
+		try {
+			// check for existing id
+			const data = await AsyncStorage.getItem(templateTask_id);
+
+			let t: TaskEnc = {}
+
+			if (data) {
+				t = JSON.parse(data)
+			} 
+
+			t[task.name] = task;
+
+			await AsyncStorage.setItem(templateTask_id, JSON.stringify(t));
 		} catch (error) {
 			console.log(error);
 		}
