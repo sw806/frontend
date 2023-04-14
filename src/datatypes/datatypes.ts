@@ -32,6 +32,7 @@ export type MaximumPowerConsumption = {
 
 export type Options = {
 	max_consumption: number;
+	notification_offset: number;
 };
 
 export type Interval = {

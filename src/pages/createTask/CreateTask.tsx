@@ -15,6 +15,7 @@ import { StorageService } from '../../utils/storage';
 import { SlidingWindow } from '../../components/PreviousTasksTemplate';
 import TimeConstraintModule from '../../components/TimeConstraintModule';
 import { ScrollView } from 'react-native-gesture-handler';
+import { NotificationService } from '../../utils/notificationsService';
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -54,6 +55,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		};
 
 		await StorageService.saveTask(newTask);
+		await NotificationService.createTaskNotification(newTask);
+
 		toggleModal();
 	};
 

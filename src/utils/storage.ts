@@ -85,15 +85,10 @@ export module StorageService {
 			// check for existing id
 			const data = await AsyncStorage.getItem(task_id);
 
-			let t: TaskEnc = {}
+			const tasks: TaskEnc = data ? JSON.parse(data) : {}
+			tasks[task.id] = task;
 
-			if (data) {
-				t = JSON.parse(data)
-			} 
-
-			t[task.id] = task;
-
-			await AsyncStorage.setItem(task_id, JSON.stringify(t));
+			await AsyncStorage.setItem(task_id, JSON.stringify(tasks));
 
 			await saveTemplateTask(task)
 		} catch (error) {
@@ -110,12 +105,7 @@ export module StorageService {
 			// check for existing id
 			const data = await AsyncStorage.getItem(templateTask_id);
 
-			let t: TaskEnc = {}
-
-			if (data) {
-				t = JSON.parse(data)
-			} 
-
+			const t: TaskEnc = data ? JSON.parse(data) : {}
 			t[task.name] = task;
 
 			await AsyncStorage.setItem(templateTask_id, JSON.stringify(t));
@@ -149,15 +139,10 @@ export module StorageService {
 			// check for existing id
 			const data = await AsyncStorage.getItem(task_id);
 
-			const t: TaskEnc = {}
+			const tasks: TaskEnc = data ? JSON.parse(data) : {}
+			delete tasks[taskID];
 
-			if (data) {
-				const t: TaskEnc = JSON.parse(data)
-			}
-
-			delete t[taskID];
-
-			await AsyncStorage.setItem(task_id, JSON.stringify(t));
+			await AsyncStorage.setItem(task_id, JSON.stringify(tasks));
 		} catch (error) {
 			console.log(error);
 		}

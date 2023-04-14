@@ -13,11 +13,19 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [maxConsumption, setMaxConsumption] = useState<string>('0');
+	const [notificationOffset, setNotificationOffset] = useState<string>('0');
 
 	const fetchData = async () => {
 		const options: Options = await StorageService.getSettings();
-		if (options && options.max_consumption) {
-			setMaxConsumption(options.max_consumption.toString());
+		if (options) {
+			if (options.max_consumption) {
+				setMaxConsumption(options.max_consumption.toString());
+			}
+			if (options.notification_offset) {
+				setNotificationOffset(options.notification_offset.toString());
+			} else {
+				setNotificationOffset("15")
+			}
 		}
 	};
 
@@ -28,6 +36,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const saveSettigns = async () => {
 		const newSettings: Options = {
 			max_consumption: parseFloat(maxConsumption),
+			notification_offset: parseFloat(notificationOffset)
 		};
 
 		await StorageService.saveSettings(newSettings);
@@ -65,10 +74,13 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 	});
 
 	const handleInput = (inputName: string, inputValue: string) => {
-		if (isValidNumber(inputValue)) {
+		if (isValidNumber(inputValue) || inputValue == "") {
 			switch (inputName) {
 				case 'maxConsumption':
 					setMaxConsumption(inputValue);
+					break;
+				case 'notificationOffset':
+					setNotificationOffset(inputValue);
 					break;
 			}
 			return true;
@@ -95,6 +107,22 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 					placeholder="Max power consumption (Watt)"
 					onChangeText={(text) => handleInput('maxConsumption', text)}
 					value={maxConsumption}
+					keyboardType="numeric"
+					activeUnderlineColor="#009FFF"
+					activeOutlineColor="#009FFF"
+					outlineColor="#009FFF"
+					underlineColor="#009FFF"
+				/>
+			</View>
+
+			<View style={{ marginTop: 20 }}>
+				<TextInput
+					mode="outlined"
+					testID="notification_delay"
+					label="Time before notification (minutes)"
+					placeholder="Time before notification (minutes)"
+					onChangeText={(text) => handleInput('notificationOffset', text)}
+					value={notificationOffset}
 					keyboardType="numeric"
 					activeUnderlineColor="#009FFF"
 					activeOutlineColor="#009FFF"

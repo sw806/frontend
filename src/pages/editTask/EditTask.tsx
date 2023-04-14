@@ -13,6 +13,7 @@ import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
 import TimeConstraintModule from '../../components/TimeConstraintModule';
 import { ScrollView } from 'react-native-gesture-handler';
+import { NotificationService } from '../../utils/notificationsService';
 
 const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -57,6 +58,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	};
 
 	const removeTask = async () => {
+		await NotificationService.removeTaskNotification(id);
 		await StorageService.deleteTask(id);
 	};
 	const handleSave = () => {
