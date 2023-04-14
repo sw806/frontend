@@ -22,8 +22,8 @@ export type schedule = {
 export type ResponseTask = {
 	duration: number;
 	power: number;
-	must_start_between: [{start_interval: Interval}];
-	must_end_between: [{end_interval: Interval}];
+	must_start_between: {start_interval: Interval}[];
+	must_end_between: {end_interval: Interval}[];
 	start_interval: Interval;
 	cost: number;
 };

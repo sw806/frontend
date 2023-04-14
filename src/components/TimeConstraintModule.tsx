@@ -90,11 +90,8 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 	setEndInterval,
 	}) => {
 	const [showSlidingWindow, setShowSlidingWindow] = useState(false);
-
-	useEffect(() => {
-		//Runs on the first render
-		//And any time any dependency value changes
-	}, [startInterval, endInterval]);
+	const constraint = new Date();
+	constraint.setHours(15,0,0,0);
 
 	const handleOpenSlideWindow = () => {
 		setShowSlidingWindow(true);
@@ -102,8 +99,6 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 
 	const handleCloseSlideWindow = () => {
 		setShowSlidingWindow(false);
-		console.log(startInterval)
-		console.log(endInterval)
 	};
 
 	const handleDeleteStartInterval = (id: string) => {
@@ -123,27 +118,37 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 	  };
 
 	const handleAddStartInterval = () => {
+		let start = new Date();
+		let end = new Date(start);
+		end.setHours(23, 59, 0, 0);
 
-		const now = new Date();
-		const nextDay = new Date(now);
-		nextDay.setDate(now.getDate() + 1);
-		nextDay.setHours(15, 0, 0, 0);
-
+		// if current time is above 15:00 we have next day prognosis 
+		if (start.getTime() > constraint.getTime()) {
+			end.setDate(start.getDate() + 1);
+		} 
 		const newStartInterval: Interval = {
 			id: uuid.v4().toString(),
-			start: Math.floor(now.getTime() / 1000),
-			end: Math.floor(nextDay.getTime() / 1000),
+			start: Math.floor(start.getTime() / 1000),
+			end: Math.floor(end.getTime() / 1000),
 			duration: null,
 		};
 		setStartInterval([...startInterval, { start_interval: newStartInterval }]);
 	};
 
 	const handleAddEndInterval = () => {
+		let start = new Date();
+		let end = new Date(start);
+		end.setHours(23, 59, 0, 0);
+
+		// if current time is above 15:00 we have next day prognosis 
+		if (start.getTime() > constraint.getTime()) {
+			end.setDate(start.getDate() + 1);
+		} 
 		const newEndInterval: Interval = {
 			id: uuid.v4().toString(),
-			start: null,
-			end: null,
-			duration: null
+			start: Math.floor(start.getTime() / 1000),
+			end: Math.floor(end.getTime() / 1000),
+			duration: null,
 		};
 		setEndInterval([...endInterval, { end_interval: newEndInterval}]);
 	};

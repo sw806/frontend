@@ -41,26 +41,35 @@ const AddConstraint = ({ interval, onDelete, onUpdate }: AddConstraintProps) => 
 	const [pickerType, setPickerType] = useState<'startTime' | 'endTime'>('startTime');
 	const [timeIntervalState, setTimeIntervalState] = useState(interval);
 
-	const handleDateTimePickerChange = (
-		name: 'startTime' | 'endTime',
-		selectedDate: Date | undefined
-	) => {
-		const unixTime = Math.floor(selectedDate.getTime() / 1000);
-		const updatedTimeInterval = { ...timeIntervalState };
-		if (name === 'startTime') {
-			updatedTimeInterval.start = unixTime;
-		} else {
-			updatedTimeInterval.end = unixTime;
-		}
-		setTimeIntervalState(updatedTimeInterval);
-		onUpdate(updatedTimeInterval); // Add this line
-	};
-
 	const timeOptions = {
 		hour12: false,
 		hour: '2-digit',
 		minute: '2-digit',
 		weekday: 'short',
+	};
+
+	const handleDateTimePickerChange = (
+		name: 'startTime' | 'endTime',
+		selectedDate: Date | undefined
+	) => {
+		const selectedDateUnix= Math.floor(selectedDate.getTime() / 1000);
+		const updatedTimeInterval = { ...timeIntervalState };
+		if (name === 'startTime') {
+			if(updatedTimeInterval.start > selectedDateUnix ){
+				alert("Please select a time after the current time.");
+				return;
+			}
+			updatedTimeInterval.start = selectedDateUnix;
+			
+		} else {
+			if(selectedDateUnix < updatedTimeInterval.start){
+				alert("Please select a time after the From constriant");
+				return;
+			}
+			updatedTimeInterval.end = selectedDateUnix;
+		}
+		setTimeIntervalState(updatedTimeInterval);
+		onUpdate(updatedTimeInterval);
 	};
 
 	return (
