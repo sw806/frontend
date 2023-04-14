@@ -12,6 +12,7 @@ import { Task, Interval } from '../../datatypes/datatypes';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
 import TimeConstraintModule from '../../components/TimeConstraintModule';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -145,16 +146,12 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	});
 
 	return (
+		<ScrollView>
 		<View style={styles.container}>
 			<View>
 
 				<Text variant="displayLarge" style={styles.heading}>
 					{name}
-					{'\n'}
-					<Text variant="headlineSmall" style={styles.subheading}>
-						{' '}
-						Edit
-					</Text>
 				</Text>
 			</View>
 
@@ -260,6 +257,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				</View>
 			</Modal>
 		</View>
+		</ScrollView>
 	);
 };
 
