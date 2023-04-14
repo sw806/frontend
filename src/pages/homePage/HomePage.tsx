@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
 });
 
 const handleEditTask = (nav, data) => {
+	console.log(data)
 	nav.jumpTo('Overview', { data: data });
 };
 
@@ -115,7 +116,7 @@ const HomePage = (props) => {
 							(f.startDate * 1000 <= currentTime.getTime() && (f.startDate * 1000) + (f.duration * 60000)) >= currentTime.getTime()
 						)).map((d) => (
 							<DataTable.Row
-								onPress={() => handleEditTask(navigation, data)}
+								onPress={() => handleEditTask(navigation, d)}
 								key={d ? d.id : 0} 						
 								style={styles.timeRowRunning}
 								>
@@ -153,7 +154,7 @@ const HomePage = (props) => {
 							(f.startDate * 1000) > currentTime.getTime()
 						)).map((d) => (
 							<DataTable.Row
-								onPress={() => handleEditTask(navigation, data)}
+								onPress={() => handleEditTask(navigation, d)}
 								key={d ? d.id : 0} 						
 								style={styles.timeRowPlanned}
 								>
@@ -189,7 +190,7 @@ const HomePage = (props) => {
 							(f.startDate * 1000) + (f.duration * 60000) < currentTime.getTime()
 						)).map((d) => (
 							<DataTable.Row
-								onPress={() => handleEditTask(navigation, data)}
+								onPress={() => handleEditTask(navigation, d)}
 								key={d ? d.id : 0} 						
 								style={styles.timeRowFinished}
 								>
