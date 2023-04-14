@@ -7,8 +7,8 @@ const task_id: string = '@Task_key';
 const templateTask_id: string = '@TemplateTask_key';
 
 type TaskEnc = {
-	[id: string]: Task
-}
+	[id: string]: Task;
+};
 
 export module StorageService {
 	/**
@@ -32,9 +32,9 @@ export module StorageService {
 	}
 
 	/**
-		 * retrives all saved tasks from the local storage
-		 * @returns array containing all the tasks from the local storage
-		 */
+	 * retrives all saved tasks from the local storage
+	 * @returns array containing all the tasks from the local storage
+	 */
 	export async function getAllTemplateTasks() {
 		try {
 			const data = await AsyncStorage.getItem(templateTask_id);
@@ -59,8 +59,8 @@ export module StorageService {
 			return d;
 		} catch (error) {
 			console.log(error);
-			const d: Options = {max_consumption: 0}
-			return d
+			const d: Options = { max_consumption: 0 };
+			return d;
 		}
 	}
 
@@ -72,7 +72,7 @@ export module StorageService {
 			return d;
 		} catch (error) {
 			console.log(error);
-			return undefined
+			return undefined;
 		}
 	}
 
@@ -85,12 +85,12 @@ export module StorageService {
 			// check for existing id
 			const data = await AsyncStorage.getItem(task_id);
 
-			const tasks: TaskEnc = data ? JSON.parse(data) : {}
+			const tasks: TaskEnc = data ? JSON.parse(data) : {};
 			tasks[task.id] = task;
 
 			await AsyncStorage.setItem(task_id, JSON.stringify(tasks));
 
-			await saveTemplateTask(task)
+			await saveTemplateTask(task);
 		} catch (error) {
 			console.log(error);
 		}
@@ -105,7 +105,7 @@ export module StorageService {
 			// check for existing id
 			const data = await AsyncStorage.getItem(templateTask_id);
 
-			const t: TaskEnc = data ? JSON.parse(data) : {}
+			const t: TaskEnc = data ? JSON.parse(data) : {};
 			t[task.name] = task;
 
 			await AsyncStorage.setItem(templateTask_id, JSON.stringify(t));
@@ -139,7 +139,7 @@ export module StorageService {
 			// check for existing id
 			const data = await AsyncStorage.getItem(task_id);
 
-			const tasks: TaskEnc = data ? JSON.parse(data) : {}
+			const tasks: TaskEnc = data ? JSON.parse(data) : {};
 			delete tasks[taskID];
 
 			await AsyncStorage.setItem(task_id, JSON.stringify(tasks));

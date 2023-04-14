@@ -8,7 +8,7 @@ import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 
 import CreateNewTaskInputs from '../../components/taskInputFields';
 import ResultArea from '../../components/ResultArea';
-import { Interval, Task} from '../../datatypes/datatypes';
+import { Interval, Task } from '../../datatypes/datatypes';
 import FindStartDateButton from '../../components/FindStartTimeButton';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
@@ -27,12 +27,16 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [startDate, setStartDate] = useState<number>();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
-	const [allPreviousTasks, setAllPreviousTasks] = useState<readonly Task[]>([]);
+	const [allPreviousTasks, setAllPreviousTasks] = useState<readonly Task[]>(
+		[]
+	);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
-	const [startInterval, setStartInterval] = useState<{ start_interval: Interval }[]>([]);
-	const [endInterval, setEndInterval] = useState<{ end_interval: Interval }[]>([]);
-	
-	
+	const [startInterval, setStartInterval] = useState<
+		{ start_interval: Interval }[]
+	>([]);
+	const [endInterval, setEndInterval] = useState<
+		{ end_interval: Interval }[]
+	>([]);
 
 	const getPreviousTasks = async () => {
 		setAllPreviousTasks(await StorageService.getAllTemplateTasks());
@@ -173,7 +177,9 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				<Modal isVisible={isModalVisible}>
 					<View style={styles.modalBackground}>
 						<View style={styles.modalContainer}>
-							<Text style={{ color: '#009FFF', paddingBottom: 10 }}>
+							<Text
+								style={{ color: '#009FFF', paddingBottom: 10 }}
+							>
 								{' '}
 								{name} scheduled!
 							</Text>
@@ -191,9 +197,11 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				<Modal isVisible={errorModal}>
 					<View style={styles.modalBackground}>
 						<View style={styles.modalContainer}>
-							<Text style={{ color: '#009FFF', paddingBottom: 10 }}>
-								Error connecting to server!{'\n'}Please check your
-								connection and try again
+							<Text
+								style={{ color: '#009FFF', paddingBottom: 10 }}
+							>
+								Error connecting to server!{'\n'}Please check
+								your connection and try again
 							</Text>
 
 							<Button

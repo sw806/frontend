@@ -13,60 +13,68 @@ Notifications.setNotificationHandler({
 });
 
 export module NotificationService {
-    async function initialise(): Promise<void> {
-        if (Device.isDevice) {
-            const { status: existingStatus } = await Notifications.getPermissionsAsync();
-            let finalStatus = existingStatus;
+	async function initialise(): Promise<void> {
+		if (Device.isDevice) {
+			const { status: existingStatus } =
+				await Notifications.getPermissionsAsync();
+			let finalStatus = existingStatus;
 
-            if (existingStatus != "granted") {
-                const { status } = await Notifications.requestPermissionsAsync();
-                finalStatus = status;
-            }
+			if (existingStatus != 'granted') {
+				const { status } =
+					await Notifications.requestPermissionsAsync();
+				finalStatus = status;
+			}
 
-            if (finalStatus != "granted") {
-                console.log("Failed to get notification permission.")
-                return;
-            }
-        }
+			if (finalStatus != 'granted') {
+				console.log('Failed to get notification permission.');
+				return;
+			}
+		}
 
-        if (Platform.OS == "android") {
-            Notifications.setNotificationChannelAsync("default", {
-                name: "default",
-                importance: Notifications.AndroidImportance.MAX,
-                vibrationPattern: [0, 250, 250, 250],
-                lightColor: '#FF231F7C',
-            })
-        }
-    }
+		if (Platform.OS == 'android') {
+			Notifications.setNotificationChannelAsync('default', {
+				name: 'default',
+				importance: Notifications.AndroidImportance.MAX,
+				vibrationPattern: [0, 250, 250, 250],
+				lightColor: '#FF231F7C',
+			});
+		}
+	}
 
-    export async function createTaskNotification(task: Task) {
-        const options: Options = await StorageService.getSettings();
+	export async function createTaskNotification(task: Task) {
+		const options: Options = await StorageService.getSettings();
 
-        let secondsBefore = 15 * 60;
-        if (!options && !options.notification_offset) {
-            secondsBefore = options.notification_offset * 60
-        }
+		let secondsBefore = 15 * 60;
+		if (!options && !options.notification_offset) {
+			secondsBefore = options.notification_offset * 60;
+		}
 
-        const startDate = new Date(task.startDate * 1000)
-        const reminderDate = new Date(startDate.getTime() - (secondsBefore * 1000))
+		const startDate = new Date(task.startDate * 1000);
+		const reminderDate = new Date(
+			startDate.getTime() - secondsBefore * 1000
+		);
 
-        await initialise();
-        await Notifications.scheduleNotificationAsync({
-            identifier: task.id,
-            content: {
-                title: task.name
-            },
-            trigger: {
-                seconds: 10
-            }
-        });
+		await initialise();
+		await Notifications.scheduleNotificationAsync({
+			identifier: task.id,
+			content: {
+				title: task.name,
+			},
+			trigger: {
+				seconds: 10,
+			},
+		});
 
-        console.log(`Created notification for task ${task.id} at ${reminderDate.getTime()}.`)
-    }
+		console.log(
+			`Created notification for task ${
+				task.id
+			} at ${reminderDate.getTime()}.`
+		);
+	}
 
-    export async function removeTaskNotification(taskId: string) {
-        await Notifications.cancelScheduledNotificationAsync(taskId)
+	export async function removeTaskNotification(taskId: string) {
+		await Notifications.cancelScheduledNotificationAsync(taskId);
 
-        console.log(`Canceled notification for task ${taskId}.`);
-    }
+		console.log(`Canceled notification for task ${taskId}.`);
+	}
 }

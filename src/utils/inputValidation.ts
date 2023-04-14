@@ -7,30 +7,34 @@
 function isScientificNumber(str) {
 	const regex = /^[-+]?[0-9]*\.?[0-9]+[eE][-+]?[0-9]+$/;
 
-	if(regex.test(str)) {
+	if (regex.test(str)) {
 		return true;
 	} else {
 		return false;
 	}
-};
+}
 
 function hasComma(str: string): boolean {
 	const regex = /,/g;
 	return regex.test(str);
-};
-  
+}
 
 const isValidNumber = (inputString: string) => {
-	inputString = inputString.replace(',', '.')
+	inputString = inputString.replace(',', '.');
 
 	var input;
-	if(inputString){
+	if (inputString) {
 		input = Number(inputString);
 	} else {
 		return false;
 	}
-	
-	if (isNaN(input) || isScientificNumber(input) || !isFinite(input) || hasComma(input)) {
+
+	if (
+		isNaN(input) ||
+		isScientificNumber(input) ||
+		!isFinite(input) ||
+		hasComma(input)
+	) {
 		return false;
 	} else {
 		return true;

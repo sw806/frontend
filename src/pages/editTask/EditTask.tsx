@@ -17,21 +17,37 @@ import { NotificationService } from '../../utils/notificationsService';
 
 const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
-	const { id, name, duration, energy, power, startDate, must_start_between, must_end_between } =
-		route.params.data;
-	const [newDuration, setDuration] = useState<string>(duration != undefined ? duration.toString() : "NaN");
-	const [newEnergy, setEnergy] = useState<string>(energy != undefined ? energy.toString() : "NaN");
-	const [newPower, setPower] = useState<string>(power != undefined ? power.toString() : "NaN");
+	const {
+		id,
+		name,
+		duration,
+		energy,
+		power,
+		startDate,
+		must_start_between,
+		must_end_between,
+	} = route.params.data;
+	const [newDuration, setDuration] = useState<string>(
+		duration != undefined ? duration.toString() : 'NaN'
+	);
+	const [newEnergy, setEnergy] = useState<string>(
+		energy != undefined ? energy.toString() : 'NaN'
+	);
+	const [newPower, setPower] = useState<string>(
+		power != undefined ? power.toString() : 'NaN'
+	);
 	const [newStartDate, setStartDate] = useState<number>(startDate);
-	const [newStartInterval, setStartInterval] = useState<{ start_interval: Interval }[]>(must_start_between);
-	const [newEndInterval, setEndInterval] = useState<{ end_interval: Interval }[]>(must_end_between);
+	const [newStartInterval, setStartInterval] =
+		useState<{ start_interval: Interval }[]>(must_start_between);
+	const [newEndInterval, setEndInterval] =
+		useState<{ end_interval: Interval }[]>(must_end_between);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [visible, setVisible] = React.useState<boolean>(false);
 	const [modalText, setModalText] = React.useState<string>('');
 	const [saveModal, setSaveModal] = React.useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
-	
+
 	const showModal = () => setVisible(true);
 
 	const hideModal = () => {
@@ -73,7 +89,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 	const backToOverview = () => {
 		navigateToOverview(navigation, route.params.data);
-	}
+	};
 
 	const handleDelete = () => {
 		setModalText('Are you sure you want to delete this task?');
@@ -149,116 +165,117 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 	return (
 		<ScrollView>
-		<View style={styles.container}>
-			<View>
+			<View style={styles.container}>
+				<View>
+					<Text variant="displayLarge" style={styles.heading}>
+						{name}
+					</Text>
+				</View>
 
-				<Text variant="displayLarge" style={styles.heading}>
-					{name}
-				</Text>
-			</View>
+				<CreateNewTaskInputs
+					duration={newDuration}
+					power={newPower}
+					energy={newEnergy}
+					screenName={route.name}
+					setDuration={setDuration}
+					setPower={setPower}
+					setEnergy={setEnergy}
+					setStartDate={setStartDate}
+					previousTaskInUse={previousTaskInUse}
+					setPreviousTaskInUse={setPreviousTaskInUse}
+				/>
 
-			<CreateNewTaskInputs
-				duration={newDuration}
-				power={newPower}
-				energy={newEnergy}
-				screenName={route.name}
-				setDuration={setDuration}
-				setPower={setPower}
-				setEnergy={setEnergy}
-				setStartDate={setStartDate}
-				previousTaskInUse={previousTaskInUse}
-				setPreviousTaskInUse={setPreviousTaskInUse}
-			/>
-
-			<TimeConstraintModule
+				<TimeConstraintModule
 					startInterval={newStartInterval}
 					endInterval={newEndInterval}
 					setStartInterval={setStartInterval}
 					setEndInterval={setEndInterval}
-			/>
-
-			<FindStartDateButton
-				name={name}
-				duration={newDuration}
-				power={newPower}
-				energy={newEnergy}
-				startDate={newStartDate}
-				setStartDate={setStartDate}
-				setLoading={setLoading}
-				setError={setErrorModal}
-			/>
-
-			<ResultArea time={newStartDate} loading={loading} />
-
-			<View style={styles.editButtons}>
-				<EditButtons
-					delete={handleDelete}
-					save={handleSave}
-					cancel={backToOverview}
 				/>
-			</View>
 
-			<Modal isVisible={visible}>
-				<View style={styles.modalBackground}>
-					<View style={styles.modalContainer}>
-						<Text variant="bodyMedium">{modalText}</Text>
+				<FindStartDateButton
+					name={name}
+					duration={newDuration}
+					power={newPower}
+					energy={newEnergy}
+					startDate={newStartDate}
+					setStartDate={setStartDate}
+					setLoading={setLoading}
+					setError={setErrorModal}
+				/>
 
-						<View style={styles.dualContainer}>
-							<Button
-								style={styles.btn}
-								mode="elevated"
-								buttonColor="#607d8b"
-								textColor="#ffffff"
-								onPress={() => modalCancel()}
-							>
-								Cancel
-							</Button>
-							{saveModal && (
+				<ResultArea time={newStartDate} loading={loading} />
+
+				<View style={styles.editButtons}>
+					<EditButtons
+						delete={handleDelete}
+						save={handleSave}
+						cancel={backToOverview}
+					/>
+				</View>
+
+				<Modal isVisible={visible}>
+					<View style={styles.modalBackground}>
+						<View style={styles.modalContainer}>
+							<Text variant="bodyMedium">{modalText}</Text>
+
+							<View style={styles.dualContainer}>
 								<Button
 									style={styles.btn}
 									mode="elevated"
-									buttonColor="#4caf50"
+									buttonColor="#607d8b"
 									textColor="#ffffff"
-									disabled={!newStartDate}
-									onPress={() => modalSave()}
+									onPress={() => modalCancel()}
 								>
-									Save
+									Cancel
 								</Button>
-							)}
-							{!saveModal && (
-								<Button
-									style={styles.btn}
-									mode="elevated"
-									buttonColor="#d32f2f"
-									textColor="#ffffff"
-									onPress={() => modalDelete()}
-								>
-									Delete
-								</Button>
-							)}
+								{saveModal && (
+									<Button
+										style={styles.btn}
+										mode="elevated"
+										buttonColor="#4caf50"
+										textColor="#ffffff"
+										disabled={!newStartDate}
+										onPress={() => modalSave()}
+									>
+										Save
+									</Button>
+								)}
+								{!saveModal && (
+									<Button
+										style={styles.btn}
+										mode="elevated"
+										buttonColor="#d32f2f"
+										textColor="#ffffff"
+										onPress={() => modalDelete()}
+									>
+										Delete
+									</Button>
+								)}
+							</View>
 						</View>
 					</View>
-				</View>
-			</Modal>
-			<Modal isVisible={errorModal}>
-				<View style={styles.modalBackground}>
-					<View style={styles.modalContainer}>
-						<Text style={{ color: '#009FFF', paddingBottom: 10 }}>
-							Error connecting to server!{'\n'}Please check your
-							connection and try again
-						</Text>
+				</Modal>
+				<Modal isVisible={errorModal}>
+					<View style={styles.modalBackground}>
+						<View style={styles.modalContainer}>
+							<Text
+								style={{ color: '#009FFF', paddingBottom: 10 }}
+							>
+								Error connecting to server!{'\n'}Please check
+								your connection and try again
+							</Text>
 
-						<Button
-							buttonColor={colors.blue.regular}
-							textColor={colors.neutral.white}
-							onPress={() => setErrorModal(false)}
-						>
-							Close
-						</Button>
+							<Button
+								buttonColor={colors.blue.regular}
+								textColor={colors.neutral.white}
+								onPress={() => setErrorModal(false)}
+							>
+								Close
+							</Button>
+						</View>
 					</View>
-				</View>
-			</Modal>
-		</View>
+				</Modal>
+			</View>
 		</ScrollView>
 	);
 };

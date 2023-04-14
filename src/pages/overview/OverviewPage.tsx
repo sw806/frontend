@@ -79,9 +79,17 @@ const timeOptions = {
 const OverviewPage: FC = (props: OverviewProps) => {
 	const { navigation, route } = props;
 	// @ts-ignore
-	const { name, duration, energy, power, startDate, must_start_between, must_end_between, price } = route.params.data;
-	const taskStartDate = new Date(startDate * 1000).toLocaleString(); 
-
+	const {
+		name,
+		duration,
+		energy,
+		power,
+		startDate,
+		must_start_between,
+		must_end_between,
+		price,
+	} = route.params.data;
+	const taskStartDate = new Date(startDate * 1000).toLocaleString();
 
 	return (
 		<View style={styles.screenContainer}>
@@ -97,30 +105,28 @@ const OverviewPage: FC = (props: OverviewProps) => {
 							icon="calendar-clock"
 							style={styles.icon}
 						/>
-						<Text style={styles.text}>
-							{taskStartDate}
-						</Text>
+						<Text style={styles.text}>{taskStartDate}</Text>
 					</Card.Content>
 				</Card>
 				<View style={styles.infoContainer}>
 					<View>
 						<OverviewInfoContainer
 							icon="clock-outline"
-							text={duration + " minutes"}
+							text={duration + ' minutes'}
 						/>
 						<OverviewInfoContainer
 							icon="lightning-bolt-outline"
-							text={power + " kW"}
+							text={power + ' kW'}
 						/>
 					</View>
 					<View>
 						<OverviewInfoContainer
 							icon="piggy-bank-outline"
-							text={"Kr " + price}
+							text={'Kr ' + price}
 						/>
 						<OverviewInfoContainer
 							icon="power-plug-outline"
-							text={energy + " kWh"}
+							text={energy + ' kWh'}
 						/>
 					</View>
 				</View>

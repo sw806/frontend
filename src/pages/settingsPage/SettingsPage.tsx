@@ -24,7 +24,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 			if (options.notification_offset) {
 				setNotificationOffset(options.notification_offset.toString());
 			} else {
-				setNotificationOffset("15")
+				setNotificationOffset('15');
 			}
 		}
 	};
@@ -36,7 +36,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const saveSettigns = async () => {
 		const newSettings: Options = {
 			max_consumption: parseFloat(maxConsumption),
-			notification_offset: parseFloat(notificationOffset)
+			notification_offset: parseFloat(notificationOffset),
 		};
 
 		await StorageService.saveSettings(newSettings);
@@ -74,7 +74,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 	});
 
 	const handleInput = (inputName: string, inputValue: string) => {
-		if (isValidNumber(inputValue) || inputValue == "") {
+		if (isValidNumber(inputValue) || inputValue == '') {
 			switch (inputName) {
 				case 'maxConsumption':
 					setMaxConsumption(inputValue);
@@ -121,7 +121,9 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 					testID="notification_delay"
 					label="Time before notification (minutes)"
 					placeholder="Time before notification (minutes)"
-					onChangeText={(text) => handleInput('notificationOffset', text)}
+					onChangeText={(text) =>
+						handleInput('notificationOffset', text)
+					}
 					value={notificationOffset}
 					keyboardType="numeric"
 					activeUnderlineColor="#009FFF"

@@ -36,9 +36,15 @@ type AddConstraintProps = {
 	onUpdate: (updatedConstraint: Interval) => void;
 };
 
-const AddConstraint = ({ interval, onDelete, onUpdate }: AddConstraintProps) => {
+const AddConstraint = ({
+	interval,
+	onDelete,
+	onUpdate,
+}: AddConstraintProps) => {
 	const [showPicker, setShowPicker] = useState(false);
-	const [pickerType, setPickerType] = useState<'startTime' | 'endTime'>('startTime');
+	const [pickerType, setPickerType] = useState<'startTime' | 'endTime'>(
+		'startTime'
+	);
 	const [timeIntervalState, setTimeIntervalState] = useState(interval);
 
 	const timeOptions = {
@@ -52,20 +58,19 @@ const AddConstraint = ({ interval, onDelete, onUpdate }: AddConstraintProps) => 
 		name: 'startTime' | 'endTime',
 		selectedDate: Date | undefined
 	) => {
-		const selectedDateUnix= Math.floor(selectedDate.getTime() / 1000);
+		const selectedDateUnix = Math.floor(selectedDate.getTime() / 1000);
 		const updatedTimeInterval = { ...timeIntervalState };
 		const dateNow = new Date().getTime() / 1000;
-		
+
 		if (name === 'startTime') {
-			if( dateNow > selectedDateUnix ){
-				alert("Please select a time after the current time.");
+			if (dateNow > selectedDateUnix) {
+				alert('Please select a time after the current time.');
 				return;
 			}
 			updatedTimeInterval.start = selectedDateUnix;
-			
 		} else {
-			if(selectedDateUnix < updatedTimeInterval.start){
-				alert("Please select a time after the From constriant");
+			if (selectedDateUnix < updatedTimeInterval.start) {
+				alert('Please select a time after the From constriant');
 				return;
 			}
 			updatedTimeInterval.end = selectedDateUnix;
@@ -85,7 +90,9 @@ const AddConstraint = ({ interval, onDelete, onUpdate }: AddConstraintProps) => 
 			>
 				<Text style={styles.nameInputFieldText}>
 					From:{' '}
-					{new Date(timeIntervalState.start * 1000).toLocaleTimeString(undefined, timeOptions)}
+					{new Date(
+						timeIntervalState.start * 1000
+					).toLocaleTimeString(undefined, timeOptions)}
 				</Text>
 			</TouchableOpacity>
 
@@ -98,7 +105,10 @@ const AddConstraint = ({ interval, onDelete, onUpdate }: AddConstraintProps) => 
 			>
 				<Text style={styles.nameInputFieldText}>
 					To:{' '}
-					{new Date(timeIntervalState.end * 1000).toLocaleTimeString(undefined, timeOptions)}
+					{new Date(timeIntervalState.end * 1000).toLocaleTimeString(
+						undefined,
+						timeOptions
+					)}
 				</Text>
 			</TouchableOpacity>
 
@@ -134,5 +144,5 @@ const AddConstraint = ({ interval, onDelete, onUpdate }: AddConstraintProps) => 
 		</View>
 	);
 };
-  
+
 export default AddConstraint;

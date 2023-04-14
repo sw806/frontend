@@ -81,26 +81,26 @@ const handleEditTask = (nav, data) => {
 const HomePage = (props) => {
 	const { navigation, route, nameProp } = props;
 	const [data, setData] = React.useState<readonly Task[]>([]);
-	const [currentTime, setCurrentTime] = React.useState<Date>(new Date()); 
+	const [currentTime, setCurrentTime] = React.useState<Date>(new Date());
 
 	const fetchData = async () => {
-			const tasks = await StorageService.getAllTasks();
+		const tasks = await StorageService.getAllTasks();
 
-			const tasksCopy = [...tasks];
-			
-			tasksCopy.sort((a,b) => {
-				const dateA = new Date(a.startDate);
-				const dateB = new Date(b.startDate);
+		const tasksCopy = [...tasks];
 
-				if(dateA < dateB) return 1;
-				if(dateA > dateB) return -1;
+		tasksCopy.sort((a, b) => {
+			const dateA = new Date(a.startDate);
+			const dateB = new Date(b.startDate);
 
-				return 0;
-			})
-			setData(tasksCopy);
+			if (dateA < dateB) return 1;
+			if (dateA > dateB) return -1;
+
+			return 0;
+		});
+		setData(tasksCopy);
 	};
 
-		fetchData();
+	fetchData();
 
 	return (
 		<View style={styles.screenContainer}>
@@ -110,109 +110,134 @@ const HomePage = (props) => {
 			</Text>
 			<View style={styles.scheduleContainer}>
 				<View style={styles.timeContainer}>
-				<ScrollView>
-						{data?.filter((f) => (
-							(f.startDate * 1000 <= currentTime.getTime() && (f.startDate * 1000) + (f.duration * 60000)) >= currentTime.getTime()
-						)).map((d) => (
-							<DataTable.Row
-								onPress={() => handleEditTask(navigation, d)}
-								key={d ? d.id : 0} 						
-								style={styles.timeRowRunning}
-								>
-								<DataTable.Cell
-									textStyle={styles.textFormat}
-									style={styles.timeName}
-								>
-									{d ? d.name : 0}
-								</DataTable.Cell>
-								<DataTable.Cell
-									textStyle={styles.textFormat}
-									style={styles.timeTime}
-								>
-									{
-										new Date(d ? (d.startDate + (d.duration * 60)) * 1000 - currentTime.getTime() : 0)
-										.toLocaleTimeString([], {
-											hour: '2-digit',
-											minute: '2-digit',
-										})
-										.replace('.', ':')
-									 }
-								</DataTable.Cell>
-								<DataTable.Cell
-									textStyle={styles.textFormat}
-									style={styles.timeArrow}
-								>
-									{'>'}
-								</DataTable.Cell>
-							</DataTable.Row>
-						))}
-					</ScrollView>
-					<View style={{ marginVertical: 10 }}></View>	
 					<ScrollView>
-						{data?.filter((f) => (
-							(f.startDate * 1000) > currentTime.getTime()
-						)).map((d) => (
-							<DataTable.Row
-								onPress={() => handleEditTask(navigation, d)}
-								key={d ? d.id : 0} 						
-								style={styles.timeRowPlanned}
+						{data
+							?.filter(
+								(f) =>
+									(f.startDate * 1000 <=
+										currentTime.getTime() &&
+										f.startDate * 1000 +
+											f.duration * 60000) >=
+									currentTime.getTime()
+							)
+							.map((d) => (
+								<DataTable.Row
+									onPress={() =>
+										handleEditTask(navigation, d)
+									}
+									key={d ? d.id : 0}
+									style={styles.timeRowRunning}
 								>
-								<DataTable.Cell
-									textStyle={styles.textFormat}
-									style={styles.timeName}
-								>
-									{d ? d.name : 0}
-								</DataTable.Cell>
-								<DataTable.Cell
-									textStyle={styles.textFormat}
-									style={styles.timeTime}
-								>
-									{new Date((d ? d.startDate : 0) * 1000)
-										.toLocaleTimeString([], {
-											hour: '2-digit',
-											minute: '2-digit',
-										})
-										.replace('.', ':')}
-								</DataTable.Cell>
-								<DataTable.Cell
-									textStyle={styles.textFormat}
-									style={styles.timeArrow}
-								>
-									{'>'}
-								</DataTable.Cell>
-							</DataTable.Row>
-						))}
+									<DataTable.Cell
+										textStyle={styles.textFormat}
+										style={styles.timeName}
+									>
+										{d ? d.name : 0}
+									</DataTable.Cell>
+									<DataTable.Cell
+										textStyle={styles.textFormat}
+										style={styles.timeTime}
+									>
+										{new Date(
+											d
+												? (d.startDate +
+														d.duration * 60) *
+														1000 -
+												  currentTime.getTime()
+												: 0
+										)
+											.toLocaleTimeString([], {
+												hour: '2-digit',
+												minute: '2-digit',
+											})
+											.replace('.', ':')}
+									</DataTable.Cell>
+									<DataTable.Cell
+										textStyle={styles.textFormat}
+										style={styles.timeArrow}
+									>
+										{'>'}
+									</DataTable.Cell>
+								</DataTable.Row>
+							))}
 					</ScrollView>
-					<View style={{ marginVertical: 10 }}></View>				
+					<View style={{ marginVertical: 10 }}></View>
 					<ScrollView>
-						{data?.filter((f) => (
-							(f.startDate * 1000) + (f.duration * 60000) < currentTime.getTime()
-						)).map((d) => (
-							<DataTable.Row
-								onPress={() => handleEditTask(navigation, d)}
-								key={d ? d.id : 0} 						
-								style={styles.timeRowFinished}
+						{data
+							?.filter(
+								(f) =>
+									f.startDate * 1000 > currentTime.getTime()
+							)
+							.map((d) => (
+								<DataTable.Row
+									onPress={() =>
+										handleEditTask(navigation, d)
+									}
+									key={d ? d.id : 0}
+									style={styles.timeRowPlanned}
 								>
-								<DataTable.Cell
-									textStyle={styles.textFormat}
-									style={styles.timeName}
+									<DataTable.Cell
+										textStyle={styles.textFormat}
+										style={styles.timeName}
+									>
+										{d ? d.name : 0}
+									</DataTable.Cell>
+									<DataTable.Cell
+										textStyle={styles.textFormat}
+										style={styles.timeTime}
+									>
+										{new Date((d ? d.startDate : 0) * 1000)
+											.toLocaleTimeString([], {
+												hour: '2-digit',
+												minute: '2-digit',
+											})
+											.replace('.', ':')}
+									</DataTable.Cell>
+									<DataTable.Cell
+										textStyle={styles.textFormat}
+										style={styles.timeArrow}
+									>
+										{'>'}
+									</DataTable.Cell>
+								</DataTable.Row>
+							))}
+					</ScrollView>
+					<View style={{ marginVertical: 10 }}></View>
+					<ScrollView>
+						{data
+							?.filter(
+								(f) =>
+									f.startDate * 1000 + f.duration * 60000 <
+									currentTime.getTime()
+							)
+							.map((d) => (
+								<DataTable.Row
+									onPress={() =>
+										handleEditTask(navigation, d)
+									}
+									key={d ? d.id : 0}
+									style={styles.timeRowFinished}
 								>
-									{d ? d.name : 0}
-								</DataTable.Cell>
-								<DataTable.Cell
-									textStyle={styles.textFormat}
-									style={styles.timeTime}
-								>
-									{"finished"}
-								</DataTable.Cell>
-								<DataTable.Cell
-									textStyle={styles.textFormat}
-									style={styles.timeArrow}
-								>
-									{'>'}
-								</DataTable.Cell>
-							</DataTable.Row>
-						))}
+									<DataTable.Cell
+										textStyle={styles.textFormat}
+										style={styles.timeName}
+									>
+										{d ? d.name : 0}
+									</DataTable.Cell>
+									<DataTable.Cell
+										textStyle={styles.textFormat}
+										style={styles.timeTime}
+									>
+										{'finished'}
+									</DataTable.Cell>
+									<DataTable.Cell
+										textStyle={styles.textFormat}
+										style={styles.timeArrow}
+									>
+										{'>'}
+									</DataTable.Cell>
+								</DataTable.Row>
+							))}
 					</ScrollView>
 				</View>
 			</View>
