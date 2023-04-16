@@ -37,7 +37,7 @@ interface MaximumPowerConsumption {
 
 interface Schedule {
 	tasks: ScheduledTask[];
-	maximum_consumption?: MaximumPowerConsumption | null;
+	maximum_power_consumption?: MaximumPowerConsumption | null;
 }
 
 interface PostSchedulesRequest {
@@ -95,7 +95,7 @@ export module ScheduleApiV2 {
 
 		return {
 			id: task.id,
-			duration: task.duration,
+			duration: task.duration * 60,
 			power: task.power,
 			must_start_between: mustStartBetween,
 			must_end_between: mustEndBetween,
@@ -141,7 +141,8 @@ export module ScheduleApiV2 {
 		return {
 			id: model.id,
 			name: model.name,
-			duration: model.duration,
+			// The backend uses seconds so we convert from minutes.
+			duration: model.duration * 60,
 			energy: model.energy,
 			power: model.power,
 			must_start_between: model.must_start_between,
@@ -196,6 +197,8 @@ export module ScheduleApiV2 {
 
 		// Create tasks (Scheduled as well as unscheduled).
 		for (const task of tasks) {
+			console.log("Task");
+			console.log(task)
 			if (task.startDate && task.price) {
 				scheduledTasks.push(createScheduledTask(task));
 			} else {
@@ -210,7 +213,7 @@ export module ScheduleApiV2 {
 
 		// Add the schedule constraints.
 		if (constraints && constraints.maximumPowerConsumption) {
-			schedule.maximum_consumption = createMaximumPowerConsumption(
+			schedule.maximum_power_consumption = createMaximumPowerConsumption(
 				constraints.maximumPowerConsumption
 			);
 		}
@@ -220,6 +223,8 @@ export module ScheduleApiV2 {
 			tasks: unsceduledTasks,
 			schedule: schedule,
 		};
+
+		console.log("request: " + JSON.stringify(request))
 
 		const url = process.env.SERVER_IP + '/api/v2/schedules';
 
@@ -259,7 +264,7 @@ export module ScheduleApiV2 {
 
 	export async function scheduleTask(
 		task: TaskModel,
-		scheduledTasks: TaskModel[],
+		scheduledTasks: readonly TaskModel[],
 		constraints?: {
 			maximumPowerConsumption?: MaximumPowerConsumptionModel;
 		}
@@ -289,7 +294,7 @@ export module ScheduleApiV2 {
 
 	export async function reschedule(
 		tasks: TaskModel[],
-		scheduledTasks: TaskModel[],
+		scheduledTasks: readonly TaskModel[],
 		constraints?: {
 			maximumPowerConsumption?: MaximumPowerConsumptionModel;
 		}
@@ -314,7 +319,7 @@ export module ScheduleApiV2 {
 
 	export async function rescheduleTask(
 		task: TaskModel,
-		scheduledTasks: TaskModel[],
+		scheduledTasks: readonly TaskModel[],
 		constraints?: {
 			maximumPowerConsumption?: MaximumPowerConsumptionModel;
 		}

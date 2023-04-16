@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: typography.fontSizes.titleLarge.fontSize,
+		color: 'white',
 	},
 	icon: {
 		backgroundColor: 'rgba(255, 255, 255, 0)',

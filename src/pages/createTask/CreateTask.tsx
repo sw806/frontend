@@ -64,8 +64,16 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				must_end_between: endInterval,
 			};
 	
+			const scheduledTasks = await StorageService.getAllTasks();
+			const settings = await StorageService.getSettings();
+			
 			const scheduledTask: Task = await ScheduleApiV2.scheduleTask(
-				unscheduledTask, []
+				unscheduledTask, scheduledTasks,
+				{
+					maximumPowerConsumption: {
+						maximum_consumption: settings.max_consumption
+					}
+				}
 			);
 
 			setScheduledTask(scheduledTask);

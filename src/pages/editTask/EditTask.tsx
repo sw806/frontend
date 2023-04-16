@@ -14,6 +14,7 @@ import { StorageService } from '../../utils/storage';
 import TimeConstraintModule from '../../components/TimeConstraintModule';
 import { ScrollView } from 'react-native-gesture-handler';
 import { NotificationService } from '../../utils/notificationsService';
+import { ScheduleApiV2 } from '../../api/scheduleApiV2';
 
 const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -47,6 +48,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [saveModal, setSaveModal] = React.useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
+	const [rescheduledTask, setRescheduledTask] = useState<Task>()
 
 	const showModal = () => setVisible(true);
 
@@ -55,22 +57,39 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	};
 
 	useEffect(() => {
-		// TODO reset startdate when constraints changes
-	}, [newStartInterval, newEndInterval]);
+		scheduleTask()
+	}, [newDuration, newPower, newEnergy, newStartInterval, newEndInterval])
+
+	const scheduleTask = async () => {
+		try {
+			const scheduledTask: Task = {
+				id: id,
+				name: name,
+				duration: parseFloat(duration),
+				power: parseFloat(power),
+				energy: parseFloat(energy),
+				must_start_between: newStartInterval,
+				must_end_between: newEndInterval,
+			};
+
+			const scheduledTasks = await StorageService.getAllTasks();
+			const settings = await StorageService.getSettings();
+
+			const rescheduledTask: Task = await ScheduleApiV2.rescheduleTask(
+				scheduledTask, scheduledTasks, {
+					maximumPowerConsumption: {
+						maximum_consumption: settings.max_consumption
+					}
+				}
+			)
+
+			setRescheduledTask(rescheduledTask)
+			setStartDate(rescheduledTask.startDate)
+		} catch {}
+	}
 
 	const saveTask = async () => {
-		const updatedTask: Task = {
-			id: id,
-			name: name,
-			duration: parseFloat(newDuration),
-			power: parseFloat(newPower),
-			energy: parseFloat(newEnergy),
-			startDate: newStartDate,
-			must_start_between: newStartInterval,
-			must_end_between: newEndInterval,
-		};
-
-		await StorageService.updateTask(updatedTask);
+		await StorageService.updateTask(rescheduledTask);
 	};
 
 	const removeTask = async () => {
@@ -190,17 +209,6 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					endInterval={newEndInterval}
 					setStartInterval={setStartInterval}
 					setEndInterval={setEndInterval}
-				/>
-
-				<FindStartDateButton
-					name={name}
-					duration={newDuration}
-					power={newPower}
-					energy={newEnergy}
-					startDate={newStartDate}
-					setStartDate={setStartDate}
-					setLoading={setLoading}
-					setError={setErrorModal}
 				/>
 
 				<ResultArea time={newStartDate} loading={loading} />
