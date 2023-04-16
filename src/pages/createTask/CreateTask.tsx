@@ -16,6 +16,7 @@ import { SlidingWindow } from '../../components/PreviousTasksTemplate';
 import TimeConstraintModule from '../../components/TimeConstraintModule';
 import { ScrollView } from 'react-native-gesture-handler';
 import { NotificationService } from '../../utils/notificationsService';
+import { ScheduleApiV2 } from '../../api/scheduleApiV2';
 
 const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -37,6 +38,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [endInterval, setEndInterval] = useState<
 		{ end_interval: Interval }[]
 	>([]);
+	const [scheduledTask, setScheduledTask] = useState<Task>()
 
 	const getPreviousTasks = async () => {
 		setAllPreviousTasks(await StorageService.getAllTemplateTasks());
@@ -46,21 +48,35 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		getPreviousTasks();
 	}, []);
 
+	useEffect(() => {
+		scheduleTask()
+	}, [name, duration, power, energy, startInterval, endInterval])
+
+	const scheduleTask = async () => {
+		try {
+			const unscheduledTask: Task = {
+				id: uuid.v4().toString(),
+				name: name,
+				duration: parseFloat(duration),
+				power: parseFloat(power),
+				energy: parseFloat(energy),
+				must_start_between: startInterval,
+				must_end_between: endInterval,
+			};
+	
+			const scheduledTask: Task = await ScheduleApiV2.scheduleTask(
+				unscheduledTask, []
+			);
+
+			setScheduledTask(scheduledTask);
+	
+			setStartDate(scheduledTask.startDate);
+		} catch {}
+	}
+
 	const saveTask = async () => {
-		const newTask: Task = {
-			id: uuid.v4().toString(),
-			name: name,
-			duration: parseFloat(duration),
-			power: parseFloat(power),
-			energy: parseFloat(energy),
-			startDate: startDate,
-			must_start_between: startInterval,
-			must_end_between: endInterval,
-		};
-
-		await StorageService.saveTask(newTask);
-		await NotificationService.createTaskNotification(newTask);
-
+		await StorageService.saveTask(scheduledTask);
+		await NotificationService.createTaskNotification(scheduledTask);
 		toggleModal();
 	};
 
@@ -138,17 +154,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					setEndInterval={setEndInterval}
 				/>
 
-				<FindStartDateButton
-					name={name}
-					duration={duration}
-					power={power}
-					energy={energy}
-					startDate={startDate}
-					setStartDate={setStartDate}
-					setLoading={setLoading}
-					setError={setErrorModal}
-				/>
-
 				<ResultArea time={startDate} loading={loading} />
 
 				<View style={styles.container}>
@@ -158,7 +163,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 						buttonColor={colors.blue.regular}
 						onPress={() => navigation.navigate('Home')}
 					>
-						Back
+						Cancel
 					</Button>
 
 					<Button
@@ -170,7 +175,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 							saveTask();
 						}}
 					>
-						Save
+						Schedule
 					</Button>
 				</View>
 
