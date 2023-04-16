@@ -197,8 +197,6 @@ export module ScheduleApiV2 {
 
 		// Create tasks (Scheduled as well as unscheduled).
 		for (const task of tasks) {
-			console.log("Task");
-			console.log(task)
 			if (task.startDate && task.price) {
 				scheduledTasks.push(createScheduledTask(task));
 			} else {
@@ -212,7 +210,7 @@ export module ScheduleApiV2 {
 		};
 
 		// Add the schedule constraints.
-		if (constraints && constraints.maximumPowerConsumption) {
+		if (constraints && constraints.maximumPowerConsumption && constraints.maximumPowerConsumption.maximum_consumption) {
 			schedule.maximum_power_consumption = createMaximumPowerConsumption(
 				constraints.maximumPowerConsumption
 			);
@@ -264,7 +262,7 @@ export module ScheduleApiV2 {
 
 	export async function scheduleTask(
 		task: TaskModel,
-		scheduledTasks: readonly TaskModel[],
+		scheduledTasks: TaskModel[],
 		constraints?: {
 			maximumPowerConsumption?: MaximumPowerConsumptionModel;
 		}
@@ -294,7 +292,7 @@ export module ScheduleApiV2 {
 
 	export async function reschedule(
 		tasks: TaskModel[],
-		scheduledTasks: readonly TaskModel[],
+		scheduledTasks: TaskModel[],
 		constraints?: {
 			maximumPowerConsumption?: MaximumPowerConsumptionModel;
 		}
@@ -319,7 +317,7 @@ export module ScheduleApiV2 {
 
 	export async function rescheduleTask(
 		task: TaskModel,
-		scheduledTasks: readonly TaskModel[],
+		scheduledTasks: TaskModel[],
 		constraints?: {
 			maximumPowerConsumption?: MaximumPowerConsumptionModel;
 		}

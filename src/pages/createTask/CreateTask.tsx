@@ -48,10 +48,6 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		getPreviousTasks();
 	}, []);
 
-	useEffect(() => {
-		scheduleTask()
-	}, [name, duration, power, energy, startInterval, endInterval])
-
 	const scheduleTask = async () => {
 		try {
 			const unscheduledTask: Task = {
@@ -66,23 +62,25 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	
 			const scheduledTasks = await StorageService.getAllTasks();
 			const settings = await StorageService.getSettings();
-			
+
 			const scheduledTask: Task = await ScheduleApiV2.scheduleTask(
-				unscheduledTask, scheduledTasks,
+				unscheduledTask, [...scheduledTasks],
 				{
 					maximumPowerConsumption: {
-						maximum_consumption: settings.max_consumption
+						maximum_consumption: settings?.max_consumption
 					}
 				}
 			);
 
 			setScheduledTask(scheduledTask);
-	
 			setStartDate(scheduledTask.startDate);
-		} catch {}
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	const saveTask = async () => {
+		console.log(scheduledTask)
 		await StorageService.saveTask(scheduledTask);
 		await NotificationService.createTaskNotification(scheduledTask);
 		toggleModal();
@@ -160,6 +158,17 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					endInterval={endInterval}
 					setStartInterval={setStartInterval}
 					setEndInterval={setEndInterval}
+				/>
+
+				<FindStartDateButton
+					name={name}
+					duration={duration}
+					power={power}
+					energy={energy}
+					startDate={startDate}
+					setLoading={setLoading}
+					setError={setErrorModal}
+					scheduleTask={scheduleTask}
 				/>
 
 				<ResultArea time={startDate} loading={loading} />

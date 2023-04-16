@@ -14,9 +14,9 @@ type TIProps = {
 	energy: string;
 	power: string;
 	startDate: number;
-	setStartDate;
 	setLoading;
 	setError;
+	scheduleTask;
 };
 
 const FindStartDateButton = ({
@@ -24,9 +24,9 @@ const FindStartDateButton = ({
 	duration,
 	energy,
 	power,
-	setStartDate,
 	setLoading,
 	setError,
+	scheduleTask,
 }: TIProps) => {
 	const findStartDate = async () => {
 		if (!name) {
@@ -50,15 +50,9 @@ const FindStartDateButton = ({
 			return false;
 		}
 
-		const params: ScheduleRequestParams = {
-			duration: parseFloat(duration),
-			power: parseFloat(power),
-		};
-
 		try {
 			setLoading(true);
-			const responseData: ScheduleResponse = await postSchedule(params);
-			setStartDate(responseData.start_date);
+			await scheduleTask();
 			setLoading(false);
 			return true;
 		} catch (error) {

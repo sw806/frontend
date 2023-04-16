@@ -54,6 +54,12 @@ export module NotificationService {
 			startDate.getTime() - secondsBefore * 1000
 		);
 
+		console.log(
+			`Creating notification for task ${
+				task.id
+			} at ${reminderDate.getTime()}.`
+		);
+
 		await initialise();
 		await Notifications.scheduleNotificationAsync({
 			identifier: task.id,
@@ -64,12 +70,6 @@ export module NotificationService {
 				seconds: 10,
 			},
 		});
-
-		console.log(
-			`Created notification for task ${
-				task.id
-			} at ${reminderDate.getTime()}.`
-		);
 	}
 
 	export async function removeTaskNotification(taskId: string) {

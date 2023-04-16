@@ -54,7 +54,9 @@ export module StorageService {
 	export async function getSettings() {
 		try {
 			const data = await AsyncStorage.getItem(settings_id);
-
+			if (!data) {
+				return {}
+			}
 			const d: Options = JSON.parse(data);
 			return d;
 		} catch (error) {

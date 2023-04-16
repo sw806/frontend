@@ -56,18 +56,14 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		setVisible(false);
 	};
 
-	useEffect(() => {
-		scheduleTask()
-	}, [newDuration, newPower, newEnergy, newStartInterval, newEndInterval])
-
 	const scheduleTask = async () => {
 		try {
 			const scheduledTask: Task = {
 				id: id,
 				name: name,
-				duration: parseFloat(duration),
-				power: parseFloat(power),
-				energy: parseFloat(energy),
+				duration: parseFloat(newDuration),
+				power: parseFloat(newPower),
+				energy: parseFloat(newEnergy),
 				must_start_between: newStartInterval,
 				must_end_between: newEndInterval,
 			};
@@ -76,16 +72,18 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			const settings = await StorageService.getSettings();
 
 			const rescheduledTask: Task = await ScheduleApiV2.rescheduleTask(
-				scheduledTask, scheduledTasks, {
+				scheduledTask, [...scheduledTasks], {
 					maximumPowerConsumption: {
-						maximum_consumption: settings.max_consumption
+						maximum_consumption: settings?.max_consumption
 					}
 				}
 			)
 
 			setRescheduledTask(rescheduledTask)
 			setStartDate(rescheduledTask.startDate)
-		} catch {}
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	const saveTask = async () => {
@@ -210,6 +208,18 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					setStartInterval={setStartInterval}
 					setEndInterval={setEndInterval}
 				/>
+
+				<FindStartDateButton
+					name={name}
+					duration={duration}
+					power={power}
+					energy={energy}
+					startDate={startDate}
+					setLoading={setLoading}
+					setError={setErrorModal}
+					scheduleTask={scheduleTask}
+				/>
+
 
 				<ResultArea time={newStartDate} loading={loading} />
 
