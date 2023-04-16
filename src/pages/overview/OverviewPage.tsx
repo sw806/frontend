@@ -122,7 +122,7 @@ const OverviewPage: FC = (props: OverviewProps) => {
 					<View>
 						<OverviewInfoContainer
 							icon="piggy-bank-outline"
-							text={'Kr ' + price}
+							text={'Kr ' + price.toFixed(2)}
 						/>
 						<OverviewInfoContainer
 							icon="power-plug-outline"

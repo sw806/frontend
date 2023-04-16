@@ -213,7 +213,7 @@ export const SlidingWindow = ({
 								onChangeText={(text) => searchFilter(text)}
 								value={name}
 								activeUnderlineColor={colors.blue.regular}
-								activeOutlineColor={colors.blue.regular}
+								activeOutlineColor={'grey'}
 								outlineColor={colors.blue.regular}
 								underlineColor={colors.blue.regular}
 								style={{
