@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 		paddingRight: 10,
 	},
 	ModalHeader: {
-		marginTop: 10,
+		paddingTop: 40,
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 	},
 	constraintHeading: {
-		paddingTop: 20,
+		paddingTop: 40,
 		paddingLeft: 10,
 		fontSize: 20,
 		color: '#009FFF',
