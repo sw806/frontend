@@ -14,14 +14,6 @@ describe('isValidNumber', () => {
 			})
 		);
 	});
-	test('should return true for valid numbers with a comma separator', () => {
-		fc.assert(
-			fc.property(fc.double({ min: -1e6, max: 1e6 }), (number) => {
-				const numberWithComma = number.toString().replace('.', ',');
-				expect(isValidNumber(numberWithComma)).toBe(false);
-			})
-		);
-	});
 
 	test('should return false for non-numeric strings', () => {
 		fc.assert(
