@@ -123,6 +123,7 @@ export const SlidingWindow = ({
 		containerTop: {
 			flexDirection: 'row',
 			paddingLeft: 10,
+			paddingTop: 40,
 		},
 		nameInputField: {
 			height: 50,
@@ -140,7 +141,7 @@ export const SlidingWindow = ({
 		},
 		slidingWindowHeader: {
 			backgroundColor: '#009FFF',
-			height: 60,
+			height: 120,
 			justifyContent: 'center',
 		},
 		FlatListHeading: {
@@ -216,7 +217,7 @@ export const SlidingWindow = ({
 								outlineColor={colors.blue.regular}
 								underlineColor={colors.blue.regular}
 								style={{
-									width: 300,
+									width: 260,
 									height: 40,
 								}}
 							/>
