@@ -1,6 +1,6 @@
 import React from 'react';
 import { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { Avatar, Button, Card, Text } from 'react-native-paper';
 import { colors, components, space, typography } from '../../styles/theme';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
@@ -93,6 +93,7 @@ const OverviewPage: FC = (props: OverviewProps) => {
 
 	return (
 		<View style={styles.screenContainer}>
+			<StatusBar barStyle="dark-content"/>
 			<Text variant="displayLarge" style={styles.heading}>
 				{' '}
 				{name}{' '}
@@ -122,7 +123,7 @@ const OverviewPage: FC = (props: OverviewProps) => {
 					<View>
 						<OverviewInfoContainer
 							icon="piggy-bank-outline"
-							text={'Kr ' + price.toFixed(2)}
+							text={price.toFixed(2) + ' Kr.'}
 						/>
 						<OverviewInfoContainer
 							icon="power-plug-outline"

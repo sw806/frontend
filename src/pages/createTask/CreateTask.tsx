@@ -1,6 +1,6 @@
 import Modal from 'react-native-modal';
 import React, { useEffect, useState } from 'react';
-import { View, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import { Button, Text, TextInput } from 'react-native-paper';
@@ -85,7 +85,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		await NotificationService.createTaskNotification(scheduledTask);
 		toggleModal();
 	};
-
+	
 	const toggleModal = () => {
 		setModalVisible(!isModalVisible);
 	};
@@ -122,6 +122,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 	return (
 		<ScrollView>
+			<StatusBar barStyle="dark-content"/>
 			<View style={styles.screenContainer}>
 				<View>
 					<Text variant="headlineLarge" style={styles.heading}>

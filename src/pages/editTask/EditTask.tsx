@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import Modal from 'react-native-modal';
 import * as React from 'react';
@@ -182,6 +182,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 	return (
 		<ScrollView>
+			<StatusBar barStyle="dark-content"/>
 			<View style={styles.container}>
 				<View>
 					<Text variant="displayLarge" style={styles.heading}>
