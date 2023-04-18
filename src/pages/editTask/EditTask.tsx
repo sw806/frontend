@@ -143,6 +143,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		heading: {
 			alignSelf: 'center',
 			...typography.pageHeader.small,
+			color: '#009FFF',
 			textAlign: 'center',
 			width: '90%',
 			position: 'relative',
@@ -210,8 +211,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			paddingTop: 10,
 		},
 		backButton: {
-			width: 20,
-			height: 20,
+			width: 30,
+			height: 30,
 			backgroundColor: 'transparent',
 			color: 'black',
 		},
@@ -228,8 +229,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					>
 						<Avatar.Icon
 							style={styles.backButton}
-							size={35}
-							icon="less-than"
+							size={40}
+							icon="arrow-left"
 							color='black'
 						/>
 					</TouchableOpacity>
