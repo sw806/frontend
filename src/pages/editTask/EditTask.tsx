@@ -1,5 +1,5 @@
-import { View, StyleSheet } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { View, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
+import { Avatar, Button, Text } from 'react-native-paper';
 import Modal from 'react-native-modal';
 import * as React from 'react';
 import ResultArea from '../../components/ResultArea';
@@ -25,6 +25,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		energy,
 		power,
 		startDate,
+		price,
 		must_start_between,
 		must_end_between,
 	} = route.params.data;
@@ -42,6 +43,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		useState<{ start_interval: Interval }[]>(must_start_between);
 	const [newEndInterval, setEndInterval] =
 		useState<{ end_interval: Interval }[]>(must_end_between);
+	const [newPrice, setPrice] = useState<number>(price != undefined ? price : 'NaN');
 	const [loading, setLoading] = useState<boolean>(false);
 	const [visible, setVisible] = React.useState<boolean>(false);
 	const [modalText, setModalText] = React.useState<string>('');
@@ -64,6 +66,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				duration: parseFloat(newDuration),
 				power: parseFloat(newPower),
 				energy: parseFloat(newEnergy),
+				price: newPrice,
 				must_start_between: newStartInterval,
 				must_end_between: newEndInterval,
 			};
@@ -83,6 +86,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 			setRescheduledTask(rescheduledTask);
 			setStartDate(rescheduledTask.startDate);
+			setPrice(rescheduledTask.price);
 		} catch (error) {
 			console.log(error);
 		}
@@ -142,6 +146,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			alignSelf: 'center',
 			...typography.pageHeader.small,
 			textAlign: 'center',
+			width: '90%',
+			position: 'relative',
 		},
 		subheading: {
 			alignSelf: 'center',
@@ -180,49 +186,103 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			backgroundColor: 'white',
 			padding: 20,
 		},
+		cardIntputBackground:{
+			backgroundColor: 'white',
+			alignItems: 'center',
+			borderRadius: 10,
+			height: 240,
+			marginBottom: 20,
+		},
+		cardInputContent:{
+			width: '90%',
+		},
+		cardScheduleBackground:{
+			backgroundColor: 'white',
+			alignItems: 'center',
+			borderRadius: 10,
+			height: 180,
+		},
+		cardScheduleContent:{
+			width: '90%',
+		},
+		headerContent:{
+			flexDirection: 'row',
+			alignItems: 'center',
+			paddingBottom: 20,
+			paddingTop: 10,
+		},
+		backButton: {
+			width: 20,
+			height: 20,
+			backgroundColor: 'transparent',
+			color: 'black',
+		},
 	});
 
 	return (
 		<ScrollView>
+			<StatusBar barStyle="dark-content"/>
+
 			<View style={styles.container}>
-				<View>
-					<Text variant="displayLarge" style={styles.heading}>
-						{name}
-					</Text>
+				<View style={styles.headerContent}>
+					<TouchableOpacity
+						onPress={backToOverview}
+					>
+						<Avatar.Icon
+							style={styles.backButton}
+							size={35}
+							icon="less-than"
+							color='black'
+						/>
+					</TouchableOpacity>
+
+					<View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+						<Text variant="displayMedium" style={styles.heading}>
+							{name}
+						</Text>
+					</View>
 				</View>
 
-				<CreateNewTaskInputs
-					duration={newDuration}
-					power={newPower}
-					energy={newEnergy}
-					screenName={route.name}
-					setDuration={setDuration}
-					setPower={setPower}
-					setEnergy={setEnergy}
-					setStartDate={setStartDate}
-					previousTaskInUse={previousTaskInUse}
-					setPreviousTaskInUse={setPreviousTaskInUse}
-				/>
+				<View style={styles.cardIntputBackground}>
+					<View style={styles.cardInputContent}>
+						<CreateNewTaskInputs
+							duration={newDuration}
+							power={newPower}
+							energy={newEnergy}
+							price={newPrice}
+							screenName={route.name}
+							setDuration={setDuration}
+							setPower={setPower}
+							setEnergy={setEnergy}
+							setPrice={setPrice}
+							setStartDate={setStartDate}
+							previousTaskInUse={previousTaskInUse}
+							setPreviousTaskInUse={setPreviousTaskInUse}
+						/>
 
-				<TimeConstraintModule
-					startInterval={newStartInterval}
-					endInterval={newEndInterval}
-					setStartInterval={setStartInterval}
-					setEndInterval={setEndInterval}
-				/>
+						<TimeConstraintModule
+							startInterval={newStartInterval}
+							endInterval={newEndInterval}
+							setStartInterval={setStartInterval}
+							setEndInterval={setEndInterval}
+						/>
+					</View>
+				</View>
 
-				<FindStartDateButton
-					name={name}
-					duration={duration}
-					power={power}
-					energy={energy}
-					startDate={startDate}
-					setLoading={setLoading}
-					setError={setErrorModal}
-					scheduleTask={scheduleTask}
-				/>
 
-				<ResultArea time={newStartDate} loading={loading} />
+				<View style={styles.cardScheduleBackground}>
+					<FindStartDateButton
+						name={name}
+						duration={duration}
+						power={power}
+						energy={energy}
+						startDate={startDate}
+						setLoading={setLoading}
+						setError={setErrorModal}
+						scheduleTask={scheduleTask}
+					/>
+					<ResultArea startTime={newStartDate} price={newPrice} loading={loading} />
+				</View>
 
 				<View style={styles.editButtons}>
 					<EditButtons

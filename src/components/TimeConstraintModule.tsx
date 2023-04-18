@@ -21,12 +21,12 @@ const styles = StyleSheet.create({
 	},
 	TimeConstraintText: {
 		color: 'white',
-		fontSize: 18,
+		fontSize: 16,
 		paddingLeft: 10,
 	},
 	TimeConstraintTextSymbol: {
 		color: 'white',
-		fontSize: 30,
+		fontSize: 20,
 		paddingRight: 10,
 	},
 	ModalHeader: {

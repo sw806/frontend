@@ -129,11 +129,54 @@ const AddConstraint = ({
 
 	return (
 		<View style={styles.itemContainer}>
-			<TouchableOpacity
-				style={styles.nameInputField}
+		  <TouchableOpacity
+			style={styles.nameInputField}
+			onPress={() => {
+			  setPickerType('startTime');
+			  setShowPicker(true);
+			}}
+		  >
+			<Text style={styles.nameInputFieldText}>
+			  From:{' '}
+			  {new Date(
+				timeIntervalState.start * 1000
+			  ).toLocaleTimeString(undefined, timeOptions)}
+			</Text>
+		  </TouchableOpacity>
+	
+		  <TouchableOpacity
+			style={styles.nameInputField}
+			onPress={() => {
+			  setPickerType('endTime');
+			  setShowPicker(true);
+			}}
+		  >
+			<Text style={styles.nameInputFieldText}>
+			  To:{' '}
+			  {new Date(timeIntervalState.end * 1000).toLocaleTimeString(
+				undefined,
+				timeOptions
+			  )}
+			</Text>
+		  </TouchableOpacity>
+	
+		  <Modal
+			transparent={true}
+			visible={showPicker}
+			onRequestClose={() => {
+			  setShowPicker(false);
+			}}
+		  >
+			<TouchableOpacity style={styles.timepickerbackground}
 				onPress={() => {
-					setPickerType('startTime');
-					setShowPicker(true);
+					setShowPicker(false);
+					}}
+			>
+			  <View
+				style={{
+				  backgroundColor: 'white',
+				  borderRadius: 10,
+				  padding: 20,
 				}}
 			>
 				<Text style={styles.nameInputFieldText}>
@@ -166,49 +209,18 @@ const AddConstraint = ({
 				visible={showPicker}
 				onRequestClose={() => {
 					setShowPicker(false);
-				}}
-			>
-				<View style={styles.timepickerbackground}>
-					<View
-						style={{
-							backgroundColor: 'white',
-							borderRadius: 10,
-							padding: 20,
-						}}
-					>
-						<DateTimePicker
-							value={
-								pickerType === 'startTime'
-									? timeIntervalState.start
-										? new Date(
-												timeIntervalState.start * 1000
-										  )
-										: new Date()
-									: timeIntervalState.end
-									? new Date(timeIntervalState.end * 1000)
-									: new Date()
-							}
-							mode="datetime"
-							textColor="grey"
-							is24Hour={true}
-							display="spinner"
-							onChange={(event, selectedDate) => {
-								setShowPicker(false);
-								if (selectedDate) {
-									handleDateTimePickerChange(
-										pickerType,
-										selectedDate
-									);
-								}
-							}}
-						/>
-					</View>
-				</View>
-			</Modal>
-
-			<TouchableOpacity onPress={() => onDelete(timeIntervalState.id)}>
-				<Text style={styles.itemDelete}>Delete</Text>
+					if (selectedDate) {
+					  handleDateTimePickerChange(pickerType, selectedDate);
+					}
+				  }}
+				/>
+			  </View>
 			</TouchableOpacity>
+		  </Modal>
+	
+		  <TouchableOpacity onPress={() => onDelete(timeIntervalState.id)}>
+			<Text style={styles.itemDelete}>Delete</Text>
+		  </TouchableOpacity>
 		</View>
 	);
 };

@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StatusBar  } from 'react-native';
 import { Button, DataTable, Text } from 'react-native-paper';
 import * as React from 'react';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
@@ -104,6 +104,7 @@ const HomePage = (props) => {
 
 	return (
 		<View style={styles.screenContainer}>
+			<StatusBar barStyle="dark-content"/>
 			<Text variant="displayLarge" style={styles.heading}>
 				{' '}
 				WattsDown{' '}

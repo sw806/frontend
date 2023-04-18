@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
-import { View, Pressable, StyleSheet, Settings } from 'react-native';
+import { View, Pressable, StyleSheet, Settings, StatusBar } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 
@@ -54,7 +54,9 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 			...components.containers.screen,
 		},
 		heading: {
-			...typography.pageHeader.big,
+			alignSelf: 'center',
+			...typography.pageHeader.small,
+			textAlign: 'center',
 		},
 		button: {
 			alignSelf: 'center',
@@ -76,6 +78,9 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 		modalContainer: {
 			...components.containers.modals.contained,
 		},
+		inputfield: {
+			backgroundColor: 'white',
+		}
 	});
 
 	const handleInput = (inputName: string, inputValue: string) => {
@@ -100,6 +105,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 	return (
 		<View style={styles.screenContainer}>
+			<StatusBar barStyle="dark-content"/>
 			<View>
 				<Text variant="headlineLarge" style={styles.heading}>
 					{' '}
@@ -120,6 +126,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 					activeOutlineColor="#009FFF"
 					outlineColor="#009FFF"
 					underlineColor="#009FFF"
+					style={styles.inputfield}
 				/>
 			</View>
 
@@ -156,6 +163,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 					activeOutlineColor="#009FFF"
 					outlineColor="#009FFF"
 					underlineColor="#009FFF"
+					style={styles.inputfield}
 				/>
 			</View>
 

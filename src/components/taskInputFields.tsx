@@ -1,6 +1,6 @@
 import { TextInput } from 'react-native-paper';
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useEffect, useState } from 'react';
 import {
 	calculateDuration,
@@ -15,10 +15,12 @@ type TIProps = {
 	duration: string;
 	power: string;
 	energy: string;
+	price: number;
 	screenName: string;
 	setDuration;
 	setEnergy;
 	setPower;
+	setPrice;
 	setStartDate;
 	previousTaskInUse;
 	setPreviousTaskInUse;
@@ -28,6 +30,8 @@ const CreateNewTaskInputs = ({
 	duration,
 	power,
 	energy,
+	price,
+	setPrice,
 	setDuration,
 	setPower,
 	setEnergy,
@@ -68,6 +72,7 @@ const CreateNewTaskInputs = ({
 		if (numFilledInputs == 3 && previousTaskInUse) {
 			setEnergyDisabled(true);
 			setStartDate(null);
+			setPrice(null);
 		}
 
 		if (numFilledInputs <= 3 && activeInput) {
@@ -86,6 +91,7 @@ const CreateNewTaskInputs = ({
 
 			// clear start date when input is changed
 			setStartDate(null);
+			setPrice(null);
 		}
 	}, [duration, energy, power]);
 
@@ -154,58 +160,81 @@ const CreateNewTaskInputs = ({
 			return false;
 		}
 	};
+
+	const styles = StyleSheet.create({
+		inputfield: {
+			backgroundColor: 'white',
+			height: 40,
+			width: '100%',
+		},
+		inputView: {
+			marginTop: 10,
+		},
+		textInputContainer: {
+			marginBottom: 5,
+		  },
+	});
 	return (
-		<View style={{ marginTop: 20 }}>
-			<TextInput
-				mode="outlined"
-				testID="Duration"
-				label="Duration (minutes)"
-				placeholder="Duration (minutes)"
-				onChangeText={(text) => handleInput('Duration', text)}
-				value={duration}
-				disabled={disabledDuration}
-				keyboardType="numeric"
-				activeUnderlineColor="#009FFF"
-				activeOutlineColor="#009FFF"
-				outlineColor="#009FFF"
-				underlineColor="#009FFF"
-				onFocus={() => setActiveInput(true)}
-				onBlur={() => setActiveInput(false)}
-			/>
+		<View style={styles.inputView}>
+			<View style={styles.textInputContainer}>
+				<TextInput
+					mode="outlined"
+					testID="Duration"
+					label="Duration (minutes)"
+					placeholder="Duration (minutes)"
+					onChangeText={(text) => handleInput('Duration', text)}
+					value={duration}
+					disabled={disabledDuration}
+					keyboardType="numeric"
+					activeUnderlineColor="#009FFF"
+					activeOutlineColor="#009FFF"
+					outlineColor="#009FFF"
+					underlineColor="#009FFF"
+					onFocus={() => setActiveInput(true)}
+					onBlur={() => setActiveInput(false)}
+					style={styles.inputfield}
+				/>
+			</View>
 
-			<TextInput
-				mode="outlined"
-				testID="Power"
-				label="Power (kW)"
-				placeholder="Power (kW)"
-				onChangeText={(text) => handleInput('Power', text)}
-				value={power}
-				disabled={disabledPower}
-				keyboardType="numeric"
-				activeUnderlineColor="#009FFF"
-				activeOutlineColor="#009FFF"
-				outlineColor="#009FFF"
-				underlineColor="#009FFF"
-				onFocus={() => setActiveInput(true)}
-				onBlur={() => setActiveInput(false)}
-			/>
+			<View style={styles.textInputContainer}>
+				<TextInput
+					mode="outlined"
+					testID="Power"
+					label="Power (kW)"
+					placeholder="Power (kW)"
+					onChangeText={(text) => handleInput('Power', text)}
+					value={power}
+					disabled={disabledPower}
+					keyboardType="numeric"
+					activeUnderlineColor="#009FFF"
+					activeOutlineColor="#009FFF"
+					outlineColor="#009FFF"
+					underlineColor="#009FFF"
+					onFocus={() => setActiveInput(true)}
+					onBlur={() => setActiveInput(false)}
+					style={styles.inputfield}
+				/>
+			</View>
 
-			<TextInput
-				mode="outlined"
-				testID="Energy"
-				label="Energy (kWh)"
-				placeholder="Energy (kWh)"
-				onChangeText={(text) => handleInput('Energy', text)}
-				value={energy}
-				disabled={disabledEnergy}
-				keyboardType="numeric"
-				activeUnderlineColor="#009FFF"
-				activeOutlineColor="#009FFF"
-				outlineColor="#009FFF"
-				underlineColor="#009FFF"
-				onFocus={() => setActiveInput(true)}
-				onBlur={() => setActiveInput(false)}
-			/>
+			<View style={styles.textInputContainer}>
+				<TextInput
+					mode="outlined"
+					testID="Energy"
+					label="Energy (kWh)"
+					placeholder="Energy (kWh)"
+					onChangeText={(text) => handleInput('Energy', text)}
+					value={energy}
+					disabled={disabledEnergy}
+					keyboardType="numeric"
+					activeUnderlineColor="#009FFF"
+					activeOutlineColor="#009FFF"
+					outlineColor="#009FFF"
+					underlineColor="#009FFF"
+					onFocus={() => setActiveInput(true)}
+					onBlur={() => setActiveInput(false)}
+					style={styles.inputfield}
+				/>
+			</View>
 		</View>
 	);
 };

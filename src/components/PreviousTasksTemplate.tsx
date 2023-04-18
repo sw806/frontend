@@ -48,6 +48,7 @@ export const SlidingWindow = ({
 
 	const handleOpenSlideWindow = () => {
 		setShowSlidingWindow(true);
+		console.log(allPreviousTasks)
 	};
 
 	const handleCloseSlideWindow = () => {
@@ -118,7 +119,7 @@ export const SlidingWindow = ({
 
 	const styles = StyleSheet.create({
 		slidingWindow: {
-			backgroundColor: '#fff',
+			backgroundColor: 'black',
 		},
 		containerTop: {
 			flexDirection: 'row',
@@ -135,14 +136,21 @@ export const SlidingWindow = ({
 			borderRadius: 5,
 		},
 		nameInputFieldText: {
-			color: 'black',
-			paddingLeft: 10,
+			color: '#524E57',
+			paddingLeft: 11,
 			fontSize: 16,
 		},
 		slidingWindowHeader: {
-			backgroundColor: '#009FFF',
 			height: 120,
+			backgroundColor:'#f3f3f3',
 			justifyContent: 'center',
+			borderBottomWidth: 3,
+			borderBottomColor: '#009FFF',
+		},
+		slidingWindowBackButton:{
+			color: '#009FFF', 
+			fontSize: 16,
+			fontWeight: 'bold',
 		},
 		FlatListHeading: {
 			paddingLeft: 10,
@@ -150,7 +158,6 @@ export const SlidingWindow = ({
 			fontSize: 18,
 			color: '#009FFF',
 			borderBottomWidth: 1,
-			borderColor: 'grey',
 		},
 		flatListItem: {
 			height: 50,
@@ -203,7 +210,7 @@ export const SlidingWindow = ({
 			</TouchableOpacity>
 
 			<Modal visible={showSlidingWindow} animationType="slide">
-				<KeyboardAvoidingView>
+				<KeyboardAvoidingView >
 					<View style={styles.slidingWindowHeader}>
 						<View style={styles.containerTop}>
 							<TextInput
@@ -229,7 +236,7 @@ export const SlidingWindow = ({
 									paddingLeft: 30,
 								}}
 							>
-								<Text style={{ color: 'white' }}> Okay </Text>
+								<Text style={styles.slidingWindowBackButton}> Okay </Text>
 							</TouchableOpacity>
 						</View>
 					</View>

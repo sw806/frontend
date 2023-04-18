@@ -7,13 +7,23 @@ const styles = StyleSheet.create({
 	content: {
 		...components.containers.results,
 	},
+	mainCard: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+	},
 	card: {
-		backgroundColor: colors.blue.regular,
+		backgroundColor: '#009FFF',
 		marginTop: space.spacing.xs,
+		borderRadius: 12,
+		height: 100,
+		width: 148,
+		marginRight: 10,
+		marginLeft: 10,
 	},
 	text: {
-		fontSize: typography.fontSizes.titleLarge.fontSize,
+		fontSize: 20,
 		color: 'white',
+		fontWeight: 'bold',
 	},
 	icon: {
 		backgroundColor: 'rgba(255, 255, 255, 0)',
@@ -21,35 +31,73 @@ const styles = StyleSheet.create({
 });
 
 type ResultProps = {
-	time: number;
+	startTime: number;
+	price: number;
 	loading: boolean;
 };
-const ResultArea = (props: ResultProps) => {
-	const date = new Date(props.time * 1000); // Convert Unix timestamp to Date object
-	const formattedDate = date.toLocaleString(); // Format the date to a string
-	let infoField;
+const ResultArea = ({
+	startTime,
+	price,
+	loading,
+} : ResultProps) => {
 
-	if (props.loading) {
-		infoField = <ActivityIndicator size="large" />;
+	let startTimeField;
+	let priceField;
+
+	const timeOptions = {
+		hour12: false,
+		hour: '2-digit',
+		minute: '2-digit',
+		weekday: 'short',
+	};
+
+	if (loading) {
+		startTimeField = <ActivityIndicator size="large" />;
 	} else {
-		infoField = (
+		startTimeField = (
 			<View style={styles.content}>
 				<Avatar.Icon
-					size={70}
+					size={50}
 					icon="calendar-clock"
 					style={styles.icon}
+					color='white'
 				/>
+
 				<Text style={styles.text}>
-					{props.time ? formattedDate : props.time}
+					{startTime ? new Date(startTime * 1000).toLocaleString(undefined, timeOptions) : ''}
 				</Text>
 			</View>
+		);
+
+		priceField = (
+			<View style={styles.content}>
+				<Avatar.Icon
+					size={50}
+					icon="piggy-bank-outline"
+					style={styles.icon}
+					color='white'
+				/>
+
+				<Text style={styles.text}>
+					{price ? price.toFixed(2) + ' Kr.' : ''}
+				</Text>
+			</View>
+
 		);
 	}
 
 	return (
-		<Card style={styles.card}>
-			<Card.Content style={styles.content}>{infoField}</Card.Content>
-		</Card>
+		<View style={styles.mainCard}>
+
+			<View style={styles.card}>
+				{startTimeField}
+			</View>
+
+			<View style={styles.card}>
+				{priceField}
+			</View>
+			
+		</View>
 	);
 };
 

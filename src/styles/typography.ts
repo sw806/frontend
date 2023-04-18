@@ -8,6 +8,9 @@ export const fontSizes = {
 	headingMedium: {
 		fontSize: 45,
 	},
+	headingSmall: {
+		fontSize: 30,
+	},
 	bodyLarge: {
 		fontSize: 16,
 	},
@@ -34,6 +37,9 @@ export const lineHeights = {
 	},
 	headingMedium: {
 		lineHeight: 52,
+	},
+	headingSmall: {
+		lineHeight: 30,
 	},
 	bodyLarge: {
 		lineHeight: 24,
@@ -65,8 +71,8 @@ export const pageHeader = {
 		color: colors.blue.light,
 		marginTop: spacing.m,
 		marginBottom: spacing.m,
-		...fontSizes.headingMedium,
-		...lineHeights.headingMedium,
+		...fontSizes.headingSmall,
+		...lineHeights.headingSmall,
 	},
 };
 

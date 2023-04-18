@@ -1,6 +1,6 @@
 import Modal from 'react-native-modal';
 import React, { useEffect, useState } from 'react';
-import { View, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import { Button, Text, TextInput } from 'react-native-paper';
@@ -26,6 +26,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [power, setPower] = useState<string>();
 	const [energy, setEnergy] = useState<string>();
 	const [startDate, setStartDate] = useState<number>();
+	const [price, setprice] = useState<number>();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [allPreviousTasks, setAllPreviousTasks] = useState<readonly Task[]>(
@@ -56,6 +57,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				duration: parseFloat(duration),
 				power: parseFloat(power),
 				energy: parseFloat(energy),
+				price: price,
 				must_start_between: startInterval,
 				must_end_between: endInterval,
 			};
@@ -75,6 +77,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 			setScheduledTask(scheduledTask);
 			setStartDate(scheduledTask.startDate);
+			setprice(scheduledTask.price);
 		} catch (error) {
 			console.log(error);
 		}
@@ -86,7 +89,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		await NotificationService.createTaskNotification(scheduledTask);
 		toggleModal();
 	};
-
+	
 	const toggleModal = () => {
 		setModalVisible(!isModalVisible);
 	};
@@ -123,6 +126,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 	return (
 		<ScrollView>
+			<StatusBar barStyle="dark-content"/>
 			<View style={styles.screenContainer}>
 				<View>
 					<Text variant="headlineLarge" style={styles.heading}>
@@ -146,10 +150,12 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					duration={duration}
 					power={power}
 					energy={energy}
+					price={price}
 					screenName={route.name}
 					setDuration={setDuration}
 					setPower={setPower}
 					setEnergy={setEnergy}
+					setPrice={setprice}
 					setStartDate={setStartDate}
 					previousTaskInUse={previousTaskInUse}
 					setPreviousTaskInUse={setPreviousTaskInUse}
@@ -173,7 +179,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					scheduleTask={scheduleTask}
 				/>
 
-				<ResultArea time={startDate} loading={loading} />
+				<ResultArea startTime={startDate} price={price} loading={loading} />
 
 				<View style={styles.container}>
 					<Button
