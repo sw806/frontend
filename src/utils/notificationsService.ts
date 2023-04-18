@@ -53,7 +53,6 @@ export module NotificationService {
 		const reminderDate = new Date(
 			startDate.getTime() - secondsBefore * 1000
 		);
-
 		console.log(
 			`Creating notification for task ${
 				task.id
@@ -66,9 +65,7 @@ export module NotificationService {
 			content: {
 				title: task.name,
 			},
-			trigger: {
-				seconds: 10,
-			},
+			trigger: reminderDate
 		});
 	}
 
