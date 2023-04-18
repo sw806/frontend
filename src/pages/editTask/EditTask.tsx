@@ -48,7 +48,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [saveModal, setSaveModal] = React.useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
-	const [rescheduledTask, setRescheduledTask] = useState<Task>()
+	const [rescheduledTask, setRescheduledTask] = useState<Task>();
 
 	const showModal = () => setVisible(true);
 
@@ -72,19 +72,21 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			const settings = await StorageService.getSettings();
 
 			const rescheduledTask: Task = await ScheduleApiV2.rescheduleTask(
-				scheduledTask, [...scheduledTasks], {
+				scheduledTask,
+				[...scheduledTasks],
+				{
 					maximumPowerConsumption: {
-						maximum_consumption: settings?.max_consumption
-					}
+						maximum_consumption: settings?.max_consumption,
+					},
 				}
-			)
+			);
 
-			setRescheduledTask(rescheduledTask)
-			setStartDate(rescheduledTask.startDate)
+			setRescheduledTask(rescheduledTask);
+			setStartDate(rescheduledTask.startDate);
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
-	}
+	};
 
 	const saveTask = async () => {
 		await StorageService.updateTask(rescheduledTask);
@@ -219,7 +221,6 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					setError={setErrorModal}
 					scheduleTask={scheduleTask}
 				/>
-
 
 				<ResultArea time={newStartDate} loading={loading} />
 

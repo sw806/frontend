@@ -181,9 +181,7 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 					style={styles.TimeConstraintButton}
 					onPress={handleOpenSlideWindow}
 				>
-					<Text style={styles.TimeConstraintText}>
-					Constrain
-					</Text>
+					<Text style={styles.TimeConstraintText}>Constrain</Text>
 					<Text style={styles.TimeConstraintTextSymbol}> {'>'} </Text>
 				</TouchableOpacity>
 			</View>
@@ -197,10 +195,7 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 						/>
 					</TouchableOpacity>
 
-					<Text style={styles.ModalHeaderText}>
-						{' '}
-						Constrain{' '}
-					</Text>
+					<Text style={styles.ModalHeaderText}> Constrain </Text>
 				</View>
 
 				<View>

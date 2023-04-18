@@ -8,6 +8,8 @@ import {
 	calculatePower,
 } from '../utils/calculations';
 import { isValidNumber } from '../utils/inputValidation';
+import { Options } from '../datatypes/datatypes';
+import { StorageService } from '../utils/storage';
 
 type TIProps = {
 	duration: string;
@@ -38,6 +40,20 @@ const CreateNewTaskInputs = ({
 	const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
 	const [disabledPower, setPowerDisabled] = useState<boolean>(false);
 	const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
+	const [maxTaskConsumption, setMaxTaskConsumption] = useState<number>(undefined);
+
+	async function loadMaxTaskComsumption() {
+		const settings = await StorageService.getSettings();
+		if (!settings) {
+			setMaxTaskConsumption(undefined);
+		}
+		// setting in watt task in kW
+		setMaxTaskConsumption(settings.max_task_power / 1000)
+	}
+
+	useEffect(() => {
+		loadMaxTaskComsumption();
+	}, [])
 
 	// unlock text inputs
 	useEffect(() => {
@@ -75,6 +91,10 @@ const CreateNewTaskInputs = ({
 
 	// handle calculation of third value
 	useEffect(() => {
+		calculateThridValue()
+	}, [activeInput]);
+
+	function calculateThridValue() {
 		if (!duration && energy && power && !activeInput) {
 			const newDuration = calculateDuration(
 				parseFloat(energy),
@@ -91,7 +111,7 @@ const CreateNewTaskInputs = ({
 				parseFloat(energy),
 				4
 			);
-			if (newPower > 3) {
+			if (maxTaskConsumption && newPower > maxTaskConsumption) {
 				alert('The calculated power ' + newPower + ' is above 3 kW!');
 				return;
 			}
@@ -108,7 +128,7 @@ const CreateNewTaskInputs = ({
 			setEnergy(newEnergy.toString());
 			setEnergyDisabled(true);
 		}
-	}, [activeInput]);
+	}
 
 	const handleInput = (inputName: string, inputValue: string) => {
 		if (isValidNumber(inputValue) || inputValue === '') {
@@ -118,8 +138,8 @@ const CreateNewTaskInputs = ({
 					setDuration(inputValue);
 					break;
 				case 'Power':
-					if (parseFloat(inputValue) > 3) {
-						alert('Power cannot be over 3');
+					if (maxTaskConsumption && parseFloat(inputValue) > maxTaskConsumption) {
+						alert('Power cannot be over ' + maxTaskConsumption + ' kW');
 						return;
 					}
 					setPower(inputValue);
