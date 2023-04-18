@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 		paddingRight: 10,
 	},
 	ModalHeader: {
-		paddingTop: 40,
+		paddingTop: 50,
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 	backButton: {
 		width: 40,
 		height: 40,
-		backgroundColor: 'white',
+		backgroundColor: 'transparent',
 	},
 	addButton: {
 		width: 80,
@@ -190,7 +190,8 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 					<TouchableOpacity onPress={handleCloseSlideWindow}>
 						<Avatar.Icon
 							style={styles.backButton}
-							size={60}
+							size={50}
+							color={'black'}
 							icon="arrow-left"
 						/>
 					</TouchableOpacity>
