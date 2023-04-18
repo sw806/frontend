@@ -144,63 +144,77 @@ const CreateNewTaskInputs = ({
 	const styles = StyleSheet.create({
 		inputfield: {
 			backgroundColor: 'white',
-		}
+			height: 40,
+			width: '100%',
+		},
+		inputView: {
+			marginTop: 10,
+		},
+		textInputContainer: {
+			marginBottom: 5,
+		  },
 	});
 	return (
-		<View style={{ marginTop: 10 }}>
-			<TextInput
-				mode="outlined"
-				testID="Duration"
-				label="Duration (minutes)"
-				placeholder="Duration (minutes)"
-				onChangeText={(text) => handleInput('Duration', text)}
-				value={duration}
-				disabled={disabledDuration}
-				keyboardType="numeric"
-				activeUnderlineColor="#009FFF"
-				activeOutlineColor="#009FFF"
-				outlineColor="#009FFF"
-				underlineColor="#009FFF"
-				onFocus={() => setActiveInput(true)}
-				onBlur={() => setActiveInput(false)}
-				style={styles.inputfield}
-			/>
+		<View style={styles.inputView}>
+			<View style={styles.textInputContainer}>
+				<TextInput
+					mode="outlined"
+					testID="Duration"
+					label="Duration (minutes)"
+					placeholder="Duration (minutes)"
+					onChangeText={(text) => handleInput('Duration', text)}
+					value={duration}
+					disabled={disabledDuration}
+					keyboardType="numeric"
+					activeUnderlineColor="#009FFF"
+					activeOutlineColor="#009FFF"
+					outlineColor="#009FFF"
+					underlineColor="#009FFF"
+					onFocus={() => setActiveInput(true)}
+					onBlur={() => setActiveInput(false)}
+					style={styles.inputfield}
+				/>
+			</View>
 
-			<TextInput
-				mode="outlined"
-				testID="Power"
-				label="Power (kW)"
-				placeholder="Power (kW)"
-				onChangeText={(text) => handleInput('Power', text)}
-				value={power}
-				disabled={disabledPower}
-				keyboardType="numeric"
-				activeUnderlineColor="#009FFF"
-				activeOutlineColor="#009FFF"
-				outlineColor="#009FFF"
-				underlineColor="#009FFF"
-				onFocus={() => setActiveInput(true)}
-				onBlur={() => setActiveInput(false)}
-				style={styles.inputfield}
-			/>
+			<View style={styles.textInputContainer}>
+				<TextInput
+					mode="outlined"
+					testID="Power"
+					label="Power (kW)"
+					placeholder="Power (kW)"
+					onChangeText={(text) => handleInput('Power', text)}
+					value={power}
+					disabled={disabledPower}
+					keyboardType="numeric"
+					activeUnderlineColor="#009FFF"
+					activeOutlineColor="#009FFF"
+					outlineColor="#009FFF"
+					underlineColor="#009FFF"
+					onFocus={() => setActiveInput(true)}
+					onBlur={() => setActiveInput(false)}
+					style={styles.inputfield}
+				/>
+			</View>
 
-			<TextInput
-				mode="outlined"
-				testID="Energy"
-				label="Energy (kWh)"
-				placeholder="Energy (kWh)"
-				onChangeText={(text) => handleInput('Energy', text)}
-				value={energy}
-				disabled={disabledEnergy}
-				keyboardType="numeric"
-				activeUnderlineColor="#009FFF"
-				activeOutlineColor="#009FFF"
-				outlineColor="#009FFF"
-				underlineColor="#009FFF"
-				onFocus={() => setActiveInput(true)}
-				onBlur={() => setActiveInput(false)}
-				style={styles.inputfield}
-			/>
+			<View style={styles.textInputContainer}>
+				<TextInput
+					mode="outlined"
+					testID="Energy"
+					label="Energy (kWh)"
+					placeholder="Energy (kWh)"
+					onChangeText={(text) => handleInput('Energy', text)}
+					value={energy}
+					disabled={disabledEnergy}
+					keyboardType="numeric"
+					activeUnderlineColor="#009FFF"
+					activeOutlineColor="#009FFF"
+					outlineColor="#009FFF"
+					underlineColor="#009FFF"
+					onFocus={() => setActiveInput(true)}
+					onBlur={() => setActiveInput(false)}
+					style={styles.inputfield}
+				/>
+			</View>
 		</View>
 	);
 };

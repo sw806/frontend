@@ -1,6 +1,6 @@
 import React from 'react';
 import { FC } from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Avatar, Button, Card, Text } from 'react-native-paper';
 import { colors, components, space, typography } from '../../styles/theme';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
@@ -16,6 +16,8 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		...typography.pageHeader.small,
 		textAlign: 'center',
+		width: '90%',
+		position: 'relative',
 	},
 	cardContainer: {
 		display: 'flex',
@@ -54,6 +56,18 @@ const styles = StyleSheet.create({
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		marginTop: space.spacing.s,
+	},
+	headerContent:{
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingBottom: 20,
+		paddingTop: 10,
+	},
+	backButton: {
+		width: 20,
+		height: 20,
+		backgroundColor: 'transparent',
+		color: 'black',
 	},
 });
 
@@ -94,10 +108,26 @@ const OverviewPage: FC = (props: OverviewProps) => {
 	return (
 		<View style={styles.screenContainer}>
 			<StatusBar barStyle="dark-content"/>
-			<Text variant="displayLarge" style={styles.heading}>
-				{' '}
-				{name}{' '}
-			</Text>
+
+			<View style={styles.headerContent}>
+					<TouchableOpacity
+						onPress={() => goBack(navigation)}
+					>
+						<Avatar.Icon
+							style={styles.backButton}
+							size={35}
+							icon="less-than"
+							color='black'
+						/>
+					</TouchableOpacity>
+
+					<View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+						<Text variant="displayMedium" style={styles.heading}>
+							{name}
+						</Text>
+					</View>
+			</View>
+
 			<Card style={styles.cardContainer} mode="elevated">
 				<Card style={styles.card} mode="contained">
 					<Card.Content style={styles.content}>

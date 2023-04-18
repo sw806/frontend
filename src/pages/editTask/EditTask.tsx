@@ -1,5 +1,5 @@
-import { View, StyleSheet, StatusBar } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { View, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
+import { Avatar, Button, Text } from 'react-native-paper';
 import Modal from 'react-native-modal';
 import * as React from 'react';
 import ResultArea from '../../components/ResultArea';
@@ -144,6 +144,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			alignSelf: 'center',
 			...typography.pageHeader.small,
 			textAlign: 'center',
+			width: '90%',
+			position: 'relative',
 		},
 		subheading: {
 			alignSelf: 'center',
@@ -201,18 +203,43 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		cardScheduleContent:{
 			width: '90%',
 		},
+		headerContent:{
+			flexDirection: 'row',
+			alignItems: 'center',
+			paddingBottom: 20,
+			paddingTop: 10,
+		},
+		backButton: {
+			width: 20,
+			height: 20,
+			backgroundColor: 'transparent',
+			color: 'black',
+		},
 	});
 
 	return (
 		<ScrollView>
 			<StatusBar barStyle="dark-content"/>
-			<View style={styles.container}>
-				<View>
-					<Text variant="displayLarge" style={styles.heading}>
-						{name}
-					</Text>
-				</View>
 
+			<View style={styles.container}>
+				<View style={styles.headerContent}>
+					<TouchableOpacity
+						onPress={backToOverview}
+					>
+						<Avatar.Icon
+							style={styles.backButton}
+							size={35}
+							icon="less-than"
+							color='black'
+						/>
+					</TouchableOpacity>
+
+					<View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+						<Text variant="displayMedium" style={styles.heading}>
+							{name}
+						</Text>
+					</View>
+				</View>
 
 				<View style={styles.cardIntputBackground}>
 					<View style={styles.cardInputContent}>

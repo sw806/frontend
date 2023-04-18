@@ -12,11 +12,13 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 	},
 	card: {
-		backgroundColor: colors.blue.regular,
+		backgroundColor: '#009FFF',
 		marginTop: space.spacing.xs,
-		borderRadius: 20,
+		borderRadius: 12,
 		height: 100,
 		width: 148,
+		marginRight: 10,
+		marginLeft: 10,
 	},
 	text: {
 		fontSize: 20,
