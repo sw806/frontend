@@ -139,7 +139,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			alignItems: 'center',
 			borderRadius: 10,
 			height: 170,
-			marginBottom: 40,
+			marginBottom: 30,
 		},
 		cardScheduleContent:{
 			width: '90%',
@@ -220,7 +220,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					<Button
 						mode="contained"
 						style={styles.disabledButton}
-						buttonColor={colors.neutral.grey}
+						buttonColor="#4caf50"
 						disabled={!startDate}
 						onPress={() => {
 							saveTask();

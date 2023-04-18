@@ -177,7 +177,7 @@ const OverviewPage: FC = (props: OverviewProps) => {
 					<Button
 						style={styles.btn}
 						mode="elevated"
-						buttonColor="#4fc3f7"
+						buttonColor="#009FFF"
 						textColor="#ffffff"
 						onPress={() => goEdit(navigation, route.params.data)}
 					>
