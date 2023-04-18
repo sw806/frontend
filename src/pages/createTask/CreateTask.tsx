@@ -99,7 +99,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			...components.containers.screen,
 		},
 		heading: {
-			...typography.pageHeader.medium,
+			...typography.pageHeader.big,
 			alignSelf: 'center',
 		},
 		button: {
