@@ -210,7 +210,11 @@ export module ScheduleApiV2 {
 		};
 
 		// Add the schedule constraints.
-		if (constraints && constraints.maximumPowerConsumption && constraints.maximumPowerConsumption.maximum_consumption) {
+		if (
+			constraints &&
+			constraints.maximumPowerConsumption &&
+			constraints.maximumPowerConsumption.maximum_consumption
+		) {
 			schedule.maximum_power_consumption = createMaximumPowerConsumption(
 				constraints.maximumPowerConsumption
 			);
@@ -222,7 +226,7 @@ export module ScheduleApiV2 {
 			schedule: schedule,
 		};
 
-		console.log("request: " + JSON.stringify(request))
+		console.log('request: ' + JSON.stringify(request));
 
 		const url = process.env.SERVER_IP + '/api/v2/schedules';
 

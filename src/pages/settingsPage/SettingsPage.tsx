@@ -13,6 +13,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const { navigation, route, nameProp } = props;
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [maxConsumption, setMaxConsumption] = useState<string>('0');
+	const [maxTaskConsumption, setMaxTaskConsumption] = useState<string>('0');
 	const [notificationOffset, setNotificationOffset] = useState<string>('0');
 
 	const fetchData = async () => {
@@ -20,6 +21,9 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 		if (options) {
 			if (options.max_consumption) {
 				setMaxConsumption(options.max_consumption.toString());
+			}
+			if (options.max_task_power) {
+				setMaxTaskConsumption(options.max_task_power.toString());
 			}
 			if (options.notification_offset) {
 				setNotificationOffset(options.notification_offset.toString());
@@ -37,6 +41,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 		const newSettings: Options = {
 			max_consumption: parseFloat(maxConsumption),
 			notification_offset: parseFloat(notificationOffset),
+			max_task_power: parseFloat(maxTaskConsumption),
 		};
 
 		await StorageService.saveSettings(newSettings);
@@ -84,6 +89,9 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 				case 'maxConsumption':
 					setMaxConsumption(inputValue);
 					break;
+				case 'maxTaskConsumption':
+					setMaxTaskConsumption(inputValue);
+					break;
 				case 'notificationOffset':
 					setNotificationOffset(inputValue);
 					break;
@@ -108,7 +116,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 			<View style={{ marginTop: 20 }}>
 				<TextInput
 					mode="outlined"
-					testID="max_powerconsumption"
+					testID="max_power_consumption"
 					label="Max power consumption (Watt)"
 					placeholder="Max power consumption (Watt)"
 					onChangeText={(text) => handleInput('maxConsumption', text)}
@@ -119,6 +127,24 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 					outlineColor="#009FFF"
 					underlineColor="#009FFF"
 					style={styles.inputfield}
+				/>
+			</View>
+
+			<View style={{ marginTop: 20 }}>
+				<TextInput
+					mode="outlined"
+					testID="max_task_power_consumption"
+					label="Max task power consumption (Watt)"
+					placeholder="Max task power consumption (Watt)"
+					onChangeText={(text) =>
+						handleInput('maxTaskConsumption', text)
+					}
+					value={maxTaskConsumption}
+					keyboardType="numeric"
+					activeUnderlineColor="#009FFF"
+					activeOutlineColor="#009FFF"
+					outlineColor="#009FFF"
+					underlineColor="#009FFF"
 				/>
 			</View>
 

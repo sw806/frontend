@@ -39,7 +39,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [endInterval, setEndInterval] = useState<
 		{ end_interval: Interval }[]
 	>([]);
-	const [scheduledTask, setScheduledTask] = useState<Task>()
+	const [scheduledTask, setScheduledTask] = useState<Task>();
 
 	const getPreviousTasks = async () => {
 		setAllPreviousTasks(await StorageService.getAllTemplateTasks());
@@ -61,16 +61,17 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				must_start_between: startInterval,
 				must_end_between: endInterval,
 			};
-	
+
 			const scheduledTasks = await StorageService.getAllTasks();
 			const settings = await StorageService.getSettings();
 
 			const scheduledTask: Task = await ScheduleApiV2.scheduleTask(
-				unscheduledTask, [...scheduledTasks],
+				unscheduledTask,
+				[...scheduledTasks],
 				{
 					maximumPowerConsumption: {
-						maximum_consumption: settings?.max_consumption
-					}
+						maximum_consumption: settings?.max_consumption,
+					},
 				}
 			);
 
@@ -78,12 +79,12 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			setStartDate(scheduledTask.startDate);
 			setprice(scheduledTask.price);
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
-	}
+	};
 
 	const saveTask = async () => {
-		console.log(scheduledTask)
+		console.log(scheduledTask);
 		await StorageService.saveTask(scheduledTask);
 		await NotificationService.createTaskNotification(scheduledTask);
 		toggleModal();
