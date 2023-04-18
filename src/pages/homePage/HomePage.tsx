@@ -92,8 +92,8 @@ const HomePage = (props) => {
 			const dateA = new Date(a.startDate);
 			const dateB = new Date(b.startDate);
 
-			if (dateA < dateB) return 1;
-			if (dateA > dateB) return -1;
+			if (dateA < dateB) return -1;
+			if (dateA > dateB) return 1;
 
 			return 0;
 		});
