@@ -29,6 +29,7 @@ interface ScheduledTask {
 	task: Task;
 	start_interval: DatetimeInterval;
 	cost: number;
+	highest_price: number;
 }
 
 interface MaximumPowerConsumption {
@@ -121,6 +122,7 @@ export module ScheduleApiV2 {
 				duration: 0,
 			},
 			cost: scheduledTask.price,
+			highest_price: scheduledTask.highestPrice
 		};
 	}
 
@@ -147,6 +149,7 @@ export module ScheduleApiV2 {
 			power: model.power,
 			must_start_between: model.must_start_between,
 			must_end_between: model.must_end_between,
+			highestPrice: model.highestPrice
 		};
 	}
 
@@ -175,6 +178,7 @@ export module ScheduleApiV2 {
 			// TODO: Start date whould be an interval when it is supported.
 			startDate: scheduleTask.start_interval.start,
 			price: scheduleTask.cost,
+			highestPrice: scheduleTask.highest_price
 		};
 	}
 
