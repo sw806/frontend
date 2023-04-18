@@ -6,13 +6,13 @@ import uuid from 'react-native-uuid';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 
-import CreateNewTaskInputs from '../../components/taskInputFields';
+import TaskUnitInput from '../../components/TaskUnitInput';
 import ResultArea from '../../components/ResultArea';
 import { Interval, Task } from '../../datatypes/datatypes';
 import FindStartDateButton from '../../components/FindStartTimeButton';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
-import { SlidingWindow } from '../../components/PreviousTasksTemplate';
+import { TaskNameSlidingWindow } from '../../components/TaskNameSlidingWindow';
 import TimeConstraintModule from '../../components/TimeConstraintModule';
 import { ScrollView } from 'react-native-gesture-handler';
 import { NotificationService } from '../../utils/notificationsService';
@@ -108,6 +108,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		},
 		containerbutton: {
 			...components.buttons.primary.contained,
+			backgroundColor: '#607d8b',
 		},
 		disabledButton: {
 			...components.buttons.unstyled.contained,
@@ -122,6 +123,27 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		modalContainer: {
 			...components.containers.modals.contained,
 		},
+		cardIntputBackground:{
+			backgroundColor: 'white',
+			alignItems: 'center',
+			borderRadius: 10,
+			height: 285,
+			marginBottom: 20,
+		},
+		cardInputContent:{
+			paddingTop: 10,
+			width: '90%',
+		},
+		cardScheduleBackground:{
+			backgroundColor: 'white',
+			alignItems: 'center',
+			borderRadius: 10,
+			height: 170,
+			marginBottom: 40,
+		},
+		cardScheduleContent:{
+			width: '90%',
+		},
 	});
 
 	return (
@@ -135,57 +157,61 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					</Text>
 				</View>
 
-				<SlidingWindow
-					name={name}
-					allPreviousTasks={allPreviousTasks}
-					setName={setName}
-					setData={setAllPreviousTasks}
-					setDuration={setDuration}
-					setPower={setPower}
-					setEnergy={setEnergy}
-					setPreviousTaskInUse={setPreviousTaskInUse}
-				/>
+				<View style={styles.cardIntputBackground}> 
+					<View style={styles.cardInputContent}>
+						<TaskNameSlidingWindow
+							name={name}
+							allPreviousTasks={allPreviousTasks}
+							setName={setName}
+							setData={setAllPreviousTasks}
+							setDuration={setDuration}
+							setPower={setPower}
+							setEnergy={setEnergy}
+							setPreviousTaskInUse={setPreviousTaskInUse}
+						/>
 
-				<CreateNewTaskInputs
-					duration={duration}
-					power={power}
-					energy={energy}
-					price={price}
-					screenName={route.name}
-					setDuration={setDuration}
-					setPower={setPower}
-					setEnergy={setEnergy}
-					setPrice={setprice}
-					setStartDate={setStartDate}
-					previousTaskInUse={previousTaskInUse}
-					setPreviousTaskInUse={setPreviousTaskInUse}
-				/>
+						<TaskUnitInput
+							duration={duration}
+							power={power}
+							energy={energy}
+							screenName={route.name}
+							setDuration={setDuration}
+							setPower={setPower}
+							setEnergy={setEnergy}
+							setPrice={setprice}
+							setStartDate={setStartDate}
+							previousTaskInUse={previousTaskInUse}
+							setPreviousTaskInUse={setPreviousTaskInUse}
+						/>
+						<TimeConstraintModule
+							startInterval={startInterval}
+							endInterval={endInterval}
+							setStartInterval={setStartInterval}
+							setEndInterval={setEndInterval}
+						/>
+					</View>
+				</View>
 
-				<TimeConstraintModule
-					startInterval={startInterval}
-					endInterval={endInterval}
-					setStartInterval={setStartInterval}
-					setEndInterval={setEndInterval}
-				/>
 
-				<FindStartDateButton
-					name={name}
-					duration={duration}
-					power={power}
-					energy={energy}
-					startDate={startDate}
-					setLoading={setLoading}
-					setError={setErrorModal}
-					scheduleTask={scheduleTask}
-				/>
+				<View style={styles.cardScheduleBackground}> 
+					<FindStartDateButton
+						name={name}
+						duration={duration}
+						power={power}
+						energy={energy}
+						startDate={startDate}
+						setLoading={setLoading}
+						setError={setErrorModal}
+						scheduleTask={scheduleTask}
+					/>
 
-				<ResultArea startTime={startDate} price={price} loading={loading} />
+					<ResultArea startTime={startDate} price={price} loading={loading} />
+				</View>
 
 				<View style={styles.container}>
 					<Button
 						mode="contained"
 						style={styles.containerbutton}
-						buttonColor={colors.blue.regular}
 						onPress={() => navigation.navigate('Home')}
 					>
 						Cancel

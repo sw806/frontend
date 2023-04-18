@@ -5,7 +5,7 @@ import * as React from 'react';
 import ResultArea from '../../components/ResultArea';
 import EditButtons from '../../components/EditButtons';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
-import CreateNewTaskInputs from '../../components/taskInputFields';
+import TaskUnitInput from '../../components/TaskUnitInput';
 import { useEffect, useState } from 'react';
 import FindStartDateButton from '../../components/FindStartTimeButton';
 import { Task, Interval } from '../../datatypes/datatypes';
@@ -191,7 +191,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			backgroundColor: 'white',
 			alignItems: 'center',
 			borderRadius: 10,
-			height: 240,
+			height: 230,
 			marginBottom: 20,
 		},
 		cardInputContent:{
@@ -201,7 +201,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			backgroundColor: 'white',
 			alignItems: 'center',
 			borderRadius: 10,
-			height: 180,
+			height: 170,
 		},
 		cardScheduleContent:{
 			width: '90%',
@@ -225,6 +225,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			<StatusBar barStyle="dark-content"/>
 
 			<View style={styles.container}>
+
 				<View style={styles.headerContent}>
 					<TouchableOpacity
 						onPress={backToOverview}
@@ -245,12 +246,11 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				</View>
 
 				<View style={styles.cardIntputBackground}>
-					<View style={styles.cardInputContent}>
-						<CreateNewTaskInputs
+					<View style={styles.cardInputContent}>	
+						<TaskUnitInput
 							duration={newDuration}
 							power={newPower}
 							energy={newEnergy}
-							price={newPrice}
 							screenName={route.name}
 							setDuration={setDuration}
 							setPower={setPower}

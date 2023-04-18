@@ -55,7 +55,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 		},
 		heading: {
 			alignSelf: 'center',
-			...typography.pageHeader.small,
+			...typography.pageHeader.medium,
 			textAlign: 'center',
 		},
 		button: {

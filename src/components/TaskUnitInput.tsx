@@ -15,7 +15,6 @@ type TIProps = {
 	duration: string;
 	power: string;
 	energy: string;
-	price: number;
 	screenName: string;
 	setDuration;
 	setEnergy;
@@ -26,11 +25,10 @@ type TIProps = {
 	setPreviousTaskInUse;
 };
 
-const CreateNewTaskInputs = ({
+const TaskUnitInput = ({
 	duration,
 	power,
 	energy,
-	price,
 	setPrice,
 	setDuration,
 	setPower,
@@ -239,4 +237,4 @@ const CreateNewTaskInputs = ({
 	);
 };
 
-export default CreateNewTaskInputs;
+export default TaskUnitInput;

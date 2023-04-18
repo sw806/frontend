@@ -26,7 +26,7 @@ type ItemProps = {
 	task: Task;
 };
 
-export const SlidingWindow = ({
+export const TaskNameSlidingWindow = ({
 	name,
 	allPreviousTasks,
 	setName,
@@ -127,8 +127,7 @@ export const SlidingWindow = ({
 			paddingTop: 40,
 		},
 		nameInputField: {
-			height: 50,
-			marginBottom: 10,
+			height: 42,
 			backgroundColor: 'white',
 			borderColor: '#009FFF',
 			justifyContent: 'center',
