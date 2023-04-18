@@ -25,6 +25,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		energy,
 		power,
 		startDate,
+		price,
 		must_start_between,
 		must_end_between,
 	} = route.params.data;
@@ -42,6 +43,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		useState<{ start_interval: Interval }[]>(must_start_between);
 	const [newEndInterval, setEndInterval] =
 		useState<{ end_interval: Interval }[]>(must_end_between);
+	const [newPrice, setPrice] = useState<number>(price != undefined ? price : 'NaN');
 	const [loading, setLoading] = useState<boolean>(false);
 	const [visible, setVisible] = React.useState<boolean>(false);
 	const [modalText, setModalText] = React.useState<string>('');
@@ -64,6 +66,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				duration: parseFloat(newDuration),
 				power: parseFloat(newPower),
 				energy: parseFloat(newEnergy),
+				price: newPrice,
 				must_start_between: newStartInterval,
 				must_end_between: newEndInterval,
 			};
@@ -79,8 +82,9 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				}
 			)
 
-			setRescheduledTask(rescheduledTask)
-			setStartDate(rescheduledTask.startDate)
+			setRescheduledTask(rescheduledTask);
+			setStartDate(rescheduledTask.startDate);
+			setPrice(rescheduledTask.price);
 		} catch (error) {
 			console.log(error)
 		}
@@ -178,6 +182,25 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			backgroundColor: 'white',
 			padding: 20,
 		},
+		cardIntputBackground:{
+			backgroundColor: 'white',
+			alignItems: 'center',
+			borderRadius: 10,
+			height: 240,
+			marginBottom: 20,
+		},
+		cardInputContent:{
+			width: '90%',
+		},
+		cardScheduleBackground:{
+			backgroundColor: 'white',
+			alignItems: 'center',
+			borderRadius: 10,
+			height: 180,
+		},
+		cardScheduleContent:{
+			width: '90%',
+		},
 	});
 
 	return (
@@ -190,39 +213,47 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					</Text>
 				</View>
 
-				<CreateNewTaskInputs
-					duration={newDuration}
-					power={newPower}
-					energy={newEnergy}
-					screenName={route.name}
-					setDuration={setDuration}
-					setPower={setPower}
-					setEnergy={setEnergy}
-					setStartDate={setStartDate}
-					previousTaskInUse={previousTaskInUse}
-					setPreviousTaskInUse={setPreviousTaskInUse}
-				/>
 
-				<TimeConstraintModule
-					startInterval={newStartInterval}
-					endInterval={newEndInterval}
-					setStartInterval={setStartInterval}
-					setEndInterval={setEndInterval}
-				/>
+				<View style={styles.cardIntputBackground}>
+					<View style={styles.cardInputContent}>
+						<CreateNewTaskInputs
+							duration={newDuration}
+							power={newPower}
+							energy={newEnergy}
+							price={newPrice}
+							screenName={route.name}
+							setDuration={setDuration}
+							setPower={setPower}
+							setEnergy={setEnergy}
+							setPrice={setPrice}
+							setStartDate={setStartDate}
+							previousTaskInUse={previousTaskInUse}
+							setPreviousTaskInUse={setPreviousTaskInUse}
+						/>
 
-				<FindStartDateButton
-					name={name}
-					duration={duration}
-					power={power}
-					energy={energy}
-					startDate={startDate}
-					setLoading={setLoading}
-					setError={setErrorModal}
-					scheduleTask={scheduleTask}
-				/>
+						<TimeConstraintModule
+							startInterval={newStartInterval}
+							endInterval={newEndInterval}
+							setStartInterval={setStartInterval}
+							setEndInterval={setEndInterval}
+						/>
+					</View>
+				</View>
 
 
-				<ResultArea time={newStartDate} loading={loading} />
+				<View style={styles.cardScheduleBackground}>
+					<FindStartDateButton
+						name={name}
+						duration={duration}
+						power={power}
+						energy={energy}
+						startDate={startDate}
+						setLoading={setLoading}
+						setError={setErrorModal}
+						scheduleTask={scheduleTask}
+					/>
+					<ResultArea startTime={newStartDate} price={newPrice} loading={loading} />
+				</View>
 
 				<View style={styles.editButtons}>
 					<EditButtons

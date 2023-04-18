@@ -73,6 +73,9 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 		modalContainer: {
 			...components.containers.modals.contained,
 		},
+		inputfield: {
+			backgroundColor: 'white',
+		}
 	});
 
 	const handleInput = (inputName: string, inputValue: string) => {
@@ -115,6 +118,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 					activeOutlineColor="#009FFF"
 					outlineColor="#009FFF"
 					underlineColor="#009FFF"
+					style={styles.inputfield}
 				/>
 			</View>
 
@@ -133,6 +137,7 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 					activeOutlineColor="#009FFF"
 					outlineColor="#009FFF"
 					underlineColor="#009FFF"
+					style={styles.inputfield}
 				/>
 			</View>
 

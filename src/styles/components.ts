@@ -139,7 +139,7 @@ export const containers = {
 	},
 	screen: {
 		flex: 1,
-		width: '80%',
+		width: '90%',
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		marginTop: 30,

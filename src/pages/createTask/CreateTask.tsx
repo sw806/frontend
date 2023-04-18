@@ -26,6 +26,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [power, setPower] = useState<string>();
 	const [energy, setEnergy] = useState<string>();
 	const [startDate, setStartDate] = useState<number>();
+	const [price, setprice] = useState<number>();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [allPreviousTasks, setAllPreviousTasks] = useState<readonly Task[]>(
@@ -56,6 +57,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				duration: parseFloat(duration),
 				power: parseFloat(power),
 				energy: parseFloat(energy),
+				price: price,
 				must_start_between: startInterval,
 				must_end_between: endInterval,
 			};
@@ -74,6 +76,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 			setScheduledTask(scheduledTask);
 			setStartDate(scheduledTask.startDate);
+			setprice(scheduledTask.price);
 		} catch (error) {
 			console.log(error)
 		}
@@ -146,10 +149,12 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					duration={duration}
 					power={power}
 					energy={energy}
+					price={price}
 					screenName={route.name}
 					setDuration={setDuration}
 					setPower={setPower}
 					setEnergy={setEnergy}
+					setPrice={setprice}
 					setStartDate={setStartDate}
 					previousTaskInUse={previousTaskInUse}
 					setPreviousTaskInUse={setPreviousTaskInUse}
@@ -173,7 +178,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					scheduleTask={scheduleTask}
 				/>
 
-				<ResultArea time={startDate} loading={loading} />
+				<ResultArea startTime={startDate} price={price} loading={loading} />
 
 				<View style={styles.container}>
 					<Button

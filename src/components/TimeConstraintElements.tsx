@@ -157,14 +157,16 @@ const AddConstraint = ({
 		  </TouchableOpacity>
 	
 		  <Modal
-			animationType="slide"
 			transparent={true}
 			visible={showPicker}
 			onRequestClose={() => {
 			  setShowPicker(false);
 			}}
 		  >
-			<View style={styles.timepickerbackground}
+			<TouchableOpacity style={styles.timepickerbackground}
+				onPress={() => {
+					setShowPicker(false);
+					}}
 			>
 			  <View
 				style={{
@@ -195,7 +197,7 @@ const AddConstraint = ({
 				  }}
 				/>
 			  </View>
-			</View>
+			</TouchableOpacity>
 		  </Modal>
 	
 		  <TouchableOpacity onPress={() => onDelete(timeIntervalState.id)}>

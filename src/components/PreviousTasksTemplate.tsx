@@ -136,8 +136,8 @@ export const SlidingWindow = ({
 			borderRadius: 5,
 		},
 		nameInputFieldText: {
-			color: 'black',
-			paddingLeft: 10,
+			color: '#524E57',
+			paddingLeft: 11,
 			fontSize: 16,
 		},
 		slidingWindowHeader: {
