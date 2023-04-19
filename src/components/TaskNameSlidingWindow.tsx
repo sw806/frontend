@@ -73,7 +73,7 @@ export const TaskNameSlidingWindow = ({
 						}}
 					>
 						<View style={styles.flatListItemContent}>
-							<Text style={{fontWeight: 'bold', color: 'black'}}> {task.name}</Text>
+							<Text style={{color: 'black'}}> {task.name}</Text>
 						</View>
 					</TouchableOpacity>
 
@@ -217,7 +217,8 @@ export const TaskNameSlidingWindow = ({
 				style={styles.nameInputField}
 			>
 				<Text style={styles.nameInputFieldText}>
-					{name || 'Task Name'}
+				{name || 'Task Name'}
+				<Text style={{ color: 'red' }}>*</Text>
 				</Text>
 			</TouchableOpacity>
 

@@ -1,6 +1,6 @@
 import { TextInput } from 'react-native-paper';
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { useEffect, useState } from 'react';
 import {
 	calculateDuration,
@@ -178,7 +178,12 @@ const TaskUnitInput = ({
 				<TextInput
 					mode="outlined"
 					testID="Duration"
-					label="Duration (minutes)"
+					label={
+						<>
+						  <Text>Duration (minutes)</Text>
+						  <Text style={{ color: 'red' }}>*</Text>
+						</>
+					  }
 					placeholder="Duration (minutes)"
 					onChangeText={(text) => handleInput('Duration', text)}
 					value={duration}
@@ -198,7 +203,12 @@ const TaskUnitInput = ({
 				<TextInput
 					mode="outlined"
 					testID="Power"
-					label="Power (kW)"
+					label={
+						<>
+						  <Text>Power (kW)</Text>
+						  <Text style={{ color: 'red' }}>*</Text>
+						</>
+					  }
 					placeholder="Power (kW)"
 					onChangeText={(text) => handleInput('Power', text)}
 					value={power}
@@ -218,7 +228,12 @@ const TaskUnitInput = ({
 				<TextInput
 					mode="outlined"
 					testID="Energy"
-					label="Energy (kWh)"
+					label={
+						<>
+						  <Text>Energy (kWh)</Text>
+						  <Text style={{ color: 'red' }}>*</Text>
+						</>
+					  }
 					placeholder="Energy (kWh)"
 					onChangeText={(text) => handleInput('Energy', text)}
 					value={energy}

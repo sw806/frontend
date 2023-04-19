@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Pressable, StyleSheet, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { Avatar, Button, Text, TextInput } from 'react-native-paper';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 
 import TaskUnitInput from '../../components/TaskUnitInput';
@@ -79,12 +79,12 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			setStartDate(scheduledTask.startDate);
 			setprice(scheduledTask.price);
 		} catch (error) {
+			setErrorModal(true)
 			console.log(error);
 		}
 	};
 
 	const saveTask = async () => {
-		console.log(scheduledTask);
 		await StorageService.saveTask(scheduledTask);
 		await NotificationService.createTaskNotification(scheduledTask);
 		toggleModal();
@@ -129,6 +129,13 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			borderRadius: 10,
 			height: 285,
 			marginBottom: 20,
+			shadowColor: 'rgba(0,0,0,0.1)',
+			shadowOpacity: 1,
+			shadowRadius: 4,
+			shadowOffset: {
+				width: 0,
+				height: 2,
+			},
 		},
 		cardInputContent:{
 			paddingTop: 10,
@@ -140,10 +147,25 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			borderRadius: 10,
 			height: 170,
 			marginBottom: 30,
+			shadowColor: 'rgba(0,0,0,0.1)',
+			shadowOpacity: 1,
+			shadowRadius: 4,
+			shadowOffset: {
+				width: 0,
+				height: 2,
+			},
 		},
 		cardScheduleContent:{
 			width: '90%',
 		},
+		alertIcon:{
+			backgroundColor: 'transparent',
+			width: 40,
+			height: 40,
+		},
+		alertButton: {
+			width: 100,	
+		}
 	});
 
 	return (
@@ -254,15 +276,20 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 					<View style={styles.modalBackground}>
 						<View style={styles.modalContainer}>
 							<Text
-								style={{ color: '#009FFF', paddingBottom: 10 }}
-							>
-								Error connecting to server!{'\n'}Please check
-								your connection and try again
+								style={{ color: '#009FFF', paddingBottom: 10, textAlign: 'center'}}
+								>
+								Scheduling task failed!{'\n'} Could not connect to server
 							</Text>
-
+							<Avatar.Icon
+								size={60}
+								icon="alert-circle"
+								color='red'
+								style={styles.alertIcon}
+							/>
 							<Button
 								buttonColor={colors.blue.regular}
 								textColor={colors.neutral.white}
+								style={styles.alertButton}
 								onPress={() => setErrorModal(false)}
 							>
 								Close

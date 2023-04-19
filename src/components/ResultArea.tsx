@@ -28,6 +28,11 @@ const styles = StyleSheet.create({
 	icon: {
 		backgroundColor: 'rgba(255, 255, 255, 0)',
 	},
+	loadingContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	} 
 });
 
 type ResultProps = {
@@ -52,7 +57,16 @@ const ResultArea = ({
 	};
 
 	if (loading) {
-		startTimeField = <ActivityIndicator size="large" />;
+		startTimeField = (
+			<View style={styles.loadingContainer}>
+			  <ActivityIndicator size="large" color="white"/>
+			</View>
+		  );
+		  priceField = (
+			<View style={styles.loadingContainer}>
+			  <ActivityIndicator size="large" color="white" />
+			</View>
+		  );
 	} else {
 		startTimeField = (
 			<View style={styles.content}>
