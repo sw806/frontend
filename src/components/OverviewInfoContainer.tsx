@@ -11,10 +11,12 @@ type InfoProps = {
 const styles = StyleSheet.create({
 	text: {
 		...typography.regularText.medBlack,
+		fontWeight: 'bold',
 	},
 	container: {
 		width: Dimensions.get('window').width * 0.35,
 		margin: 4,
+		backgroundColor: '#009FFF',
 	},
 	icon: {
 		backgroundColor: 'rgba(255, 255, 255, 0)',
