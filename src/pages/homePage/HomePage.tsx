@@ -1,5 +1,5 @@
-import { View, StyleSheet, StatusBar  } from 'react-native';
-import { Button, DataTable, Text } from 'react-native-paper';
+import { View, StyleSheet, StatusBar, TouchableOpacity  } from 'react-native';
+import { Avatar, Button, DataTable, Text } from 'react-native-paper';
 import * as React from 'react';
 import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -7,6 +7,7 @@ import { Task } from '../../datatypes/datatypes';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
+import CreateTask from '../createTask/CreateTask';
 
 const styles = StyleSheet.create({
 	screenContainer: {
@@ -72,11 +73,26 @@ const styles = StyleSheet.create({
 		color: colors.blue.regular,
 		borderColor: colors.blue.regular,
 	},
+	emptyTaskContainer:{
+		marginTop: 50,
+		alignContent: 'center',
+		alignItems: 'center'
+	},
+	emptyTask: {
+		alignSelf: 'center',
+	},
+	emptyTaskIcon: {
+		backgroundColor: 'transparent'
+	}
 });
 
 const handleEditTask = (nav, data) => {
 	nav.jumpTo('Overview', { data: data });
 };
+
+const handleCreateTask = (nav) => {
+	nav.jumpTo('Create Task');
+}
 
 const HomePage = (props) => {
 	const { navigation, route, nameProp } = props;
@@ -111,6 +127,25 @@ const HomePage = (props) => {
 			</Text>
 			<View style={styles.scheduleContainer}>
 				<View style={styles.timeContainer}>
+					{data.length === 0 && 
+						<View style={styles.emptyTaskContainer}>
+							<Text style={styles.emptyTask}>You have no tasks yet</Text>
+							<Text style={styles.emptyTask}>Let's create a one!</Text>
+
+							<TouchableOpacity
+								onPress={() =>
+									handleCreateTask(navigation)
+								}
+							>
+								<Avatar.Icon
+									style={styles.emptyTaskIcon}
+									size={70}
+									color="#009FFF"
+									icon={ "plus-circle-outline"}
+								/>
+							</TouchableOpacity>
+						</View>
+					}
 					<ScrollView>
 						{data
 							?.filter(
