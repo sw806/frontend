@@ -174,14 +174,7 @@ const HomePage = (props) => {
 										textStyle={styles.textFormat}
 										style={styles.timeTime}
 									>
-										{new Date(
-											d
-												? (d.startDate +
-														d.duration * 60) *
-														1000 -
-												  currentTime.getTime()
-												: 0
-										)
+										{new Date( d.startDate * 1000)
 											.toLocaleTimeString([], {
 												hour: '2-digit',
 												minute: '2-digit',
