@@ -12,16 +12,16 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 	},
-	nameInputField: {
+	constraintElement: {
 		height: 30,
-		width: 150,
+		width: 130,
 		backgroundColor: 'white',
 		borderColor: '#009FFF',
 		justifyContent: 'center',
 		borderWidth: 1,
 		borderRadius: 5,
 	},
-	nameInputFieldText: {
+	constraintElementText: {
 		color: 'black',
 		paddingLeft: 10,
 		fontSize: 16,
@@ -126,13 +126,13 @@ const AddConstraint = ({
 	return (
 		<View style={styles.itemContainer}>
 		  <TouchableOpacity
-			style={styles.nameInputField}
+			style={styles.constraintElement}
 			onPress={() => {
 			  setPickerType('startTime');
 			  setShowPicker(true);
 			}}
 		  >
-			<Text style={styles.nameInputFieldText}>
+			<Text style={styles.constraintElementText}>
 			  From:{' '}
 			  {new Date(
 				timeIntervalState.start * 1000
@@ -141,13 +141,13 @@ const AddConstraint = ({
 		  </TouchableOpacity>
 	
 		  <TouchableOpacity
-			style={styles.nameInputField}
+			style={styles.constraintElement}
 			onPress={() => {
 			  setPickerType('endTime');
 			  setShowPicker(true);
 			}}
 		  >
-			<Text style={styles.nameInputFieldText}>
+			<Text style={styles.constraintElementText}>
 			  To:{' '}
 			  {new Date(timeIntervalState.end * 1000).toLocaleTimeString(
 				undefined,

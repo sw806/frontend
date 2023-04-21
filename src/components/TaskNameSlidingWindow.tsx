@@ -66,6 +66,7 @@ export const TaskNameSlidingWindow = ({
 			<>
 				<View style={styles.FlatListContainerItem}>
 					<TouchableOpacity
+						activeOpacity={1} // disable feedback
 						style={styles.flatListItem}
 						onPress={() => {
 							selectTaskItem(task);
@@ -82,8 +83,8 @@ export const TaskNameSlidingWindow = ({
 							<Avatar.Icon
 								style={styles.flatListItemIcon}
 								size={50}
-								color="white"
-								icon={showInfo ? "chevron-down" : "chevron-right"}
+								color="#009FFF"
+								icon={'information-outline'}
 							/>
 						</TouchableOpacity>
 					</View>
@@ -135,6 +136,8 @@ export const TaskNameSlidingWindow = ({
 		slidingWindowContent:{
 			overflow: 'scroll',
 			height: '100%',
+			backgroundColor: '#f3f3f3'
+
 		},
 		containerTop: {
 			flexDirection: 'row',
@@ -156,8 +159,15 @@ export const TaskNameSlidingWindow = ({
 		},
 		slidingWindowHeader: {
 			height: 120,
-			backgroundColor:'#f3f3f3',
+			backgroundColor:'white',
 			justifyContent: 'center',
+			shadowColor: 'rgba(0,0,0,0.1)',
+			shadowOpacity: 1,
+			shadowRadius: 4,
+			shadowOffset: {
+				width: 0,
+				height: 2,
+			},
 		},
 		slidingWindowBackButton:{
 			color: '#009FFF', 
@@ -165,7 +175,7 @@ export const TaskNameSlidingWindow = ({
 			fontWeight: 'bold',
 		},
 		FlatListHeadingSection:{
-			borderBottomWidth: 1,
+			// empty
 		},
 		FlatListHeading: {
 			paddingLeft: 10,
@@ -176,10 +186,18 @@ export const TaskNameSlidingWindow = ({
 		FlatListContainerItem: {
 			flexDirection: 'row',
 			justifyContent: 'space-between',
+			paddingTop: 15,
+			shadowColor: 'rgba(0,0,0,0.1)',
+			shadowOpacity: 1,
+			shadowRadius: 4,
+			shadowOffset: {
+				width: 0,
+				height: 2,
+			},
 		},
 		flatListItem: {
+			marginLeft: 15,
 			height: 50,
-			borderBottomWidth: 1,
 			flexDirection: 'row',
 			alignItems: 'center',
 			paddingLeft: 10,
@@ -191,11 +209,11 @@ export const TaskNameSlidingWindow = ({
 			justifyContent: 'space-between',
 		},
 		flatListItemShowInfo: {
-			backgroundColor: '#009FFF',
+			marginRight: 15,
+			backgroundColor: 'white',
 			alignItems: 'center',
 			justifyContent: 'center',
-			width: 40,
-			borderBottomWidth: 1,
+			width: 50,
 		},
 		flatListItemIcon: {
 			width: 30,
@@ -206,7 +224,15 @@ export const TaskNameSlidingWindow = ({
 			paddingLeft: 10,
 			paddingVertical: 10,
 			backgroundColor: '#C8EAFF',
-			borderBottomWidth: 1,
+			marginLeft: 15,
+			marginRight: 15,
+			shadowColor: 'rgba(0,0,0,0.1)',
+			shadowOpacity: 1,
+			shadowRadius: 4,
+			shadowOffset: {
+				width: 0,
+				height: 2,
+			},
 		},
 	});
 
@@ -239,6 +265,7 @@ export const TaskNameSlidingWindow = ({
 								style={{
 									width: 260,
 									height: 40,
+									backgroundColor:'white',
 								}}
 							/>
 

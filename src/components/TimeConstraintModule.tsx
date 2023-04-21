@@ -29,10 +29,23 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		paddingRight: 10,
 	},
+	slidingWindowContent:{
+		height: '100%',
+		backgroundColor: '#f3f3f3'
+	},
 	ModalHeader: {
-		paddingTop: 50,
+		height: 100,
+		paddingTop: 40,
 		flexDirection: 'row',
 		alignItems: 'center',
+		backgroundColor: 'white',
+		shadowColor: 'rgba(0,0,0,0.1)',
+		shadowOpacity: 1,
+		shadowRadius: 4,
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
 	},
 	ModalHeaderText: {
 		color: '#009FFF',
@@ -50,23 +63,34 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	addButtonSymbol: {
-		backgroundColor: 'white',
+		backgroundColor: 'transparent',
 	},
 	addButtonText: {
 		color: 'black',
 		paddingLeft: 10,
 		fontSize: 14,
 	},
+	constraintCard: {
+		alignContent: 'center',
+		backgroundColor: 'white',
+		borderRadius: 10,
+		height: 200,
+		margin: 10,
+		shadowColor: 'rgba(0,0,0,0.1)',
+		shadowOpacity: 1,
+		shadowRadius: 4,
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+	},
+	scrollView: {
+	},
 	constraintHeading: {
 		paddingTop: 40,
 		paddingLeft: 10,
 		fontSize: 20,
 		color: '#009FFF',
-	},
-	scrollView: {
-		height: 200,
-		borderWidth: 2,
-		borderColor: 'grey',
 	},
 });
 
@@ -185,77 +209,86 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 					<Text style={styles.TimeConstraintTextSymbol}> {'>'} </Text>
 				</TouchableOpacity>
 			</View>
+
 			<Modal visible={showSlidingWindow} animationType="slide">
-				<View style={styles.ModalHeader}>
-					<TouchableOpacity onPress={handleCloseSlideWindow}>
-						<Avatar.Icon
-							style={styles.backButton}
-							size={50}
-							color={'black'}
-							icon="arrow-left"
-						/>
-					</TouchableOpacity>
+				<View style={styles.slidingWindowContent}>
+					<View style={styles.ModalHeader}>
+						<TouchableOpacity onPress={handleCloseSlideWindow}>
+							<Avatar.Icon
+								style={styles.backButton}
+								size={50}
+								color={'black'}
+								icon="arrow-left"
+							/>
+						</TouchableOpacity>
 
-					<Text style={styles.ModalHeaderText}> Constrain </Text>
-				</View>
+						<Text style={styles.ModalHeaderText}> Constrain </Text>
+					</View>
 
-				<View>
-					<Text style={styles.constraintHeading}>
-						Start constraints
-					</Text>
-					<TouchableOpacity
-						style={styles.addButton}
-						onPress={handleAddStartInterval}
-					>
-						<Text style={styles.addButtonText}> Add</Text>
-						<Avatar.Icon
-							style={styles.addButtonSymbol}
-							icon="plus-thick"
-							color="#009FFF"
-							size={30}
-						/>
-					</TouchableOpacity>
+							
+						<Text style={styles.constraintHeading}>
+							Start constraints
+						</Text>
+						
+						<TouchableOpacity
+							style={styles.addButton}
+							onPress={handleAddStartInterval}
+						>
+							<Text style={styles.addButtonText}> Add</Text>
+							<Avatar.Icon
+								style={styles.addButtonSymbol}
+								icon="plus-thick"
+								color="#009FFF"
+								size={30}
+							/>
+						</TouchableOpacity>
+						
+						<View style={styles.constraintCard}>
+							<ScrollView style={styles.scrollView}>
+								{startInterval.map((intervalObject) => (
+									<View key={intervalObject.start_interval.id}>
+										<AddConstraint
+											interval={intervalObject.start_interval}
+											onDelete={handleDeleteStartInterval}
+											onUpdate={updateStartInterval}
+										/>
+									</View>
+								))}
+							</ScrollView>
+						</View>
 
-					<ScrollView style={styles.scrollView}>
-						{startInterval.map((intervalObject) => (
-							<View key={intervalObject.start_interval.id}>
-								<AddConstraint
-									interval={intervalObject.start_interval}
-									onDelete={handleDeleteStartInterval}
-									onUpdate={updateStartInterval}
-								/>
-							</View>
-						))}
-					</ScrollView>
+						<Text style={styles.constraintHeading}>
+							End constraints
+						</Text>
 
-					<Text style={styles.constraintHeading}>
-						End constraints
-					</Text>
+						
+						<TouchableOpacity
+							style={styles.addButton}
+							onPress={handleAddEndInterval}
+						>
+							<Text style={styles.addButtonText}> Add</Text>
+							<Avatar.Icon
+								style={styles.addButtonSymbol}
+								icon="plus-thick"
+								color="#009FFF"
+								size={30}
+							/>
+						</TouchableOpacity>
 
-					<TouchableOpacity
-						style={styles.addButton}
-						onPress={handleAddEndInterval}
-					>
-						<Text style={styles.addButtonText}> Add</Text>
-						<Avatar.Icon
-							style={styles.addButtonSymbol}
-							icon="plus-thick"
-							color="#009FFF"
-							size={30}
-						/>
-					</TouchableOpacity>
-
-					<ScrollView style={styles.scrollView}>
-						{endInterval.map((intervalObject) => (
-							<View key={intervalObject.end_interval.id}>
-								<AddConstraint
-									interval={intervalObject.end_interval}
-									onDelete={handleDeleteEndInterval}
-									onUpdate={updateEndInterval}
-								/>
-							</View>
-						))}
-					</ScrollView>
+					
+						<View style={styles.constraintCard}>
+							<ScrollView style={styles.scrollView}>
+								{endInterval.map((intervalObject) => (
+									<View key={intervalObject.end_interval.id}>
+										<AddConstraint
+											interval={intervalObject.end_interval}
+											onDelete={handleDeleteEndInterval}
+											onUpdate={updateEndInterval}
+										/>
+									</View>
+								))}
+							</ScrollView>
+						</View>
 				</View>
 			</Modal>
 		</View>
