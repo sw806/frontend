@@ -9,6 +9,8 @@ export type Task = {
 	must_end_between?: { end_interval: Interval }[];
 	price?: number;
 	highestPrice?: number;
+	co2Emission?: number;
+	highestCo2Emission?: number;
 };
 
 export type POSTObject = {
