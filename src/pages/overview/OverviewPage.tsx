@@ -44,10 +44,12 @@ const styles = StyleSheet.create({
 		...components.containers.results,
 	},
 	card: {
-		marginTop: space.spacing.xs,
+		margin: 4,
+		backgroundColor: '#009FFF',
 	},
 	text: {
-		fontSize: typography.fontSizes.titleLarge.fontSize,
+		fontSize: 20,
+		fontWeight: 'bold',
 	},
 	icon: {
 		backgroundColor: 'rgba(255, 255, 255, 0)',
@@ -73,8 +75,8 @@ const styles = StyleSheet.create({
 });
 
 type OverviewProps = {
-	navigation: NativeStackNavigationProp<any>;
-	route: RouteProp<ParamListBase, any>;
+	navigation: NativeStackNavigationProp<never>;
+	route: RouteProp<ParamListBase, never>;
 };
 
 const goBack = (nav) => {
@@ -94,6 +96,7 @@ const timeOptions = {
 const OverviewPage: FC = (props: OverviewProps) => {
 	const { navigation, route } = props;
 	// @ts-ignore
+	console.log(route.params.data);
 	const {
 		name,
 		duration,
@@ -103,9 +106,10 @@ const OverviewPage: FC = (props: OverviewProps) => {
 		must_start_between,
 		must_end_between,
 		price,
+		highestPrice
 	} = route.params.data;
 	const taskStartDate = new Date(startDate * 1000).toLocaleString();
-
+	const currentDate = new Date();
 	return (
 		<View style={styles.screenContainer}>
 			<StatusBar barStyle="dark-content"/>
@@ -137,32 +141,60 @@ const OverviewPage: FC = (props: OverviewProps) => {
 							icon="calendar-clock"
 							style={styles.icon}
 						/>
-						<Text style={styles.text}>{taskStartDate}</Text>
+						<Text style={styles.text}>{getDateStartAndEnd(startDate, duration, currentDate)}</Text>
 					</Card.Content>
 				</Card>
 				<View style={styles.infoContainer}>
 					<View>
 						<OverviewInfoContainer
 							icon="clock-outline"
-							text={duration + ' minutes'}
+							text={duration + ' minutes\n'}
 						/>
 						<OverviewInfoContainer
 							icon="lightning-bolt-outline"
-							text={power + ' kW'}
+							text={power + ' kW\n'}
 						/>
 					</View>
 					<View>
 						<OverviewInfoContainer
 							icon="piggy-bank-outline"
-							text={price.toFixed(2) + ' Kr.'}
+							text={PriceAndMoneySaved(price, highestPrice)}
 						/>
 						<OverviewInfoContainer
 							icon="power-plug-outline"
-							text={energy + ' kWh'}
+							text={energy + ' kWh\n'}
 						/>
 					</View>
 				</View>
 			</Card>
+
+			{CanEdit(startDate, currentDate, duration, navigation, route)}
+		</View>
+	);
+};
+
+const getDateStartAndEnd = (date, duration, currentDate) => {
+	const taskStartDate = new Date(date * 1000);
+	const taskEndDate = new Date(taskStartDate.getTime() + duration * 60000);
+	if (currentDate.getMonth() !== taskStartDate.getMonth() && currentDate.getDay() === taskStartDate.getDay()) {
+		return taskStartDate.toLocaleTimeString() + "-" + taskEndDate.toLocaleTimeString();
+	} else if (currentDate.getTime() > taskEndDate.getTime()) {
+		return "Finished"
+	} else {
+		return taskStartDate.toLocaleString() + " - " + taskEndDate.toLocaleString();
+	}
+}
+
+const PriceAndMoneySaved = (price, highest) => {
+	const actualPrice = price.toFixed(2) + ' Kr.'
+	const moneySaved = (highest - price).toFixed(2) + ' Kr.'
+	return " " + actualPrice + "\n-" + moneySaved;
+}
+
+const CanEdit = (startDate, currentDate, duration, navigation, route) => {
+	const taskStartDate = new Date(startDate * 1000);
+	if (currentDate.getTime() < taskStartDate.getTime() + duration * 60000) {
+		return (
 			<View style={styles.container}>
 				<View style={styles.dualContainer}>
 					<Button
@@ -177,7 +209,7 @@ const OverviewPage: FC = (props: OverviewProps) => {
 					<Button
 						style={styles.btn}
 						mode="elevated"
-						buttonColor="#4fc3f7"
+						buttonColor="#009FFF"
 						textColor="#ffffff"
 						onPress={() => goEdit(navigation, route.params.data)}
 					>
@@ -185,8 +217,24 @@ const OverviewPage: FC = (props: OverviewProps) => {
 					</Button>
 				</View>
 			</View>
-		</View>
-	);
-};
+		)
+	} else {
+		return (
+			<View style={styles.container}>
+				<View style={styles.dualContainer}>
+					<Button
+						style={styles.btn}
+						mode="elevated"
+						buttonColor="#607d8b"
+						textColor="#ffffff"
+						onPress={() => goBack(navigation)}
+					>
+						Back
+					</Button>
+				</View>
+			</View>
+		)
 
+	}
+}
 export default OverviewPage;

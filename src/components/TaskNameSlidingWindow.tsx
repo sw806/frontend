@@ -8,6 +8,7 @@ import {
 	Modal,
 	KeyboardAvoidingView,
 	StyleSheet,
+	ScrollView,
 } from 'react-native';
 import { Task } from '../datatypes/datatypes';
 
@@ -48,43 +49,56 @@ export const TaskNameSlidingWindow = ({
 
 	const handleOpenSlideWindow = () => {
 		setShowSlidingWindow(true);
-		console.log(allPreviousTasks)
 	};
 
 	const handleCloseSlideWindow = () => {
 		setShowSlidingWindow(false);
 	};
 
-	const TaskItem = ({ task }: ItemProps) => (
-		<TouchableOpacity
-			style={styles.flatListItem}
-			onPress={() => {
-				selectTaskItem(task);
-				setPreviousTaskInUse(true);
-			}}
-		>
-			<View style={styles.flatListItemContent}>
-				<View>
-					<Text> {task.name}</Text>
-				</View>
-				<View>
+	const TaskItem = ({ task }: ItemProps) => {
+		const [showInfo, setShowInfo] = useState(false);
+	
+		const handleInfoPress = () => {
+			setShowInfo(!showInfo);
+		};
+	
+		return (
+			<>
+				<View style={styles.FlatListContainerItem}>
 					<TouchableOpacity
+						style={styles.flatListItem}
 						onPress={() => {
-							setSelectedTask(task);
-							setShowModal(true);
+							selectTaskItem(task);
+							setPreviousTaskInUse(true);
 						}}
 					>
-						<Avatar.Icon
-							style={styles.flatListItemIcon}
-							size={50}
-							color="#009FFF"
-							icon="information-outline"
-						/>
+						<View style={styles.flatListItemContent}>
+							<Text style={{color: 'black'}}> {task.name}</Text>
+						</View>
 					</TouchableOpacity>
+
+					<View style={styles.flatListItemShowInfo}>
+						<TouchableOpacity onPress={handleInfoPress}>
+							<Avatar.Icon
+								style={styles.flatListItemIcon}
+								size={50}
+								color="white"
+								icon={showInfo ? "chevron-down" : "chevron-right"}
+							/>
+						</TouchableOpacity>
+					</View>
 				</View>
-			</View>
-		</TouchableOpacity>
-	);
+
+				{showInfo && (
+					<View style={styles.infoContainer}>
+						<Text>Duration: {task.duration} minutes</Text>
+						<Text>Power: {task.power} Watts</Text>
+						<Text>Energy: {task.energy} kWh</Text>
+					</View>
+				)}
+			</>
+		);
+	};
 
 	const renderTaskItem = ({ item }: { item: Task }) => {
 		return <TaskItem task={item} />;
@@ -116,10 +130,11 @@ export const TaskNameSlidingWindow = ({
 			setName(text);
 		}
 	};
-
+	
 	const styles = StyleSheet.create({
-		slidingWindow: {
-			backgroundColor: 'black',
+		slidingWindowContent:{
+			overflow: 'scroll',
+			height: '100%',
 		},
 		containerTop: {
 			flexDirection: 'row',
@@ -143,57 +158,55 @@ export const TaskNameSlidingWindow = ({
 			height: 120,
 			backgroundColor:'#f3f3f3',
 			justifyContent: 'center',
-			borderBottomWidth: 3,
-			borderBottomColor: '#009FFF',
 		},
 		slidingWindowBackButton:{
 			color: '#009FFF', 
 			fontSize: 16,
 			fontWeight: 'bold',
 		},
+		FlatListHeadingSection:{
+			borderBottomWidth: 1,
+		},
 		FlatListHeading: {
 			paddingLeft: 10,
 			paddingTop: 20,
 			fontSize: 18,
 			color: '#009FFF',
-			borderBottomWidth: 1,
+		},
+		FlatListContainerItem: {
+			flexDirection: 'row',
+			justifyContent: 'space-between',
 		},
 		flatListItem: {
 			height: 50,
 			borderBottomWidth: 1,
-			borderColor: 'grey',
 			flexDirection: 'row',
 			alignItems: 'center',
 			paddingLeft: 10,
+			backgroundColor: 'white',
+			flex: 1,
 		},
 		flatListItemContent: {
 			flexDirection: 'row',
 			justifyContent: 'space-between',
-			width: '95%',
+		},
+		flatListItemShowInfo: {
+			backgroundColor: '#009FFF',
+			alignItems: 'center',
+			justifyContent: 'center',
+			width: 40,
+			borderBottomWidth: 1,
 		},
 		flatListItemIcon: {
 			width: 30,
 			height: 30,
-			backgroundColor: 'white',
+			backgroundColor: 'transparent',
 		},
-		modalBackground: {
-			flex: 1,
-			backgroundColor: 'rba(0,0,0,0,5)',
-			justifyContent: 'center',
-			alignItems: 'center',
-		},
-		modalContainer: {
-			width: '80%',
-			height: '30%',
-			justifyContent: 'center',
-			alignItems: 'center',
-			backgroundColor: 'white',
-			paddingHorizontal: 20,
-			paddingVertical: 30,
-			elevation: 20,
-			borderRadius: 20,
-			top: '20%',
-			left: '10%',
+		infoContainer: {
+			paddingLeft: 10,
+			paddingVertical: 10,
+			backgroundColor: '#C8EAFF',
+			borderBottomWidth: 1,
 		},
 	});
 
@@ -204,12 +217,13 @@ export const TaskNameSlidingWindow = ({
 				style={styles.nameInputField}
 			>
 				<Text style={styles.nameInputFieldText}>
-					{name || 'Task Name'}
+				{name || 'Task Name'}
+				<Text style={{ color: 'red' }}>*</Text>
 				</Text>
 			</TouchableOpacity>
 
 			<Modal visible={showSlidingWindow} animationType="slide">
-				<KeyboardAvoidingView >
+				<View style={styles.slidingWindowContent}>
 					<View style={styles.slidingWindowHeader}>
 						<View style={styles.containerTop}>
 							<TextInput
@@ -240,44 +254,13 @@ export const TaskNameSlidingWindow = ({
 						</View>
 					</View>
 
-					<Text style={styles.FlatListHeading}> Previous tasks </Text>
+					<View style={styles.FlatListHeadingSection}>
+						<Text style={styles.FlatListHeading}> Previous tasks </Text>
+					</View>
 					<FlatList
 						data={filteredAllPreviousTasks}
 						renderItem={renderTaskItem}
 					/>
-				</KeyboardAvoidingView>
-			</Modal>
-
-			<Modal
-				visible={showModal}
-				style={styles.modalBackground}
-				transparent
-			>
-				<View style={styles.modalContainer}>
-					<Text
-						style={{
-							paddingBottom: 10,
-							fontSize: 18,
-							color: '#009FFF',
-						}}
-					>
-						{selectedTask?.name}
-					</Text>
-					<Text>Duration: {selectedTask?.duration} minutes</Text>
-					<Text>Power: {selectedTask?.power} Watts</Text>
-					<Text>Energy: {selectedTask?.energy} kWh</Text>
-
-					<View style={{ paddingTop: 30 }}>
-						<Button
-							buttonColor={colors.blue.regular}
-							textColor="white"
-							onPress={() => {
-								setShowModal(false);
-							}}
-						>
-							Close
-						</Button>
-					</View>
 				</View>
 			</Modal>
 		</View>

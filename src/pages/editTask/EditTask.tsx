@@ -193,6 +193,13 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			borderRadius: 10,
 			height: 230,
 			marginBottom: 20,
+			shadowColor: 'rgba(0,0,0,0.1)',
+			shadowOpacity: 1,
+			shadowRadius: 4,
+			shadowOffset: {
+				width: 0,
+				height: 2,
+			},
 		},
 		cardInputContent:{
 			width: '90%',
@@ -202,6 +209,14 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			alignItems: 'center',
 			borderRadius: 10,
 			height: 170,
+			marginBottom: 30,
+			shadowColor: 'rgba(0,0,0,0.1)',
+			shadowOpacity: 1,
+			shadowRadius: 4,
+			shadowOffset: {
+				width: 0,
+				height: 2,
+			},
 		},
 		cardScheduleContent:{
 			width: '90%',
@@ -310,6 +325,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 								</Button>
 								{saveModal && (
 									<Button
+								
 										style={styles.btn}
 										mode="elevated"
 										buttonColor="#4caf50"
