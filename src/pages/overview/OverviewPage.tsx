@@ -7,6 +7,8 @@ import { IStackScreenProps } from '../../library/Stack.ScreenProps';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase, RouteProp } from '@react-navigation/native';
 import OverviewInfoContainer from '../../components/OverviewInfoContainer';
+import {NotificationService} from "../../utils/notificationsService";
+import {StorageService} from "../../utils/storage";
 
 const styles = StyleSheet.create({
 	screenContainer: {
@@ -50,6 +52,7 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 20,
 		fontWeight: 'bold',
+		color: "white"
 	},
 	icon: {
 		backgroundColor: 'rgba(255, 255, 255, 0)',
@@ -95,9 +98,8 @@ const timeOptions = {
 };
 const OverviewPage: FC = (props: OverviewProps) => {
 	const { navigation, route } = props;
-	// @ts-ignore
-	console.log(route.params.data);
 	const {
+		id,
 		name,
 		duration,
 		energy,
@@ -106,9 +108,10 @@ const OverviewPage: FC = (props: OverviewProps) => {
 		must_start_between,
 		must_end_between,
 		price,
-		highestPrice
+		highestPrice,
+		co2Emission,
+		highestCo2Emission
 	} = route.params.data;
-	const taskStartDate = new Date(startDate * 1000).toLocaleString();
 	const currentDate = new Date();
 	return (
 		<View style={styles.screenContainer}>
@@ -140,6 +143,7 @@ const OverviewPage: FC = (props: OverviewProps) => {
 							size={70}
 							icon="calendar-clock"
 							style={styles.icon}
+							color={"black"}
 						/>
 						<Text style={styles.text}>{getDateStartAndEnd(startDate, duration, currentDate)}</Text>
 					</Card.Content>
@@ -147,8 +151,8 @@ const OverviewPage: FC = (props: OverviewProps) => {
 				<View style={styles.infoContainer}>
 					<View>
 						<OverviewInfoContainer
-							icon="clock-outline"
-							text={duration + ' minutes\n'}
+							icon="molecule-co2"
+							text={co2Emission.toFixed(2) + ' g/kWh\n'}
 						/>
 						<OverviewInfoContainer
 							icon="lightning-bolt-outline"
@@ -168,7 +172,7 @@ const OverviewPage: FC = (props: OverviewProps) => {
 				</View>
 			</Card>
 
-			{CanEdit(startDate, currentDate, duration, navigation, route)}
+			{CanEdit(startDate, currentDate, duration, navigation, route, id)}
 		</View>
 	);
 };
@@ -191,9 +195,15 @@ const PriceAndMoneySaved = (price, highest) => {
 	return " " + actualPrice + "\n-" + moneySaved;
 }
 
-const CanEdit = (startDate, currentDate, duration, navigation, route) => {
+const removeTask = async (id, nav) => {
+	await NotificationService.removeTaskNotification(id);
+	await StorageService.deleteTask(id);
+	nav.goBack();
+};
+
+const CanEdit = (startDate, currentDate, duration, navigation, route, id) => {
 	const taskStartDate = new Date(startDate * 1000);
-	if (currentDate.getTime() < taskStartDate.getTime() + duration * 60000) {
+	if (currentDate.getTime() > taskStartDate.getTime() + duration * 60000) {
 		return (
 			<View style={styles.container}>
 				<View style={styles.dualContainer}>
@@ -230,6 +240,15 @@ const CanEdit = (startDate, currentDate, duration, navigation, route) => {
 						onPress={() => goBack(navigation)}
 					>
 						Back
+					</Button>
+					<Button
+						style={styles.btn}
+						mode="elevated"
+						buttonColor="#d32f2f"
+						textColor="#ffffff"
+						onPress={() => removeTask(id, navigation)}
+					>
+						Delete
 					</Button>
 				</View>
 			</View>

@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
 	text: {
 		...typography.regularText.medBlack,
 		fontWeight: 'bold',
+		color: "white"
 	},
 	container: {
 		width: Dimensions.get('window').width * 0.35,
@@ -30,7 +31,7 @@ const OverviewInfoContainer = (props: InfoProps) => {
 	return (
 		<Card style={styles.container} mode="contained">
 			<Card.Content style={styles.content}>
-				<Avatar.Icon size={40} icon={props.icon} style={styles.icon} />
+				<Avatar.Icon size={40} icon={props.icon} style={styles.icon} color={"black"}/>
 				<Text style={styles.text} variant="bodyMedium">
 					{props.text}
 				</Text>

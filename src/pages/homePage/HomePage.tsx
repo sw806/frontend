@@ -97,7 +97,7 @@ const handleCreateTask = (nav) => {
 const HomePage = (props) => {
 	const { navigation, route, nameProp } = props;
 	const [data, setData] = React.useState<readonly Task[]>([]);
-	const [currentTime, setCurrentTime] = React.useState<Date>(new Date());
+	const [currentTime, _] = React.useState<Date>(new Date());
 
 	const fetchData = async () => {
 		const tasks = await StorageService.getAllTasks();
@@ -116,7 +116,7 @@ const HomePage = (props) => {
 		setData(tasksCopy);
 	};
 
-	fetchData();
+	fetchData().then(() => console.log('fetched data'));
 
 	return (
 		<View style={styles.screenContainer}>
@@ -127,7 +127,7 @@ const HomePage = (props) => {
 			</Text>
 			<View style={styles.scheduleContainer}>
 				<View style={styles.timeContainer}>
-					{data.length === 0 && 
+					{data.length === 0 &&
 						<View style={styles.emptyTaskContainer}>
 							<Text style={styles.emptyTask}>You have no tasks yet</Text>
 							<Text style={styles.emptyTask}>Let's create a one!</Text>
