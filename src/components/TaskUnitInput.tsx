@@ -1,7 +1,7 @@
 import { TextInput } from 'react-native-paper';
 import * as React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { useEffect, useState } from 'react';
+import {FC, useEffect, useState} from 'react';
 import {
 	calculateDuration,
 	calculateEnergy,
@@ -116,7 +116,7 @@ const TaskUnitInput = ({
 				4
 			);
 			if (maxTaskConsumption && newPower > maxTaskConsumption) {
-				alert('The calculated power ' + newPower + ' is above 3 kW!');
+				alert('The calculated power ' + newPower + 'kW is above your max power of ' + maxTaskConsumption + 'kW!');
 				return;
 			}
 			setPower(newPower.toString());
