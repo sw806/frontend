@@ -28,6 +28,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		price,
 		must_start_between,
 		must_end_between,
+		co2Emission
 	} = route.params.data;
 	const [newDuration, setDuration] = useState<string>(
 		duration != undefined ? duration.toString() : 'NaN'
@@ -44,6 +45,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [newEndInterval, setEndInterval] =
 		useState<{ end_interval: Interval }[]>(must_end_between);
 	const [newPrice, setPrice] = useState<number>(price != undefined ? price : 'NaN');
+	const [newCo2Emission, setCo2Emission] = useState<number>(co2Emission != undefined ? co2Emission : 'NaN');
 	const [loading, setLoading] = useState<boolean>(false);
 	const [visible, setVisible] = React.useState<boolean>(false);
 	const [modalText, setModalText] = React.useState<string>('');
@@ -67,6 +69,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				power: parseFloat(newPower),
 				energy: parseFloat(newEnergy),
 				price: newPrice,
+				co2Emission: newCo2Emission,
 				must_start_between: newStartInterval,
 				must_end_between: newEndInterval,
 			};
@@ -86,6 +89,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 			setRescheduledTask(rescheduledTask);
 			setStartDate(rescheduledTask.startDate);
+			setCo2Emission(rescheduledTask.co2Emission)
 			setPrice(rescheduledTask.price);
 		} catch (error) {
 			console.log(error);
@@ -208,8 +212,8 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			backgroundColor: 'white',
 			alignItems: 'center',
 			borderRadius: 10,
-			height: 170,
-			marginBottom: 30,
+			height: 215,
+			marginBottom: 10,
 			shadowColor: 'rgba(0,0,0,0.1)',
 			shadowOpacity: 1,
 			shadowRadius: 4,
@@ -297,7 +301,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 						setError={setErrorModal}
 						scheduleTask={scheduleTask}
 					/>
-					<ResultArea startTime={newStartDate} price={newPrice} loading={loading} />
+					<ResultArea startTime={newStartDate} price={newPrice} co2Emission={newCo2Emission} loading={loading} />
 				</View>
 
 				<View style={styles.editButtons}>

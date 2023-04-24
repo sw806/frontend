@@ -27,6 +27,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [energy, setEnergy] = useState<string>();
 	const [startDate, setStartDate] = useState<number>();
 	const [price, setprice] = useState<number>();
+	const [co2Emission, setCo2Emission] = useState<number>();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [allPreviousTasks, setAllPreviousTasks] = useState<readonly Task[]>(
@@ -58,6 +59,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				power: parseFloat(power),
 				energy: parseFloat(energy),
 				price: price,
+				co2Emission: co2Emission,
 				must_start_between: startInterval,
 				must_end_between: endInterval,
 			};
@@ -78,6 +80,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 			setScheduledTask(scheduledTask);
 			setStartDate(scheduledTask.startDate);
+			setCo2Emission(scheduledTask.co2Emission)
 			setprice(scheduledTask.price);
 		} catch (error) {
 			setErrorModal(true)
@@ -146,8 +149,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 			backgroundColor: 'white',
 			alignItems: 'center',
 			borderRadius: 10,
-			height: 170,
-			marginBottom: 30,
+			height: 215,
+			marginBottom: 10,
 			shadowColor: 'rgba(0,0,0,0.1)',
 			shadowOpacity: 1,
 			shadowRadius: 4,
@@ -228,7 +231,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 						scheduleTask={scheduleTask}
 					/>
 
-					<ResultArea startTime={startDate} price={price} loading={loading} />
+					<ResultArea startTime={startDate} price={price} co2Emission={co2Emission} loading={loading} />
 				</View>
 
 				<View style={styles.container}>
