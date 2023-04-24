@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 	},
 	constraintElement: {
 		height: 30,
-		width: 130,
+		width: 140,
 		backgroundColor: 'white',
 		borderColor: '#009FFF',
 		justifyContent: 'center',

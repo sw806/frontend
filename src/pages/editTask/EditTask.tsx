@@ -60,6 +60,14 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		setVisible(false);
 	};
 
+	useEffect(() => {
+		if(must_start_between.length != newStartInterval.length || must_start_between.length !=  must_end_between.length){
+			setStartDate(null);
+			setPrice(null);
+			setCo2Emission(null);
+		}
+	}, [newStartInterval, newEndInterval, must_start_between, must_end_between]);
+
 	const scheduleTask = async () => {
 		try {
 			const scheduledTask: Task = {
@@ -276,6 +284,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 							setEnergy={setEnergy}
 							setPrice={setPrice}
 							setStartDate={setStartDate}
+							setCo2Emission={setCo2Emission}
 							previousTaskInUse={previousTaskInUse}
 							setPreviousTaskInUse={setPreviousTaskInUse}
 						/>

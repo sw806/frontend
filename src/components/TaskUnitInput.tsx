@@ -21,6 +21,7 @@ type TIProps = {
 	setPower;
 	setPrice;
 	setStartDate;
+	setCo2Emission;
 	previousTaskInUse;
 	setPreviousTaskInUse;
 };
@@ -35,6 +36,7 @@ const TaskUnitInput = ({
 	setEnergy,
 	screenName,
 	setStartDate,
+	setCo2Emission,
 	previousTaskInUse,
 	setPreviousTaskInUse,
 }: TIProps) => {
@@ -70,6 +72,7 @@ const TaskUnitInput = ({
 		if (numFilledInputs == 3 && previousTaskInUse) {
 			setEnergyDisabled(true);
 			setStartDate(null);
+			setCo2Emission(null);
 			setPrice(null);
 		}
 
@@ -90,6 +93,7 @@ const TaskUnitInput = ({
 			// clear start date when input is changed
 			setStartDate(null);
 			setPrice(null);
+			setCo2Emission(null)
 		}
 	}, [duration, energy, power]);
 

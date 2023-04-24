@@ -47,8 +47,16 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	};
 
 	useEffect(() => {
+		setStartDate(null);
+		setprice(null);
+		setCo2Emission(null);
+
+	}, [startInterval, endInterval]);
+
+	useEffect(() => {
 		getPreviousTasks();
 	}, []);
+
 
 	const scheduleTask = async () => {
 		try {
@@ -206,6 +214,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 							setEnergy={setEnergy}
 							setPrice={setprice}
 							setStartDate={setStartDate}
+							setCo2Emission={setCo2Emission}
 							previousTaskInUse={previousTaskInUse}
 							setPreviousTaskInUse={setPreviousTaskInUse}
 						/>
