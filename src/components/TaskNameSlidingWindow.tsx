@@ -234,6 +234,10 @@ export const TaskNameSlidingWindow = ({
 				height: 2,
 			},
 		},
+		noPrevTask: {
+			paddingTop: 40,
+			alignItems: 'center',
+		}
 	});
 
 	return (
@@ -284,10 +288,21 @@ export const TaskNameSlidingWindow = ({
 					<View style={styles.FlatListHeadingSection}>
 						<Text style={styles.FlatListHeading}> Previous tasks </Text>
 					</View>
-					<FlatList
-						data={filteredAllPreviousTasks}
-						renderItem={renderTaskItem}
-					/>
+
+	
+					{filteredAllPreviousTasks.length === 0 ? (
+						<View style={styles.noPrevTask}>
+							<Text> You have no previous tasks</Text>
+						
+						</View>
+					) : (
+						<FlatList
+							data={filteredAllPreviousTasks}
+							renderItem={renderTaskItem}
+						/>
+					)
+					}
+		
 				</View>
 			</Modal>
 		</View>
