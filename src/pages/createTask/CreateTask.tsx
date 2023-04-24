@@ -62,7 +62,8 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 				must_end_between: endInterval,
 			};
 
-			const scheduledTasks = await StorageService.getAllTasks();
+			const dateNow = new Date();
+			const scheduledTasks = await StorageService.getAllTasks(dateNow); // we only want active tasks
 			const settings = await StorageService.getSettings();
 
 			const scheduledTask: Task = await ScheduleApiV2.scheduleTask(

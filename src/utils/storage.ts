@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Task, Options, RasponseTask } from '../datatypes/datatypes';
+import { Task, Options, ResponseTask } from '../datatypes/datatypes';
 
 const settings_id: string = '@Settings_key';
 const schedule_id: string = '@Schedule_key';
@@ -13,23 +13,32 @@ type TaskEnc = {
 export module StorageService {
 	/**
 	 * retrives all saved tasks from the local storage
-	 * @returns array containing all the tasks from the local storage
+	 * @param {Date} filterDate - optional parameter to filter tasks based on a specific date. Selects tasks with startdate after given date
+	 * @returns array containing all the tasks from the local storage that pass the optional filter. 
 	 */
-	export async function getAllTasks() {
+	export async function getAllTasks(filterDate?: Date) {
 		try {
 			const data = await AsyncStorage.getItem(task_id);
 
 			if (data) {
 				const t: TaskEnc = JSON.parse(data);
 				const d: readonly Task[] = Object.values(t) ?? [];
+
+				if (filterDate) {
+					// filter tasks based on the filterDate parameter
+					return d.filter(task => task.startDate > (Math.floor(filterDate.getTime() / 1000)));
+				}
+
 				return d;
 			}
 
 			return [];
+			
 		} catch (error) {
 			console.log(error);
 		}
 	}
+
 
 	/**
 	 * retrives all saved tasks from the local storage
@@ -70,7 +79,7 @@ export module StorageService {
 		try {
 			const data = await AsyncStorage.getItem(schedule_id);
 
-			const d: RasponseTask = JSON.parse(data);
+			const d: ResponseTask = JSON.parse(data);
 			return d;
 		} catch (error) {
 			console.log(error);
@@ -124,7 +133,7 @@ export module StorageService {
 		}
 	}
 
-	export async function saveSchedule(schedule: RasponseTask) {
+	export async function saveSchedule(schedule: ResponseTask) {
 		try {
 			await AsyncStorage.setItem(schedule_id, JSON.stringify(schedule));
 		} catch (error) {
