@@ -203,7 +203,7 @@ const removeTask = async (id, nav) => {
 
 const CanEdit = (startDate, currentDate, duration, navigation, route, id) => {
 	const taskStartDate = new Date(startDate * 1000);
-	if (currentDate.getTime() > taskStartDate.getTime() + duration * 60000) {
+	if (currentDate.getTime() < taskStartDate.getTime() + duration * 60000) {
 		return (
 			<View style={styles.container}>
 				<View style={styles.dualContainer}>

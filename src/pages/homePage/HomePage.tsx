@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { components, typography, colors, space } from '../../styles/theme';
 import { StorageService } from '../../utils/storage';
 import CreateTask from '../createTask/CreateTask';
+import {useEffect} from "react";
 
 const styles = StyleSheet.create({
 	screenContainer: {
@@ -116,7 +117,9 @@ const HomePage = (props) => {
 		setData(tasksCopy);
 	};
 
-	fetchData().then(() => console.log('fetched data'));
+	useEffect(() => {
+		fetchData().then(() => console.log('fetched data'));
+	}, [])
 
 	return (
 		<View style={styles.screenContainer}>
