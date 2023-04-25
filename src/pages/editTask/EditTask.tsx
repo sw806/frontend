@@ -53,6 +53,20 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [previousTaskInUse, setPreviousTaskInUse] = useState(false);
 	const [rescheduledTask, setRescheduledTask] = useState<Task>();
+	const [maxTaskConsumption, setMaxTaskConsumption] = useState<number>(undefined);
+
+	async function loadMaxTaskComsumption() {
+		const settings = await StorageService.getSettings();
+		if (!settings) {
+			setMaxTaskConsumption(undefined);
+		}
+		// setting in watt task in kW
+		setMaxTaskConsumption(settings.max_task_power)
+	}
+
+	useEffect(() => {
+		loadMaxTaskComsumption();
+	}, [])
 
 	const showModal = () => setVisible(true);
 
@@ -279,6 +293,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 							power={newPower}
 							energy={newEnergy}
 							screenName={route.name}
+							maxTaskConsumption={maxTaskConsumption}
 							setDuration={setDuration}
 							setPower={setPower}
 							setEnergy={setEnergy}
@@ -306,6 +321,7 @@ const EditTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 						power={power}
 						energy={energy}
 						startDate={startDate}
+						maxTaskConsumption={maxTaskConsumption}
 						setLoading={setLoading}
 						setError={setErrorModal}
 						scheduleTask={scheduleTask}

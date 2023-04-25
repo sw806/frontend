@@ -16,6 +16,7 @@ type TIProps = {
 	power: string;
 	energy: string;
 	screenName: string;
+	maxTaskConsumption: number,
 	setDuration;
 	setEnergy;
 	setPower;
@@ -30,6 +31,7 @@ const TaskUnitInput = ({
 	duration,
 	power,
 	energy,
+	maxTaskConsumption,
 	setPrice,
 	setDuration,
 	setPower,
@@ -44,20 +46,6 @@ const TaskUnitInput = ({
 	const [disabledDuration, setDurationDisabled] = useState<boolean>(false);
 	const [disabledPower, setPowerDisabled] = useState<boolean>(false);
 	const [disabledEnergy, setEnergyDisabled] = useState<boolean>(false);
-	const [maxTaskConsumption, setMaxTaskConsumption] = useState<number>(undefined);
-
-	async function loadMaxTaskComsumption() {
-		const settings = await StorageService.getSettings();
-		if (!settings) {
-			setMaxTaskConsumption(undefined);
-		}
-		// setting in watt task in kW
-		setMaxTaskConsumption(settings.max_task_power / 1000)
-	}
-
-	useEffect(() => {
-		loadMaxTaskComsumption();
-	}, [])
 
 	// unlock text inputs
 	useEffect(() => {

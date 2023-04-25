@@ -41,10 +41,23 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 		{ end_interval: Interval }[]
 	>([]);
 	const [scheduledTask, setScheduledTask] = useState<Task>();
-
+	const [maxTaskConsumption, setMaxTaskConsumption] = useState<number>(undefined);
 	const getPreviousTasks = async () => {
 		setAllPreviousTasks(await StorageService.getAllTemplateTasks());
 	};
+
+	async function loadMaxTaskComsumption() {
+		const settings = await StorageService.getSettings();
+		if (!settings) {
+			setMaxTaskConsumption(undefined);
+		}
+		// setting in watt task in kW
+		setMaxTaskConsumption(settings.max_task_power)
+	}
+
+	useEffect(() => {
+		loadMaxTaskComsumption();
+	}, [])
 
 	useEffect(() => {
 		setStartDate(null);
@@ -60,6 +73,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 
 	const scheduleTask = async () => {
 		try {
+			console.log( 'Duration: ' + duration)
 			const unscheduledTask: Task = {
 				id: uuid.v4().toString(),
 				name: name,
@@ -209,6 +223,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 							power={power}
 							energy={energy}
 							screenName={route.name}
+							maxTaskConsumption={maxTaskConsumption}
 							setDuration={setDuration}
 							setPower={setPower}
 							setEnergy={setEnergy}
@@ -238,6 +253,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 						setLoading={setLoading}
 						setError={setErrorModal}
 						scheduleTask={scheduleTask}
+						maxTaskConsumption={maxTaskConsumption}
 					/>
 
 					<ResultArea startTime={startDate} price={price} co2Emission={co2Emission} loading={loading} />
@@ -280,7 +296,7 @@ const CreateTask: React.FunctionComponent<IStackScreenProps> = (props) => {
 								textColor={colors.neutral.white}
 								onPress={() => navigation.navigate('Home')}
 							>
-								Home
+								Ok
 							</Button>
 						</View>
 					</View>

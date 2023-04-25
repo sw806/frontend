@@ -117,8 +117,8 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 				<TextInput
 					mode="outlined"
 					testID="max_power_consumption"
-					label="Max power consumption (Watt)"
-					placeholder="Max power consumption (Watt)"
+					label="Max power (kW)"
+					placeholder="Max power (kW)"
 					onChangeText={(text) => handleInput('maxConsumption', text)}
 					value={maxConsumption}
 					keyboardType="numeric"
@@ -134,8 +134,8 @@ const SettingsPage: React.FunctionComponent<IStackScreenProps> = (props) => {
 				<TextInput
 					mode="outlined"
 					testID="max_task_power_consumption"
-					label="Max task power consumption (Watt)"
-					placeholder="Max task power consumption (Watt)"
+					label="Max task power (kW)"
+					placeholder="Max task power (kW)"
 					onChangeText={(text) =>
 						handleInput('maxTaskConsumption', text)
 					}

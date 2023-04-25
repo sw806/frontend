@@ -12,6 +12,7 @@ type TIProps = {
 	setLoading;
 	setError;
 	scheduleTask;
+	maxTaskConsumption;
 };
 
 const FindStartDateButton = ({
@@ -22,6 +23,7 @@ const FindStartDateButton = ({
 	setLoading,
 	setError,
 	scheduleTask,
+	maxTaskConsumption,
 }: TIProps) => {
 	const findStartDate = async () => {
 		if (!name) {
@@ -42,6 +44,11 @@ const FindStartDateButton = ({
 			filledInputs.length < 2
 		) {
 			alert('Provide 2 of the following inputs: Duration, Power, Energy');
+			return false;
+		}
+
+		if (maxTaskConsumption && maxTaskConsumption < power) {
+			alert('Power cannot be over ' + maxTaskConsumption + ' kW');
 			return false;
 		}
 
