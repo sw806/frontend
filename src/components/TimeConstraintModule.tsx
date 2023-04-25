@@ -34,9 +34,12 @@ const styles = StyleSheet.create({
 		backgroundColor: '#f3f3f3'
 	},
 	ModalHeader: {
-		height: 100,
+		height: 110,
 		paddingTop: 40,
+		paddingLeft: 10,
+		paddingRight: 20,
 		flexDirection: 'row',
+		justifyContent: 'space-between',
 		alignItems: 'center',
 		backgroundColor: 'white',
 		shadowColor: 'rgba(0,0,0,0.1)',
@@ -56,6 +59,11 @@ const styles = StyleSheet.create({
 		width: 40,
 		height: 40,
 		backgroundColor: 'transparent',
+	},
+	slidingWindowBackButton:{
+		color: '#009FFF', 
+		fontSize: 16,
+		fontWeight: 'bold',
 	},
 	addButton: {
 		width: 80,
@@ -213,16 +221,19 @@ const TimeConstraintModule: React.FC<TimeConstraintModuleProps> = ({
 			<Modal visible={showSlidingWindow} animationType="slide">
 				<View style={styles.slidingWindowContent}>
 					<View style={styles.ModalHeader}>
-						<TouchableOpacity onPress={handleCloseSlideWindow}>
-							<Avatar.Icon
-								style={styles.backButton}
-								size={50}
-								color={'black'}
-								icon="arrow-left"
-							/>
-						</TouchableOpacity>
 
 						<Text style={styles.ModalHeaderText}> Constrain </Text>
+						
+						<TouchableOpacity
+								onPress={handleCloseSlideWindow}
+								style={{
+									justifyContent: 'center',
+									paddingLeft: 30,
+								}}
+							>
+								<Text style={styles.slidingWindowBackButton}> Okay </Text>
+							</TouchableOpacity>
+
 					</View>
 
 							
