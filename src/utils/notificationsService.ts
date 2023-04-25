@@ -53,6 +53,11 @@ export module NotificationService {
 		const reminderDate = new Date(
 			startDate.getTime() - secondsBefore * 1000
 		);
+
+		if (reminderDate.getTime() < Date.now()) {
+			return;
+		}
+
 		console.log(
 			`Creating notification for task ${
 				task.id
