@@ -127,6 +127,7 @@ const TaskUnitInput = ({
 	}
 
 	const handleInput = (inputName: string, inputValue: string) => {
+		inputValue = inputValue.replace(',', '.')
 		if (isValidNumber(inputValue) || inputValue === '') {
 			setPreviousTaskInUse(false);
 			switch (inputName) {
